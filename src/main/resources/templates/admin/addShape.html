@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="admin/common/header :: common-header" />
+
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+
+<body>
+<div th:replace="admin/common/header :: navbar" />
+
+<div class="container login">
+    <div class="">
+        <div class="">
+            <h2 class="section-headline"><span>Nouvelle forme</span></h2>
+        </div>
+    </div>
+
+    <hr style="position:absolute; width:48%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
+
+
+
+        <div class="">
+
+  <!-- create new shape -->
+
+                <div class="panel panel-default" style="border: none;">
+                    <div class="panel-body"
+                         style="background-color:#ededed; margin-top: 20px;">
+
+                        <form th:action="@{/product/addShape}" method="post">
+
+
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="shapeName">Nom forme</label>&nbsp;<span
+                                    style="color: red;" th:if="${shapeExists}">Forme Existe Déja.</span>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="shapeName" name="shapeName" th:value="${shape.shapeName}"
+                                           placeholder=""  required/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
+                            <!--
+
+                                                             style="color: red;" th:if="${categoryExists}">Categorie Existe Déja.</span>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" id="categoryName" name="categoryName" th:value="${category.categoryName}"
+                                                                           placeholder=""  required/>
+                                                                    <span class="help-block"></span>
+                                                                </div>
+                                                            </div>
+                                                            <p style="color: #828282">Enter shape Name .</p>
+                            -->
+
+
+                            <button type="submit" class="btn btn-login">Ajouter une forme</button>
+
+                        </form>
+                    </div>
+
+
+                </div>
+
+
+
+        </div>
+
+
+
+
+</div>
+<a th:href="@{/product/shapeList}" role="button" class="btn btn-login">List des formes</a>
+
+
+
+<div th:replace="admin/common/header :: body-bottom-scripts" />
+
+</body>
+</html>
+

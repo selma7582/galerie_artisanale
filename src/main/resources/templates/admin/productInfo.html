@@ -1,0 +1,72 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="admin/common/header :: common-header" />
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+
+<div th:replace="admin/common/header :: navbar" />
+
+
+
+<div class="container">
+    <div>
+        <ol class="breadcrumb">
+            <li><a th:href="@{/product/productList}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Vers la liste</a></li>
+            <li><a th:href="@{/product/updateProduct?id=}+${product.id}">Editer</a></li>
+        </ol>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <div th:if="${product.haveImages()}"
+                         th:each="image : ${product.imagesList}">
+                            <img th:if="${image.fullURL != null}" class="img-responsive" th:src="@{${image.fullURL}}" width=""/>
+
+                    </div>
+              <!--      <img th:src="@{/image/product/}+${product.id}+'.png'" class="img-responsive center-block" />-->
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-9">
+            <h3 th:text="${product.productName}"></h3>
+            <div class="row">
+                <div class="col-xs-6">
+
+                    <p><strong>Category: </strong><span th:text="${product.category}"></span></p>
+
+                    <p><strong>Nom: </strong><span th:text="${product.productName}"></span></p>
+                </div>
+                <div class="col-xs-6">
+
+                    <p><strong>Hauteur: </strong><span th:text="${product.height}"></span></p>
+
+                    <p><strong>Largeur: </strong><span th:text="${product.width}"></span></p>
+                    <p><strong>Prix: </strong><span th:text="${product.price}"></span></p>
+                    <p><strong>Le Stock: </strong><span th:text="${product.inStockNumber}"></span></p>
+
+                </div>
+            </div>
+
+            <p><Strong>Description: </Strong><span th:utext="${product.description}"></span></p>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="admin/common/header :: body-bottom-scripts" />
+
+</body>
+</html>

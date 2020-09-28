@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+
+
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+<div th:replace="common/header :: navbar" />
+
+<div class="container">
+    <div class="row" style="margin-bottom: -100px;">
+        <div class="col-xs-8">
+            <h2 class="section-headline">
+                <h2 class="section-headline">
+                    <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'toute la collection'"></span>
+                </h2>
+            </h2>
+        </div>
+
+    </div>
+    <hr
+            style="position: absolute; width: 100%; height: 6px; background-color: #333; z-index: -1; margin-top: -80px;"/>
+
+
+    <div class="row" style="margin-top: 60px;">
+
+<!--        <div class="col-xs-3">
+            <h3><label for="category">Category</label></h3>
+            <div class="list-group" id="category">
+                <a th:href="@{/bookshelf(category='all')}" th:classappend="${activeAll}? 'active'" class="list-group-item">All</a>
+                <a th:href="@{/searchByCategory(category='Management')}" th:classappend="${activeManagement}? 'active'" class="list-group-item">Management</a>
+                <a th:href="@{/searchByCategory(category='Fiction')}" th:classappend="${activeFiction}? 'active'" class="list-group-item">Fiction</a>
+                <a th:href="@{/searchByCategory(category='Engineering')}" th:classappend="${activeEngineering}? 'active'" class="list-group-item">Engineering</a>
+                <a th:href="@{/searchByCategory(category='Programming')}" th:classappend="${activeProgramming}? 'active'" class="list-group-item">Programming</a>
+                <a th:href="@{/searchByCategory(category='Arts &amp; Literature')}" th:classappend="${activeArtsLiterature}? 'active'" class="list-group-item">Arts &amp; Literature</a>
+            </div>
+        </div>-->
+
+        <div class="col-xs-9">
+            <div th:if="${emptyList}">
+                <h5 style="font-style: italic;">Aucun resulta pour votre recherche.</h5>
+            </div>
+
+            <table border="0" id="productList">
+                <thead><tr><th></th></tr></thead>
+                <tbody>
+                <tr class="product-item" data-th-each="product : ${productList}">
+                    <td>
+                        <div th:if="${product != null}">
+                            <div class="row" style="margin-bottom: 50px;">
+                                <div class="col-xs-3">
+
+                                    <div th:if="${product.haveImages()}"
+                                         th:each="image : ${product.imagesList}">
+<!--
+                                        <a th:href="@{/productDetail?id=}+${product.id}">
+-->
+                                            <img th:if="${image.fullURL != null}" class="img-responsive" th:src="@{${image.fullURL}}" width="500"/>  <!--</a>-->
+
+                                    </div>
+                                </div>
+                                <div class="col-xs-9">
+<!--
+                                        <h4 th:text="${product.productName}"></h4>
+-->
+
+                                    <a th:href="@{/productDetail?id=}+${product.id}"><h4
+                                            th:text="${product.productName}"></h4></a>
+
+                                    <span >Hauteur:  <span th:text="${product.height}"></span></span> m<br/>
+                                    <span >Largeur:      <span th:text="${product.width}"></span> m</span><br/>
+                                    <!--     <span th:text="${#strings.capitalize(book.format)}"></span>-->
+                                    <!--   <a th:href=@{/productDetail?id=}+${product.id}" > -->
+
+                                    <span >   <span th:text="${product.inStockNumber}"></span> pièce disponible</span><br/>
+                                       <span style="font-size:x-large;color:#db3208;">Prix: <span
+                                               th:text="${#numbers.formatDecimal(product.price, 0 , 'POINT', 2, 'POINT')}"></span> DH</span><br/>
+
+<!--
+                                    <span th:text="${product.description}"></span>
+-->
+
+
+<!--
+                                   <p th:utext="${#strings.abbreviate(product.description,1000)}"></p>
+-->
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="common/header :: footer"/>
+
+<div th:replace="common/header :: body-bottom-scripts" />
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>

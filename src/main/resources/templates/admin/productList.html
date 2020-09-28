@@ -1,0 +1,104 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="admin/common/header :: common-header" />
+
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+
+
+<body>
+<div th:replace="admin/common/header :: navbar" />
+
+
+
+    <div class="container">
+        <form class="form-horizontal" th:action="@{/product/removelist}" method="post"  enctype="multipart/form-data" th:objet="${container}">
+            <input hidden="hidden" name="productList" th:field="*{container.productList}" />
+        <div class="table-responsive">
+            <table id="productListTable" class="table table-bordered table-hover table-striped">
+
+                <thead>
+                    <tr>
+                        <th><input th:id="selectAllProducts" type="checkbox" /></th>
+
+                        <th>Nom</th>
+                        <th>Forme</th>
+                        <th>Largeur</th>
+                        <th>Hauteur</th>
+                        <th>Catégorie</th>
+                        <th>Prix</th>
+                        <th>Stock</th>
+                        <th>Editer</th>
+                        <th>supprimer</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="product , itemStat: ${container.productList}">
+
+                        <td>
+                            <input hidden="hidden" name="id" th:value="${product.id}" />
+                            <input th:id="'selected'+${product.id}" class="checkbox" type="checkbox"  th:field="*{container.productList[__${itemStat.index}__].selected}"/>
+                        </td>
+                       <td>
+
+                               <span th:text="${product.productName}"></span>
+                           </a>
+                       </td>
+
+                        <td th:text="${product.shape.shapeName}"></td>
+                        <td th:text="${product.width}"></td>
+                        <td th:text="${product.height}"></td>
+                        <td th:text="${product.category.categoryName}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td th:text="${product.inStockNumber}"></td>
+
+                       <td>
+                           <a th:href="@{/product/productInfo(id=${product.id})}">
+                           <i class="glyphicon glyphicon-pencil"></i></button></a>
+                       </td>
+
+                        <td>
+                            <form class="form-horizontal" th:action="@{/product/remove2}" method="post"  enctype="multipart/form-data" th:objet="${product}">
+
+                            <input hidden="hidden" name="id" th:value="${product.id}" />
+                            <button th:id="'oneProduct-'+${product.id}" class="btn btn-danger btn-xs delete-product"  type="submit" value="delete" >
+<!--
+                                    <a th:href="${'/product/delete' +product.id}" onclick="return data-confirm('Etes-vous certain de vouloir supprimer?')"  value="delete" >
+-->
+                                <i class="glyphicon glyphicon-trash"></i></button>
+<!--
+                                        <i class="fa fa-times delete_forever"></i></button>
+-->
+                            </form>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button th:id="deleteSelected" class="btn btn-danger"  type="submit">suprimer</button>
+            <a href="" >Suppression</a>
+        </form>
+
+    </div>
+
+<a th:href="@{/product/add}" role="button" class="btn btn-success">Ajouter nouveau produit</a>
+
+
+<div th:replace="admin/common/header :: body-bottom-scripts" />
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,90 @@
+
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="admin/common/header :: common-header" />
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+<div th:replace="admin/common/header :: navbar" />
+
+
+<div class="container">
+    <div class="row" style="margin-bottom: auto">
+        <div class="col-xs-8">
+            <h2 class="section-headline"><span>Liste des categories</span></h2>
+        </div>
+
+
+    </div>
+    <hr style="position:absolute; width:75%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
+
+    <img class="img-responsive" src="" />
+
+    <div class="row" style="margin-top:120px">
+        <div class="col-xs-9 col-xs-offset-3">
+
+
+            <!-- list category -->
+
+
+
+                <div>
+                    <div class="table-responsive">
+                        <table id="categoryListTable" class="table table-bordered table-hover table-striped">
+                            <thead>
+                            <tr>
+
+                                <th>Categorie</th>
+                                <th>Editer</th>
+                                <th>Supprimer</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-th-each="category : ${categoryList}">
+
+
+                                <td th:text="${category.categoryName}"></td>
+<!--
+                                    <a th:href="@{/category/editCategory?id=}+${product.id}">
+-->
+
+                                <td>
+                                    <a th:href="@{/product/updateCategory(id=${category.id})}">
+                                        <i class="glyphicon glyphicon-pencil"></i></a>
+                                </td>
+
+                                <td>
+                                    <form class="form-horizontal" th:action="@{/product/removeC}" method="post"  enctype="multipart/form-data" th:objet="${category}">
+                                        <input hidden="hidden" name="id" th:value="${category.id}" />
+                                        <button th:id="'oneCategory-'+${category.id}" class="btn btn-danger btn-xs delete-category"  type="submit" value="delete" >
+                                            <i class="glyphicon glyphicon-trash"></i></button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+
+
+
+<a th:href="@{/product/addCategory}" role="button" class="btn btn-login">Ajouter une categorie</a>
+
+</div>
+
+<div th:replace="admin/common/header :: body-bottom-scripts" />
+
+</body>
+</html>

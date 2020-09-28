@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header"/>
+
+
+
+<body>
+<div th:replace="common/header :: navbar"/>
+
+
+<div class="container">
+    <!--
+        <div class="row" style="margin-bottom: -100px;">
+            <div class="col-xs-8">
+                <h2 class="section-headline">
+                    <h2 class="section-headline">
+                            <span
+                                    th:text="${user}? ${#strings.toUpperCase(user.username)} : 'Tous les Produits'"></span>
+                    </h2>
+                </h2>
+            </div>
+
+
+        </div>
+    -->
+
+
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-6 text-left">
+                    <a class="btn btn-warning" th:href="@{/galerie}">Continuer le shopping</a>
+                </div>
+                <a th:if="${shoppingCart != null and shoppingCart.cartItemList != null}" th:href="@{/shoppingCart/confirm}" role="button" class="btn btn-success">Valider le panier</a>
+
+                <br/>
+                <div th:if="${notEnoughStock}" class="alert alert-warning">
+                    Oops, some of the products don't have enough stock. Please update
+                    product quantity.
+                </div>
+                <div th:if="${shoppingCart == null or shoppingCart.getCartItemCount()==0}" class="alert alert-warning">Oops,
+                    Votre panier est vide
+                </div>
+
+                <br/>
+
+
+                <table th:if="${shoppingCart != null and shoppingCart.cartItemList != null}" id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0"
+                       width="100%">
+                    <thead>
+                    <tr>
+<!--
+                        <th></th>
+-->
+                        <th>Produit</th>
+                        <th>Prix Unitaire</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr class="result" data-th-each=" cartItem : ${shoppingCart.cartItemList}">
+
+
+
+                        <td th:text="${cartItem.product.productName}"></td>
+                        <td th:text="${cartItem.product.price}"></td>
+                        <td th:text="${cartItem.qty}"></td>
+                        <td th:text="${(cartItem.product.price)*(cartItem.qty)}"></td>
+
+
+                    </tr>
+                    <tr>
+                        <td><b>Total : [[${shoppingCart.getTotal()}]] DH </b></td>
+
+                    </tr>
+                    </tbody>
+
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end of container -->
+
+
+<div th:replace="common/header :: footer"/>
+
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>

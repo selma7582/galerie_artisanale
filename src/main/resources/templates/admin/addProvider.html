@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="admin/common/header :: common-header" />
+
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+
+<body>
+<div th:replace="admin/common/header :: navbar" />
+
+<div class="container">
+    <div class="row" style="margin-bottom: auto">
+        <div class="col-xs-8">
+            <h2 class="section-headline"><span>Add New provider</span></h2>
+        </div>
+
+
+    </div>
+    <hr style="position:absolute; width:75%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
+    <hr />
+
+    <img class="img-responsive" src="" />
+
+    <div class="row" style="margin-top:120px">
+        <div class="col-xs-9 col-xs-offset-3">
+
+            <!-- Nav tabs -->
+
+
+            <!-- Tab panels -->
+            <div class="tab-content">
+
+
+
+
+
+                <div class="panel-group">
+                    <div class="panel panel-default" style="border: none;">
+                        <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
+
+                            <form th:action="@{/add/addProvider}" method="post">
+
+                                <div class="form-group">
+                                    <label for="providerFirstName">Provider Name</label>
+                                    <input required  type="text" class="form-control"
+                                           id="providerFirstName" name="providerFirstName" />
+                                    <p style="color: #828282">Enter Provider FirstName .</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="providerLastName">Provider Name</label>&nbsp;<span
+                                        style="color: red;" th:if="${usernameExists}">Category alredy exists.</span>
+                                    <input required  type="text" class="form-control"
+                                           id="providerLastName" name="providerLastName" />
+                                    <p style="color: #828282">Enter Provider lastName .</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="providerEmail"> Email</label>&nbsp;<span
+                                        style="color: red;" th:if="${usernameExists}">Category alredy exists.</span>
+                                    <input required  type="email" class="form-control"
+                                           id="providerEmail" name="providerEmail" />
+                                    <p style="color: #828282">Enter Provider Email .</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="providerTel">Tel</label>&nbsp;
+                                    <input required  type="tel" class="form-control"
+                                           id="providerTel" name="providerTel" />
+                                    <p style="color: #828282">Enter Provider Tel .</p>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="Number"> number</label>&nbsp;
+                                    <input required  type="number" class="form-control"
+                                           id="Number" name="Number" />
+                                    <p style="color: #828282">Enter number .</p>
+                                </div>
+
+                                <div>
+                                    <label for="city">City</label>&nbsp;
+                                    <input required  type="text" class="form-control"
+                                           id="city" name="city" />
+                                    <p style="color: #828282">Enter city .</p>
+                                </div>
+
+                                <div>
+                                <label for="country">Country</label>&nbsp;
+                                <input required  type="text" class="form-control"
+                                       id="country" name="country" />
+                                <p style="color: #828282">Enter country .</p>
+                                </div>
+
+
+                                <button type="submit" class="btn btn-primary">Add new Provider</button>
+
+
+                            </form>
+                        </div>
+                    </div>
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+</div>
+</div>
+
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<div th:replace="admin/common/header :: body-bottom-scripts" />
+
+</body>
+</html>
+
