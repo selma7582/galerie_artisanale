@@ -18,4 +18,8 @@ public interface ProductService {
      Product findOne(Long id);
 
     void removeOne(Long id);
+
+    Product findByProductName(String productName);
+
+    List<Product> findByCategory(String category);
 }

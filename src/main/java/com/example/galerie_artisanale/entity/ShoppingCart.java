@@ -1,10 +1,11 @@
 package com.example.galerie_artisanale.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -18,17 +19,26 @@ public class ShoppingCart {
     private Long id;
     private double GrandTotal;
 
-    @OneToMany(mappedBy="shoppingCart")
-    @JsonIgnore
-    private List<CartItem> cartItemList;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Ordered ordered;
+
+    @Column(name ="dateCreation")
+    private Date creationDate;
+
+    @Column(name ="dateModification")
+    private Date updateDate;
+
+
 
 
     public double getTotal(){
+       final List<CartItem> cartItemList  = ordered != null ?ordered.getCartItemList(): null ;
         if (cartItemList != null && !cartItemList.isEmpty()){
             return  cartItemList.stream()
                     .mapToDouble(item -> item.getQty() * item.getProduct().getPrice())
@@ -41,6 +51,8 @@ public class ShoppingCart {
     }
 
     public int getCartItemCount(){
+        final List<CartItem> cartItemList  = ordered != null ?ordered.getCartItemList(): null ;
+
         if (cartItemList != null && !cartItemList.isEmpty()){
             return  cartItemList.stream()
                     .mapToInt(item -> item.getQty())
@@ -48,6 +60,10 @@ public class ShoppingCart {
         }else {
             return 0 ;
         }
+    }
+
+    public List<CartItem>  getCartItemList() {
+        return ordered != null ?ordered.getCartItemList(): new ArrayList<>();
     }
 
 

@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,29 +17,28 @@ public class Ordered {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private Date orderDate;
+/*
     private Date shippingDate;
-    private Date billingDate;
-    private String shippingMethod;
+*/
     private String orderStatus;
-    private double orderTotal;
-    private boolean enabled;
     private String status;
 
 
     @OneToMany(mappedBy = "ordered", cascade=CascadeType.ALL )
-    private List<CartItem> cartItemList;
+    private List<CartItem> cartItemList = new ArrayList<>();
 
     @ManyToOne
     private User user;
 
     @ManyToOne
+    @JoinColumn( name = "ship_address")
     private Address shippingAddress;
 
     @ManyToOne
+    @JoinColumn( name = "bill_address")
     private Address billingAddress;
 
-    @OneToOne(targetEntity = ShoppingCart.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "id")
+    @OneToOne (mappedBy = "ordered")
     private ShoppingCart shoppingCart;
 
 

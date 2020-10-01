@@ -27,6 +27,10 @@
 
     <img class="img-responsive" src="" />
 
+    <div class="alert alert-danger" th:if="${canNotDelete}">
+        <strong>Impossible de supprimer cette categorie </strong> .
+    </div>
+
     <div class="row" style="margin-top:120px">
         <div class="col-xs-9 col-xs-offset-3">
 
@@ -63,7 +67,7 @@
                                 <td>
                                     <form class="form-horizontal" th:action="@{/product/removeC}" method="post"  enctype="multipart/form-data" th:objet="${category}">
                                         <input hidden="hidden" name="id" th:value="${category.id}" />
-                                        <button th:id="'oneCategory-'+${category.id}" class="btn btn-danger btn-xs delete-category"  type="submit" value="delete" >
+                                        <button th:id="${category.id}" class="btn btn-danger btn-xs delete-category"  type="submit" value="delete" >
                                             <i class="glyphicon glyphicon-trash"></i></button>
                                     </form>
                                 </td>

@@ -62,11 +62,12 @@ public class ShoppingCartController {
             ShoppingCart shoppingCart = shoppingCartService.findByUser(connectedUser);
             if (shoppingCart == null) {
                 shoppingCart = new ShoppingCart();
+                shoppingCart.setOrdered(new Ordered());
             }
-            if (shoppingCart.getCartItemList() == null) {
-                shoppingCart.setCartItemList(new ArrayList<>());
+            if (shoppingCart.getOrdered().getCartItemList() == null) {
+                shoppingCart.getOrdered().setCartItemList(new ArrayList<>());
             }
-            shoppingCart.getCartItemList().add(cartItem);
+            shoppingCart.getOrdered().getCartItemList().add(cartItem);
             shoppingCart.setUser(connectedUser);
             shoppingCartService.save(shoppingCart);
             session.removeAttribute(SHOPPING_CART);
@@ -76,19 +77,18 @@ public class ShoppingCartController {
             Object shoppingCart = session.getAttribute(SHOPPING_CART);
             if (shoppingCart == null) {
                 ShoppingCart cart = new ShoppingCart();
-                if (cart.getCartItemList() == null) {
-                    cart.setCartItemList(new ArrayList<>());
-                }
-                cart.getCartItemList().add(cartItem);
+                cart.setOrdered(new Ordered());
+
+                cart.getOrdered().getCartItemList().add(cartItem);
                 session.setAttribute(SHOPPING_CART, cart);
             } else {
                 if (shoppingCart instanceof ShoppingCart) {
 
                     ShoppingCart cart = (ShoppingCart) shoppingCart;
-                    if (cart.getCartItemList() == null) {
-                        cart.setCartItemList(new ArrayList<>());
+                    if (cart.getOrdered() == null){
+                        cart.setOrdered(new Ordered());
                     }
-                    cart.getCartItemList().add(cartItem);
+                    cart.getOrdered().getCartItemList().add(cartItem);
                     // à verifier si ça nécissaire
                     session.setAttribute(SHOPPING_CART, cart);
                 } else {
@@ -143,7 +143,7 @@ public class ShoppingCartController {
     }
 
 
-    @GetMapping("/confirm")
+/*    @GetMapping("/confirm")
     public String confirmShoppingCart(Model model, HttpSession session) {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -165,7 +165,7 @@ public class ShoppingCartController {
             session.setAttribute(SHOPPING_CART,null);
 
             return "orderConfirm";
-        }
+        }*/
 
     @RequestMapping("/updateCartItem")
     public String updateShoppingCart(

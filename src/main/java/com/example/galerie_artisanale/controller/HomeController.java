@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -69,9 +70,15 @@ public class HomeController {
     @Autowired
     private CityService cityService;
 
-    @RequestMapping("/")
-    public String index() {
 
+    @Autowired
+    private CategoryService categoryService ;
+
+    @RequestMapping("/")
+    public String index(Model model) {
+
+
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (User.class.isInstance(authentication.getPrincipal())) {
 
@@ -93,9 +100,23 @@ public class HomeController {
     }
 
 
+    @RequestMapping("/galerie/{category}")
+    public String galerieByCategory(@PathVariable String category, Model model, Principal principal, HttpSession session) {
+
+        List<Product> productList = productService.findByCategory(category);
+        return galerieForAll(model, principal, session, productList);
+    }
+
     @RequestMapping("/galerie")
     public String galerie(Model model, Principal principal, HttpSession session) {
 
+        List<Product> productList = productService.findAll();
+        return galerieForAll(model, principal, session, productList);
+    }
+
+
+    private String galerieForAll(Model model, Principal principal, HttpSession session, List<Product> productList) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
         ShoppingCart shoppingCart ;
         if (principal != null) {
             String username = principal.getName();
@@ -105,7 +126,7 @@ public class HomeController {
         } else {
             shoppingCart =(ShoppingCart) session.getAttribute(ShoppingCartController.SHOPPING_CART);
         }
-        List<Product> productList = productService.findAll();
+
         // construire l'url des images
         productList.stream()
                 .flatMap(product -> product.getImagesList().stream())
@@ -116,6 +137,8 @@ public class HomeController {
         model.addAttribute("shoppingCart",shoppingCart);
         return "galerie";
     }
+
+
 
     @RequestMapping("/productDetail")
     public String productDetail(

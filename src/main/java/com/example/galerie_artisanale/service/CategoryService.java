@@ -23,6 +23,5 @@ public interface CategoryService {
     Category findOne(Long id);
 
 
-
-
+    List<String> findAllCategoryNames();
 }

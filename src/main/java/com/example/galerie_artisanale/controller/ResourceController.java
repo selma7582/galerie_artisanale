@@ -16,13 +16,13 @@ public class ResourceController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/product/removeList", method = RequestMethod.POST)
+    @RequestMapping(value = "/shape/removeList", method = RequestMethod.POST)
     public String removeList(
-            @RequestBody ArrayList<String> productIdList, Model model){
+            @RequestBody ArrayList<String> shapeIdList, Model model){
 
-        for (String id : productIdList ) {
-            String productId =id.substring(8);
-            productService.removeOne(Long.parseLong(productId));
+        for (String id : shapeIdList ) {
+            String shapeId =id.substring(8);
+            productService.removeOne(Long.parseLong(shapeId));
         }
 
         return "delete success";

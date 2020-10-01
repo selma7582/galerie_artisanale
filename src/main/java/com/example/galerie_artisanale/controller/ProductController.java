@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.apache.commons.collections.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
@@ -43,45 +45,49 @@ public class ProductController {
     private StorageService storageService;
 
 
-
-    @RequestMapping(value="/add", method = RequestMethod.GET)
-    public String addProduct(Model model){
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String addProduct(Model model) {
         Product product = new Product();
-        model.addAttribute("product",product);
-        return "admin/addProduct";
+        model.addAttribute("product", product);
+        return "/admin/addProduct";
     }
 
     @RequestMapping(value = "/remove2", method = RequestMethod.POST)
-    public String remove(@ModelAttribute Product product){
-        System.out.println("Removing :"+product.getId());
-         productService.removeOne(product.getId());
+    public String remove(@ModelAttribute Product product) {
+        System.out.println("Removing :" + product.getId());
+        productService.removeOne(product.getId());
 
         return "redirect:/product/productList";
 
     }
 
 
-
     @RequestMapping(value = "/removelist", method = RequestMethod.POST)
-    public String remove(@ModelAttribute Container container){
+    public String remove(@ModelAttribute Container container) {
         System.out.println("Removing  List:");
 
 
         container.getProductList().stream().filter(Product::isSelected)
-                .forEach(p -> {System.out.println("Removing " + p.getId());
-                     productService.removeOne(p.getId());
+                .forEach(p -> {
+                    System.out.println("Removing " + p.getId());
+                    productService.removeOne(p.getId());
                 });
 
         return "redirect:/product/productList";
 
     }
 
-    @PostMapping(value="/add")
-    public String addProductPost(@ModelAttribute Product product,Model model,
-                                 @RequestParam("file") MultipartFile[] files){
+    @PostMapping(value = "/add")
+    public String addProductPost(@ModelAttribute("product") Product product, Model model,
+                                 @RequestParam("file") MultipartFile[] files) throws Exception{
 
+        model.addAttribute("productName",product.getProductName());
+        if(productService.findByProductName(product.getProductName()) != null){
+            model.addAttribute("productExists",true);
+            return "admin/addProduct";
+        }
         product = this.productService.save(product);
-        for(MultipartFile file : files ) {
+        for (MultipartFile file : files) {
             Image image = new Image();
             image.setProduct(product);
 
@@ -93,7 +99,9 @@ public class ProductController {
 
         }
         model.addAttribute("addSuccess", true);
+/*
         model.addAttribute("classActiveAdd", true);
+*/
 
         return "admin/addProduct";
 
@@ -105,99 +113,97 @@ public class ProductController {
 
 
     @RequestMapping("/productList")
-    public String productList(Model model){
+    public String productList(Model model) {
         List<Product> productList = productService.findAll();
-        Container container = new Container() ;
+        Container container = new Container();
         container.setProductList(productList);
-        model.addAttribute("productList",productList);
-        model.addAttribute("container",container);
+        model.addAttribute("productList", productList);
+        model.addAttribute("container", container);
         return "admin/productList";
     }
 
     @RequestMapping("/categoryList")
-    public String categoryList(Model model){
+    public String categoryList(Model model) {
         List<Category> categoryList = categoryService.findAll();
-        model.addAttribute("categoryList",categoryList);
+        model.addAttribute("categoryList", categoryList);
         return "admin/categoryList";
     }
 
     @RequestMapping("/shapeList")
-    public String shapeList(Model model){
+    public String shapeList(Model model) {
         List<Shape> shapeList = shapeService.findAll();
-        model.addAttribute("shapeList",shapeList);
+        model.addAttribute("shapeList", shapeList);
         return "admin/shapeList";
     }
 
 
     @RequestMapping("/addShape")
-    public String addShape(Model model){
+    public String addShape(Model model) {
         List<Shape> shapeList = shapeService.findAll();
-        model.addAttribute("shapeList",shapeList);
+        model.addAttribute("shapeList", shapeList);
         return ("admin/addShape");
     }
 
 
+    @RequestMapping(value = "/addShape", method = RequestMethod.POST)
+    public String addShapePost(HttpServletRequest request,
+                               @ModelAttribute("shape") Shape shape,
+                               Model model) throws Exception {
+        model.addAttribute("shapeName", shape.getShapeName());
 
-     @RequestMapping(value = "/addShape", method = RequestMethod.POST)
-     public String  addShapePost(HttpServletRequest request,
-             @ModelAttribute("Shape") Shape shape,
-             Model model)throws Exception{
-         model.addAttribute("shapeName",shape.getShapeName());
+        if (shapeService.findByShapeName(shape.getShapeName()) != null) {
+            model.addAttribute("shapeExists", true);
+            return "/admin/addShape";
+        }
 
-         if(shapeService.findByShapeName(shape.getShapeName()) != null){
-             model.addAttribute("shapeExists",true);
-             return "/admin/addShape";
-         }
-
-         this.shapeService.save(shape);
-         return ("redirect:shapeList") ;
-     }
-
+        this.shapeService.save(shape);
+        return ("redirect:shapeList");
+    }
 
 
     @ModelAttribute("shape")
-    public Shape newShape(){
+    public Shape newShape() {
         return new Shape();
     }
 
     @ModelAttribute("shapes")
-    Collection<Shape>  findAllShape(){
-        Collection<Shape> shapes = (Collection<Shape>)shapeService.findAll();
+    Collection<Shape> findAllShape() {
+        Collection<Shape> shapes = (Collection<Shape>) shapeService.findAll();
         return shapes;
     }
 
     @RequestMapping("/addCategory")
-    public String addCategory(Model model){
+    public String addCategory(Model model) {
         List<Category> categoryList = categoryService.findAll();
-        model.addAttribute("categoryList",categoryList);
+        model.addAttribute("categoryList", categoryList);
         return ("admin/addCategory");
     }
 
-    @RequestMapping(value="/addCategory", method = RequestMethod.POST)
+    @RequestMapping(value = "/addCategory", method = RequestMethod.POST)
     public String addCategoryPost(
             HttpServletRequest request,
-            @ModelAttribute("category")Category category,
-            Model model)throws Exception{
-        model.addAttribute("categoryName",category.getCategoryName());
+            @ModelAttribute("category") Category category,
+            Model model) throws Exception {
+        model.addAttribute("categoryName", category.getCategoryName());
 
-        if(categoryService.findByCategoryName(category.getCategoryName()) != null ){
-            model.addAttribute("categoryExists",true);
+        if (categoryService.findByCategoryName(category.getCategoryName()) != null) {
+            model.addAttribute("categoryExists", true);
             return "/admin/addCategory";
         }
 
         this.categoryService.save(category);
-       // return ("admin/addCategory");
+        // return ("admin/addCategory");
         return ("redirect:categoryList");
 
     }
 
     @ModelAttribute("category")
-    public Category newCategory(){
+    public Category newCategory() {
         return new Category();
     }
 
     @ModelAttribute("categories")
-    Collection<Category> findAllCategory(){
+    Collection<Category> findAllCategory() {
         Collection<Category> categories = (Collection<Category>) categoryService.findAll();
         return categories;
     }
@@ -224,120 +230,86 @@ public class ProductController {
         return "admin/updateProduct";
     }
 
-    @RequestMapping(value="/updateProduct", method=RequestMethod.POST)
-    public String updateProductPost(@ModelAttribute("product")Product product, HttpServletRequest request) {
+    @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
+    public String updateProductPost(@ModelAttribute("product") Product product, HttpServletRequest request) {
 
         productService.save(product);
 
         List<Product> productList = productService.findAll();
       /* Container container = new Container() ;
         container.getProductList();*/
-        productList.stream()
+/*        productList.stream()
                 .flatMap(products -> products.getImagesList().stream())
-                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));*/
 
         return "redirect:/product/productInfo?id="+product.getId();
 
     }
-/*
+    /*
+    *         model.addAttribute("updateSuccess", true);
+     */
 
-    @RequestMapping(value="/removeC", method=RequestMethod.POST)
+    @RequestMapping(value = "/removeC", method = RequestMethod.POST)
     public String removeC(
             @ModelAttribute("id") String id, Model model
     ) {
-        categoryService.removeOne(Long.parseLong(id.substring(8)));
+
+      /*  if(productService.findByCategory(categoryService.findById(Long.parseLong(id))) != null){
+            model.addAttribute("canNotDelete",true);
+
+        }*/
+        categoryService.removeOne(Long.parseLong(id));
         List<Category> categoryList = categoryService.findAll();
         model.addAttribute("categoryList", categoryList);
 
-        return "redirect:/category/categoryList";
+        return "redirect:/product/categoryList";
     }
 
-*/
 
-/*
-    @ModelAttribute("image")
-    public Image newImage(){
-        return new  Image();
-    }
 
-    @ModelAttribute("image")
-    Collection<Image> findAllImage(){
-        Collection<Image> images = (Collection<Image>) imageService.findAll();
-        return images;
-    }
 
-    @ModelAttribute("image")
-    public String ImageList(Model model){
-        List<Image> imageList = imageService.findAll();
-        model.addAttribute("imageList",imageList);
-        return "admin/imageList";
-    }
-*/
-    /*
-    @GetMapping(value = "/edit/{productId}")
-    public String edit(Model model, @PathVariable Long productId) {
-        Optional<Product> product = productService.findById(productId);
-        if (product.isPresent()) {
-            model.addAttribute("product", product.get());
-            model.addAttribute("productList", productService.findByRemovedFalse());
+//    @RequestMapping(value = "/removeS", method = RequestMethod.POST)
+//    public String removeS(@ModelAttribute("id") String id, Model model){
+//
+//
+///*
+//        System.out.println("Removing Shape:"+shape.getId());
+//*/
+//
+//        shapeService.removeOne(Long.parseLong(id.substring(8)));
+//
+///*
+//        shapeService.removeOne(shape.getId());
+//*/
+//        List<Shape> shapeList = shapeService.findAll();
+//        model.addAttribute("shapeList", shapeList);
+//
+//        return "redirect:/product/shapeList";
+//
+//    }
 
-            return "admin/addProduct";
-        } else {
-            throw new IllegalArgumentException();
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@RequestParam("shapes[]") List<Shape> shapes, RedirectAttributes redirectAttributes) {
+
+        if (CollectionUtils.isNotEmpty(shapes)) {
+            for (Shape shape : shapes) {
+                shapeService.removeOne(shape.getId());
+            }
+//            //Adapt message result to guaranty
+//            redirectAttributes.addFlashAttribute("messageResult",
+//                    MessageUtils.getMessageResult(validationResult,
+//                            SucessMessage.SuccessType.CUSTOM,
+//                            APPLICATION_DELETE_SUCCESS_MESSAGE));
         }
-    }
-
-    @GetMapping(value = "/delete/{productId}")
-    public String delete(Model model, @PathVariable Long productId) {
-        final Optional<Product> product = productService.findById(productId);
-        if (product.isPresent()) {
-            product.get().setRemoved(true);
-            productService.save(product.get());
-            return "admin/productList";
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    @GetMapping(value = "/restore/{productId}")
-    public String restore(Model model, @PathVariable Long productId) {
-        final Optional<Product> product = productService.findById(productId);
-        if (product.isPresent()) {
-            product.get().setRemoved(false);
-            productService.save(product.get());
-            return "admin/productList";
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-*/
-
-
-
-  /* @RequestMapping(value="/removeS", method=RequestMethod.POST)
-    public String removeS(
-            @ModelAttribute("id") String id, Model model
-    ) {
-        shapeService.removeOne(Long.parseLong(id));
-        List<Shape> shapeList = shapeService.findAll();
-        model.addAttribute("shapeList", shapeList);
-
-        return "redirect:product/shapeList";
-
-   }*/
-
-    @RequestMapping(value = "/removeS", method = RequestMethod.POST)
-    public String removeS(@ModelAttribute("id")String id,  Model model){
-/*
-        System.out.println("Removing :"+shape.getId());
-*/
-        shapeService.removeOne(Long.parseLong(id.substring(1)));
-        //shapeService.removeOne(shape.getId());
-        List<Shape> shapeList = shapeService.findAll();
-        model.addAttribute("shapeList", shapeList);
 
         return "redirect:/product/shapeList";
+    }
 
+    @RequestMapping(value = "/deleteOne/{shape}", method = RequestMethod.POST)
+    public String deleteOne(@PathVariable("shape") Long id) {
+
+        shapeService.removeOne(id);
+        return "redirect:/product/shapeList";
     }
 
 }

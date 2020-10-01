@@ -44,8 +44,13 @@ public class ProductServiceImp implements ProductService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public Product findByProductName(String productName) {
+        return productRepository.findByProductName(productName);
+    }
 
-        public Product findOne(Long id) {
+
+    public Product findOne(Long id) {
            // Product one = productRepository.getOne(id);
             Optional<Product> byId = productRepository.findById(id);
 //            if (byId.isPresent()){
@@ -57,20 +62,20 @@ public class ProductServiceImp implements ProductService {
         }
 
 
-
+        @Override
     public List<Product> findByCategory(String category){
 
-        List<Product> productList = productRepository.findByCategory(category);
+        List<Product> productList = productRepository.findByCategoryCategoryName(category);
 
-        List<Product> activeProductList = new ArrayList<>();
+/*        List<Product> activeProductList = new ArrayList<>();
 
         for (Product product: productList) {
             if(product.isActive()) {
                 activeProductList.add(product);
             }
-        }
+        }*/
 
-        return activeProductList;
+        return productList;
     }
 
 }

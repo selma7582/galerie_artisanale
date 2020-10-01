@@ -16,6 +16,8 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_address")
     private Long id;
+
+
     @Column(columnDefinition = "text")
     private String street;
     private String number;

@@ -7,3 +7,40 @@
                           </div>
 
                       </td>
+
+ //////////////////////////////////////////////////
+
+ <tr th:each="fgp : ${fingerprints}">
+     <td><a th:href="@{'/home/'+${fgp.fingerprintId}+'/viewFingerprints'}"><button
+             type="button" class="btn btn-success">V</button></a> <a
+             th:href="@{'/home/'+${fgp.fingerprintId}+'/editFingerprints'}"><button
+             type="button" class="btn btn-warning">E</button></a>
+
+         <button type="button" class="btn btn-danger" data-toggle="modal"
+                 data-target="#myModal"></button>
+
+         <!-- The Modal -->
+         <div class="modal fade" id="myModal">
+             <div class="modal-dialog">
+                 <div class="modal-content">
+
+                     <!-- Modal Header -->
+                     <div class="modal-header">
+                         <h4 class="modal-title">Are you sure?</h4>
+                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     </div>
+
+                     <!-- Modal footer -->
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-danger"
+                                 data-dismiss="modal">Close</button>
+                         <a th:href="@{'/home/'+${fgp.fingerprintId}+'/deleteFingerprints'}"><button
+                                 type="button" class="btn btn-success">Yes</button></a>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </td>
+
+
+

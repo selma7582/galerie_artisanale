@@ -1,22 +1,26 @@
 package com.example.galerie_artisanale.service.impl;
 
-import com.example.galerie_artisanale.entity.CartItem;
+import com.example.galerie_artisanale.entity.Ordered;
 import com.example.galerie_artisanale.entity.ShoppingCart;
 import com.example.galerie_artisanale.entity.User;
+import com.example.galerie_artisanale.repository.OrderRepository;
 import com.example.galerie_artisanale.repository.ShoppingCartRepository;
 import com.example.galerie_artisanale.service.CartItemService;
 import com.example.galerie_artisanale.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Date;
 
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
-    ShoppingCartRepository shoppingCartRepository;
+    private ShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
+    private OrderRepository orderRepository ;
 
 
     @Autowired
@@ -63,6 +67,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart save(ShoppingCart shoppingCart) {
+
+            Ordered persistedOrdered = orderRepository.save(shoppingCart.getOrdered());
+            shoppingCart.setOrdered(persistedOrdered);
+            if(shoppingCart.getId() == null){
+                shoppingCart.setCreationDate(new Date());
+            }else {
+                shoppingCart.setUpdateDate(new Date());
+            }
         return shoppingCartRepository.save(shoppingCart);
     }
 
@@ -73,9 +85,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void remove(ShoppingCart persistedShoppingCart) {
-        persistedShoppingCart.getCartItemList().stream()
-                .forEach(cartItemService::remove);
+        // TODO : on doit supprimer aussi la commande s'il n'est pas encore validé
         shoppingCartRepository.deleteById(persistedShoppingCart.getId());
-
     }
 }

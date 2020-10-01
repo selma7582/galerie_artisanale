@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImp implements CategoryService {
@@ -51,6 +52,11 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public Category findOne(Long id) {
         return null;
+    }
+
+    @Override
+    public List<String> findAllCategoryNames() {
+        return findAll().stream().map(Category::getCategoryName).collect(Collectors.toList());
     }
 
 

@@ -99,7 +99,7 @@ public class User implements UserDetails, Serializable {
     }
 
     //@NotNull(message="not match")
-    private String confirmPassword;
+/*    private String confirmPassword;
 
     public void setPassword(String password) {
         this.password = password;
@@ -117,7 +117,7 @@ public class User implements UserDetails, Serializable {
         }else if(!this.password.equals(confirmPassword)){
             this.confirmPassword = null;
         }
-    }
+    }*/
 
 }
 
