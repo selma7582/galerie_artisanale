@@ -94,6 +94,9 @@ public class HomeController {
 
     @RequestMapping("/login")
     public String login(Model model) {
+
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
         model.addAttribute("classActiveLogin", true);
 
         return "myAccount";
@@ -143,6 +146,8 @@ public class HomeController {
     @RequestMapping("/productDetail")
     public String productDetail(
             @PathParam("id") Long id, Model model, Principal principal) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
         if (principal != null) {
             String username = principal.getName();
             User user = userService.findByUsername(username);
@@ -175,6 +180,8 @@ public class HomeController {
             HttpServletRequest request,
             @ModelAttribute("email") String email,
             Model model) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
         model.addAttribute("classActiveForgetPassword", true);
 
         User user = userService.findByEmail(email);
@@ -207,6 +214,8 @@ public class HomeController {
 
     @RequestMapping("/myProfile")
     public String myProfile(Model model, Principal principal) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
         User user = userService.findByUsername(principal.getName());
         /*Ordered ordered = (Ordered) orderService.findByUser(user);
         Address address = new Address();
@@ -230,17 +239,18 @@ public class HomeController {
     @RequestMapping(value = "/newUser", method = RequestMethod.POST)
     public String newUserPost(
             HttpServletRequest request,
-            @ModelAttribute("email") String userEmail,
-            @ModelAttribute("username") String userName,  Model model ) throws Exception {
+            @ModelAttribute("email") String userEmail,  Model model ) throws Exception {
+
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
 
         model.addAttribute("classActiveNewAccount", true);
         // model.addAttribute("email", userEmail);
         //model.addAttribute("username", userName);
 
-        if (userService.findByUsername(userName) != null) {
+      /*  if (userService.findByUsername(userName) != null) {
             model.addAttribute("usernameExists", true);
             return "myAccount";
-        }
+        }*/
 
         if (userService.findByEmail(userEmail) != null) {
             model.addAttribute("emailExists", true);
@@ -248,7 +258,7 @@ public class HomeController {
         }
         User user = new User();
         user.setEnabled(1);
-        user.setUsername(userName);
+        user.setUsername(userEmail);
         user.setEmail(userEmail);
 
         String password = securityUtility.randomPassword();
@@ -278,6 +288,7 @@ public class HomeController {
 
     @RequestMapping("/newUser")
     public String newUser(@RequestParam("token") String token, Model model) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
 
         PasswordResetToken passToken = userService.getPasswordResetToken(token);
 
@@ -312,6 +323,9 @@ public class HomeController {
             Model model
     ) throws Exception {
 
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
 
 /*
         User currentUser = userService.findById(user.getId_user());
@@ -342,19 +356,19 @@ public class HomeController {
 
 //		update password
 
-		if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")){
+        if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")){
 
 
-			//BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
-			String dbPassword = currentUser.getPassword();
-			if(passwordEncoder.matches(user.getPassword(), dbPassword)){
-				currentUser.setPassword(passwordEncoder.encode(newPassword));
-			} else {
-				model.addAttribute("incorrectPassword", true);
+            //BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
+            String dbPassword = currentUser.getPassword();
+            if(passwordEncoder.matches(user.getPassword(), dbPassword)){
+                currentUser.setPassword(passwordEncoder.encode(newPassword));
+            } else {
+                model.addAttribute("incorrectPassword", true);
 
-				return "myProfile";
-			}
-		}
+                return "myProfile";
+            }
+        }
         currentUser.setFirstName(user.getFirstName());
         currentUser.setLastName(user.getLastName());
         currentUser.setUsername(user.getUsername());

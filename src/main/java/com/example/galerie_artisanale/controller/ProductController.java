@@ -227,27 +227,46 @@ public class ProductController {
         Product product = productService.findOne(id);
         model.addAttribute("product", product);
 
+
+        /*product.setCategory(product.getCategory());
+        product.setShape(product.getShape());*/
+        product.getImagesList()
+                .stream().forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+
         return "admin/updateProduct";
     }
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
-    public String updateProductPost(@ModelAttribute("product") Product product, HttpServletRequest request) {
+    public String updateProductPost(@ModelAttribute("product") Product product,@RequestParam("file") MultipartFile[] files,Model model) {
 
         productService.save(product);
 
         List<Product> productList = productService.findAll();
+
       /* Container container = new Container() ;
         container.getProductList();*/
-/*        productList.stream()
-                .flatMap(products -> products.getImagesList().stream())
-                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));*/
 
-        return "redirect:/product/productInfo?id="+product.getId();
+        for (MultipartFile file : files) {
+            Image image = new Image();
+            image.setProduct(product);
+
+            image = imageService.save(image);
+            image.setUrl_image("products/product_" + product.getId() + "/" + image.getId() + ".jpeg");
+            // image.setUrl_image(String.format("product_%s/%s.jpeg",product.getId(),image.getId()));
+            image = imageService.save(image);
+            storageService.store(file, image.getUrl_image());
+
+        }
+
+        model.addAttribute("updateSuccess", true);
+
+
+
+        return "admin/updateProduct";
+
+        /*return "redirect:/product/productInfo?id="+product.getId();*/
 
     }
-    /*
-    *         model.addAttribute("updateSuccess", true);
-     */
 
     @RequestMapping(value = "/removeC", method = RequestMethod.POST)
     public String removeC(

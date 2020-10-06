@@ -38,9 +38,9 @@ public class GalerieArtisanaleApplication implements CommandLineRunner {
         storageService.init();
         User user1 = new User();
         user1.setEnabled(1);
-        user1.setEmail("papimma@hotmail.com");
+        user1.setEmail("admin@hotmail.com");
         System.out.println("coucou"+user1.getEmail());
-        user1.setUsername("admin");
+        user1.setUsername("admin@hotmail.com");
         user1.setTel("0486938793");
         user1.setPassword(passwordEncoder.encode("admin"));
         userService.createUser(user1, "ROLE_ADMIN");

@@ -64,6 +64,14 @@ public class User implements UserDetails, Serializable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private ShoppingCart shoppingCart;
 
+    public String getUsername() {
+        return email;
+    }
+
+    public void setUsername(String email) {
+        this.username = email;
+    }
+
   /*  @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")
     private List<Ordered> orderedList;
 

@@ -9,22 +9,12 @@
 
 
 <div class="container">
-    <!--
-        <div class="row" style="margin-bottom: -100px;">
-            <div class="col-xs-8">
-                <h2 class="section-headline">
-                    <h2 class="section-headline">
-                            <span
-                                    th:text="${user}? ${#strings.toUpperCase(user.username)} : 'Tous les Produits'"></span>
-                    </h2>
-                </h2>
-            </div>
 
 
-        </div>
-    -->
 
-
+    <div class="alert alert-success" th:if="${addSuccess}">
+        <strong>Produit Bien Ajouté!</strong>
+    </div>
     <div class="row" style="margin-top: 10px;">
         <div class="col-xs-12">
             <div class="row">
@@ -49,10 +39,10 @@
                        width="100%">
                     <thead>
                     <tr>
-<!--
-                        <th></th>
--->
+
+                        <!--<th>Produit</th>-->
                         <th>Produit</th>
+
                         <th>Prix Unitaire</th>
                         <th>Quantité</th>
                         <th>Total</th>
@@ -66,6 +56,13 @@
 
 
                         <td th:text="${cartItem.product.productName}"></td>
+                        <!--<td>
+                            <div th:if="${product.haveImages()}"
+                                 th:each="image : ${product.imagesList}">
+                                <img th:if="${image.fullURL != null}" class="img-responsive" th:src="@{${image.fullURL}}" width=""/>
+
+                            </div>
+                        </td>-->
                         <td th:text="${cartItem.product.price}"></td>
                         <td th:text="${cartItem.qty}"></td>
                         <td th:text="${(cartItem.product.price)*(cartItem.qty)}"></td>
@@ -79,6 +76,7 @@
                     </tbody>
 
                 </table>
+
 
 
             </div>

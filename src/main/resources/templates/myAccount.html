@@ -15,140 +15,140 @@
 <body>
 <div th:replace="common/header :: navbar" />
 
-    <div class="container login">
+<div class="container login">
 
+    <div class="">
         <div class="">
-            <div class="">
 
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs">
-                    <li th:classappend="${classActiveNewAccount}? 'active'"><a href="#tab1" data-toggle="tab"><span
-                            style="color: black;">Nouveau compte</span></a></li>
-                    <li th:classappend="${classActiveLogin}? 'active'"><a href="#tab-2" data-toggle="tab"><span
-                            style="color: black;">se connecter</span></a></li>
-                    <li th:classappend="${classActiveForgetPassword}? 'active'"><a href="#tab-3" data-toggle="tab"><span
-                            style="color: black;">Mot de passe oublier</span></a></li>
-                </ul>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li th:classappend="${classActiveNewAccount}? 'active'"><a href="#tab1" data-toggle="tab"><span
+                        style="color: black;">Nouveau compte</span></a></li>
+                <li th:classappend="${classActiveLogin}? 'active'"><a href="#tab-2" data-toggle="tab"><span
+                        style="color: black;">se connecter</span></a></li>
+                <li th:classappend="${classActiveForgetPassword}? 'active'"><a href="#tab-3" data-toggle="tab"><span
+                        style="color: black;">Mot de passe oublier</span></a></li>
+            </ul>
 
-                <div class="tab-content ">
+            <div class="tab-content ">
 
 
-                    <!-- create new user -->
+                <!-- create new user -->
 
-                    <div class="tab-pane fade" id="tab1"
-                         th:classappend="${classActiveNewAccount}? 'in active'">
-                        <div class="panel-group">
-                            <div class="panel panel-default" style="border: none;">
-                                <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
+                <div class="tab-pane fade" id="tab1"
+                     th:classappend="${classActiveNewAccount}? 'in active'">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none;">
+                            <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
 
-                                    <div class="alert alert-info" th:if="${emailSent}">
-                                        Un Email a été envoyer, pouriez vous le valider
+                                <div class="alert alert-info" th:if="${emailSent}">
+                                    Un Email a été envoyer, pouriez vous le valider
+                                </div>
+
+                                <form th:action="@{/newUser}" method="post">
+
+                                    <!--  <div class="form-group">
+                                          <label for="newUsername">Nom d'utilisateur</label>&nbsp;<span
+                                              style="color: red;" th:if="${usernameExists}">Ce Nom d'utilisateur existe Déja.</span>
+                                          <input required  type="text" class="form-control"
+                                                 id="newUsername" name="username" />
+                                          <p style="color: #828282">Enter votre nom d'utilisateur.</p>
+                                      </div>-->
+
+                                    <div class="form-group">
+                                        <label for="email">* Email</label> <span
+                                            style="color: red;" th:if="${emailExists}">Email already exists</span>
+                                        <input required="required" type="email" class="form-control"
+                                               id="email" name="email" />
+                                        <p style="color: #828282">Enter un email Valide</p>
                                     </div>
 
-                                    <form th:action="@{/newUser}" method="post">
-
-                                        <div class="form-group">
-                                            <label for="newUsername">Nom d'utilisateur</label>&nbsp;<span
-                                                style="color: red;" th:if="${usernameExists}">Ce Nom d'utilisateur existe Déja.</span>
-                                            <input required  type="text" class="form-control"
-                                                   id="newUsername" name="username" />
-                                            <p style="color: #828282">Enter votre nom d'utilisateur.</p>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="email">* Email</label> <span
-                                            style="color: red;" th:if="${emailExists}">Email already exists</span>
-                                            <input required="required" type="email" class="form-control"
-                                                   id="email" name="email" />
-                                            <p style="color: #828282">Enter un email Valide</p>
-                                        </div>
-
-                          <!--              <div class="form-group">
-                                            <label for="password">* Mot de passe</label> &lt;!&ndash;<span
-                                            style="color: red;" th:if="${emailExists}">Email already exists</span> &ndash;&gt;
-                                            <input  type="password" class="form-control"
-                                                   id="password" name="password" />
-                                            <p style="color: #828282">Entrer le Mot de passe</p>
-                                            <div class="alert-danger" th:if="${param.error ne null}">Nom d'utilisateur et Mot de passe invalides</div>
-                                            <div class="alert-normal" th:if="${param.logout ne null}">Vous avez été déconnecté.</div>
-                                        </div>
--->
-                                        <button type="submit" class="btn btn-login">S'inscrire</button>
+                                    <!--              <div class="form-group">
+                                                      <label for="password">* Mot de passe</label> &lt;!&ndash;<span
+                                                      style="color: red;" th:if="${emailExists}">Email already exists</span> &ndash;&gt;
+                                                      <input  type="password" class="form-control"
+                                                             id="password" name="password" />
+                                                      <p style="color: #828282">Entrer le Mot de passe</p>
+                                                      <div class="alert-danger" th:if="${param.error ne null}">Nom d'utilisateur et Mot de passe invalides</div>
+                                                      <div class="alert-normal" th:if="${param.logout ne null}">Vous avez été déconnecté.</div>
+                                                  </div>
+          -->
+                                    <button type="submit" class="btn btn-login">S'inscrire</button>
 
 
 
-                                    </form>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
 
 
-                    <!-- log in -->
-                    <div class="tab-pane fade" id="tab-2"
-                         th:classappend="${classActiveLogin}? 'in active'">
-                        <div class="panel-group">
-                            <div class="panel panel-default" style="border: none;">
-                                <div class="panel-body"
-                                     style="background-color:#ededed; margin-top: 20px;">
-                                    <div th:if="${param.error != null}" style="color: red">Nom d'utilisateur ou Mot de passe incorrecte</div>
+                <!-- log in -->
+                <div class="tab-pane fade" id="tab-2"
+                     th:classappend="${classActiveLogin}? 'in active'">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none;">
+                            <div class="panel-body"
+                                 style="background-color:#ededed; margin-top: 20px;">
+                                <div th:if="${param.error != null}" style="color: red">Nom d'utilisateur ou Mot de passe incorrecte</div>
 
-                                    <form th:action="@{/login}" method = "post">
+                                <form th:action="@{/login}" method = "post">
 
-                                        <div class="form-group">
-                                            <label for="username">* Nom d'utilisateur</label>
-                                            <input type="text" class="form-control"
-                                                   id="username" name="username" required autofocus>
-                                            <p style="color: #828282">Entrer votre nom d'utilisateur.</p>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="username">* Nom d'utilisateur</label>
+                                        <input type="text" class="form-control"
+                                               id="username" name="username" required autofocus>
+                                        <p style="color: #828282">Entrer votre nom d'utilisateur.</p>
+                                    </div>
 
-                                        <div class="form-group">
-                                            <label for="passwordL">* Mot de passe</label>
-                                            <input required="required" type="password" class="form-control"
-                                                   id="passwordL" name="password" />
-                                            <p style="color: #828282">Entrer le Mot de passe</p>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="passwordL">* Mot de passe</label>
+                                        <input required="required" type="password" class="form-control"
+                                               id="passwordL" name="password" />
+                                        <p style="color: #828282">Entrer le Mot de passe</p>
+                                    </div>
 
-                                        <button type="submit" class="btn btn-login">Se connecter</button>
+                                    <button type="submit" class="btn btn-login">Se connecter</button>
 
-                                    </form>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
 
 
 
-                    <div class="tab-pane fade" id="tab-3"
-                         th:classappend="${classActiveForgetPassword}? 'in active'">
-                        <div class="panel-group">
-                            <div class="panel panel-default" style="border: none;">
-                                <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
-                                    <div th:if="${emailNotExists}" class="alert alert-danger">Cet email n'existe pas.</div>
-                                    <div th:if="${forgetPasswordEmailSent}" class="alert alert-success">Email Envoyer.</div>
+                <div class="tab-pane fade" id="tab-3"
+                     th:classappend="${classActiveForgetPassword}? 'in active'">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none;">
+                            <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
+                                <div th:if="${emailNotExists}" class="alert alert-danger">Cet email n'existe pas.</div>
+                                <div th:if="${forgetPasswordEmailSent}" class="alert alert-success">Email Envoyer.</div>
 
-                                    <form th:action="@{/forgetPassword}" method="post">
+                                <form th:action="@{/forgetPassword}" method="post">
 
-                                        <div class="form-group">
-                                            <label for="recoverEmail"> Adresse mail </label>
-                                            <input required autofocus type="email" class="form-control"
-                                                   id="recoverEmail" name="email" />
-                                            <p style="color: #828282">Entrer un email valide</p>
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="recoverEmail"> Adresse mail </label>
+                                        <input required autofocus type="email" class="form-control"
+                                               id="recoverEmail" name="email" />
+                                        <p style="color: #828282">Entrer un email valide</p>
+                                    </div>
 
-                                        <button type="submit" class="btn btn-login">Envoyer</button>
+                                    <button type="submit" class="btn btn-login">Envoyer</button>
 
-                                    </form>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
             </div>
+
         </div>
     </div>
+</div>
 
 <div th:replace="common/header :: footer"/>
 

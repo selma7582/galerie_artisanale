@@ -1,11 +1,10 @@
-
 <!doctype html>
 <html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
-<head th:replace="admin/common/header :: common-header" />
+<head th:replace="admin/common/header :: common-header"/>
 
 
 <style>
-    body{
+    body {
 
         background-image: url("../images/background/background.jpg");
         background-repeat: repeat
@@ -14,11 +13,17 @@
 
 
 <body>
-<div th:replace="admin/common/header :: navbar" />
+<div th:replace="admin/common/header :: navbar"/>
+
+
+<div class="alert alert-success" th:if="${updateSuccess}">
+    <strong>Update Success!</strong>
+</div>
 
 <div class="container">
     <div class="row">
-        <form class="form-horizontal" th:action="@{/product/updateProduct}" method="post"  enctype="multipart/form-data" th:objet="${product}">
+        <form class="form-horizontal" th:action="@{/product/updateProduct}" method="post" enctype="multipart/form-data"
+              th:objet="${product}">
             <fieldset>
                 <!-- -->
 
@@ -28,8 +33,9 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="productName"> *Nom</label>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" id="productName" name="productName" th:value="${product.productName}" required
-                               placeholder="productName"  />
+                        <input type="text" class="form-control" id="productName" name="productName"
+                               th:value="${product.productName}" required
+                               placeholder="productName"/>
                         <!--
                                                 <span class="help-block">*Nomination</span>
                         -->
@@ -59,8 +65,9 @@
 
                             <span class="input-group-addon">m</span>
 
-                            <input type="number" class="form-control" name="width" id="width" th:value="${product.width}" required
-                                   placeholder="width"  step="0.01"/>
+                            <input type="number" class="form-control" name="width" id="width"
+                                   th:value="${product.width}" required
+                                   placeholder="width" step="0.01"/>
                         </div>
                         <!--
                                                 <span class="help-block">Largeur du produit</span>
@@ -73,8 +80,9 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             <span class="input-group-addon">m</span>
-                            <input  type="number" class="form-control" name="height" id="height" th:value="${product.height}" required
-                                    placeholder="height"  step="0.01" />
+                            <input type="number" class="form-control" name="height" id="height"
+                                   th:value="${product.height}" required
+                                   placeholder="height" step="0.01"/>
                         </div>
                         <!--
                                                 <span class="help-block">*Largeur du produit</span>
@@ -100,23 +108,23 @@
 
                 </div>
 
-               <!-- Provider-->
+                <!-- Provider-->
 
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="provider">*Fournisseur</label>
-                                    <div class="col-md-8">
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="provider">*Fournisseur</label>
+                    <div class="col-md-8">
 
-                                        <select id="provider" name="provider" class="form-control">
-                                            <option value=""></option>
-                                            <option th:each="provider: ${providers}"
-                                                    th:value="${provider.id}"
-                                                    th:text="${provider.firstName + ' ' + provider.lastName}"></option>
-                                        </select>
-                <!--
-                                        <span class="help-block">Fournisseur</span>
-                -->
-                                    </div>
-                                </div>
+                        <select id="provider" name="provider" class="form-control">
+                            <option value=""></option>
+                            <option th:each="provider: ${providers}"
+                                    th:value="${provider.id}"
+                                    th:text="${provider.firstName + ' ' + provider.lastName}"></option>
+                        </select>
+                        <!--
+                                                <span class="help-block">Fournisseur</span>
+                        -->
+                    </div>
+                </div>
 
                 <!-- list price -->
 
@@ -125,8 +133,8 @@
                     <div class="col-md-8">
                         <div class="input-group">
                             <span class="input-group-addon">DH</span>
-                            <input  th:value="${product.price}"  type="number" name="price"
-                                    class="form-control" id="price" placeholder="the Price" step="0.01" required />
+                            <input th:value="${product.price}" type="number" name="price"
+                                   class="form-control" id="price" placeholder="the Price" step="0.01" required/>
                         </div>
                         <!--
                                                 <span class="help-block"> Prix</span>
@@ -138,10 +146,10 @@
                 <!-- in stock number -->
 
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="inStockNumber" > *Stock</label>
+                    <label class="col-md-2 control-label" for="inStockNumber"> *Stock</label>
                     <div class="col-md-8">
-                        <input  th:value="${product.inStockNumber}" type="number" name="inStockNumber"
-                                class="form-control" id="inStockNumber" placeholder="Number of in-stock" required />
+                        <input th:value="${product.inStockNumber}" type="number" name="inStockNumber"
+                               class="form-control" id="inStockNumber" placeholder="Number of in-stock" required/>
 
                         <!--
                                                 <span class="help-block">Quantité stock</span>
@@ -150,18 +158,21 @@
                 </div>
                 <!-- status of product -->
 
-                <div class="form-group">
-                    <label class="col-md-2 control-label " for="active" >*Statut</label>
-                    <div class="col-md-8">
-                        <label><input id="active" value="true" type="radio" name="active" checked="checked"  />Active</label>
-                        <label><input  value="false" type="radio" name="active" >InActive</label>
-
-
 <!--
-                        <span class="help-block">active</span>
--->
+                <div class="form-group">
+                    <label class="col-md-2 control-label " for="active">*Statut</label>
+                    <div class="col-md-8">
+                        <label><input id="active" value="true" type="radio" name="active"
+                                      checked="checked"/>Active</label>
+                        <label><input value="false" type="radio" name="active">InActive</label>
+
+
+                        &lt;!&ndash;
+                                                <span class="help-block">active</span>
+                        &ndash;&gt;
                     </div>
                 </div>
+-->
 
                 <!--Description -->
 
@@ -169,8 +180,9 @@
                     <label class="col-md-2 control-label" for="description">*Description</label>
                     <div class="col-md-8">
 
-                            <textarea  name="description" rows="5" class="form-control" id="description" th:value="${product.description}" required
-                                       placeholder="description"  ></textarea>
+                            <textarea name="description" rows="5" class="form-control" id="description"
+                                      th:value="${product.description}" required
+                                      placeholder="description"></textarea>
                         <!--
                                                 <span class="help-block">description du produit</span>
                         -->
@@ -178,16 +190,27 @@
                 </div>
 
 
-
                 <!--upload image -->
-
                 <div class="form-group">
                     <div class="col-md-2 control-label">
                         <label for="urlImage">Téléchargé Image</label>
                     </div>
 
                     <div class="col-md-8">
-                        <input id="urlImage" type="file" name="file"  required/>
+                        <input id="urlImage" type="file" name="file" multiple required/>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <div th:if="${product.haveImages()}"
+                             th:each="image : ${product.imagesList}">
+                            <img th:if="${image.fullURL != null}" class="img-responsive" th:src="@{${image.fullURL}}"
+                                 width=""/>
+
+                        </div>
                     </div>
                 </div>
 
@@ -207,7 +230,7 @@
 </div>
 
 
-<div th:replace="admin/common/header :: body-bottom-scripts" />
+<div th:replace="admin/common/header :: body-bottom-scripts"/>
 
 </body>
 </html>

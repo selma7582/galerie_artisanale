@@ -26,7 +26,7 @@ import static com.example.galerie_artisanale.controller.HomeController.fileToPat
 public class ShoppingCartController {
 
     public static final String SHOPPING_CART = "SHOPPING_CART";
-    public static final String CART_ITEM_LIST= "cartItemList";
+    public static final String CART_ITEM_LIST = "cartItemList";
 
     @Autowired
     private UserService userService;
@@ -54,7 +54,7 @@ public class ShoppingCartController {
 
 
     @PostMapping("/cart")
-    public String shoppingCart(CartItem cartItem, HttpSession session) {
+    public String shoppingCart(CartItem cartItem, HttpSession session,Model model) {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof User) {
@@ -85,7 +85,7 @@ public class ShoppingCartController {
                 if (shoppingCart instanceof ShoppingCart) {
 
                     ShoppingCart cart = (ShoppingCart) shoppingCart;
-                    if (cart.getOrdered() == null){
+                    if (cart.getOrdered() == null) {
                         cart.setOrdered(new Ordered());
                     }
                     cart.getOrdered().getCartItemList().add(cartItem);
@@ -98,7 +98,10 @@ public class ShoppingCartController {
 
 
         }
-        return "redirect:/galerie";
+        model.addAttribute("addSuccess", true);
+         //return "shoppingCart";
+        return "forward:/shoppingCart/view";
+
     }
 
     @RequestMapping("/view")
@@ -130,42 +133,58 @@ public class ShoppingCartController {
             }
         }
 
-/*
-        List<CartItem> cartItems = cartItemRepository.findByShoppingCart(shoppingCart);
+
+
+        /*List<CartItem> cartItems = shoppingCart.getCartItemList();*/
+
+
+              /*  productList.stream().flatMap(product -> product.getImagesList().stream())
+                        .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
 */
-        //Product product = cartItems.stream()
-            //product.getImagesList().stream().forEach(img->img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+
+
+        //product.getImagesList().stream().forEach(img->img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
 
 
         model.addAttribute("shoppingCart", shoppingCart);
+
+
 
         return "shoppingCart";
     }
 
 
-/*    @GetMapping("/confirm")
-    public String confirmShoppingCart(Model model, HttpSession session) {
+    @GetMapping("/confirm")
+    public String confirmShoppingCart(ShoppingCart shoppingCart, Model model, HttpSession session) {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof User) {
+            User connectedUser = (User) authentication.getPrincipal();
 
-        User connectedUser = (User) authentication.getPrincipal();
-        ShoppingCart persistedShoppingCart = shoppingCartService.findByUser(connectedUser);
+            ShoppingCart persistedShoppingCart = shoppingCartService.findByUser(connectedUser);
+            shoppingCartService.save(persistedShoppingCart);
+            session.removeAttribute(SHOPPING_CART);
+
+        } else
+            {
+                ShoppingCart shoppingCart1 = (ShoppingCart) shoppingCart;
+                Ordered cart = new Ordered();
+                cart.getCartItemList().stream().forEach(cartItem -> cartItem.setQty(Integer.min(cartItem.getQty(), cartItem.getProduct().getInStockNumber())));
+                LocalDateTime localDateTime = LocalDateTime.now();
+                Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+                cart.setOrderDate(date);
 
 
-
-            Ordered cart =  new Ordered();
-            cart.setEnabled(true);
-            cart.getCartItemList().stream().forEach(cartItem -> cartItem.setQty(Integer.min(cartItem.getQty(),cartItem.getProduct().getInStockNumber())));
-            LocalDateTime localDateTime = LocalDateTime.now();
-            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            cart.setOrderDate(date);
+                orderService.save(cart);
+                shoppingCartService.remove(shoppingCart1);
+                session.setAttribute(SHOPPING_CART, null);
 
 
-            orderService.save(cart);
-            session.setAttribute(SHOPPING_CART,null);
+            }
+        return "orderConfirm";
+    }
 
-            return "orderConfirm";
-        }*/
+
 
     @RequestMapping("/updateCartItem")
     public String updateShoppingCart(
