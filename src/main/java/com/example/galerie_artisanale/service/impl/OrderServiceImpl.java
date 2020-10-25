@@ -20,7 +20,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Ordered save(Ordered order) {
-       return orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
 *//*
             ordered.setOrderTotal(shoppingCart.getGrandTotal());
 *//*
-            *//*shippingAddress.setOrder(ordered);
+     *//*shippingAddress.setOrder(ordered);
             billingAddress.setOrder(ordered);*//*
             ordered.setUser(user);
             ordered = orderRepository.save(ordered);
@@ -88,6 +88,24 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Ordered> findByUser(User user) {
         return orderRepository.findByUser(user);
+    }
+
+    @Override
+    public Ordered findShoppingCart(User user) {
+        List<Ordered> shoppingCarts = orderRepository.findByUserAndStatus(user,OrderedStatus.NOT_VALID);
+        if (shoppingCarts.size() >1 ){
+
+            throw new IllegalStateException("We should have at most one invalid ordered");
+        }else if (shoppingCarts.isEmpty()){
+            return null ;
+        }else {
+            return shoppingCarts.get(0);
+        }
+    }
+
+    @Override
+    public void remove(Ordered persistedShoppingCart) {
+        orderRepository.delete(persistedShoppingCart);
     }
 
 }

@@ -19,9 +19,6 @@
 <div class="container">
     <div class="row">
 
-        <!--
-                <div  th:classappend="${classActiveAdd}">
-        -->
 
 
         <div class="alert alert-success" th:if="${addSuccess}">
@@ -116,7 +113,7 @@
 
                 <!--Provider -->
 
-                <!--                <div class="form-group">
+                                <div class="form-group">
                                     <label class="col-md-2 control-label" for="provider">*Fournisseur</label>
                                     <div class="col-md-8">
 
@@ -126,11 +123,11 @@
                                                     th:value="${provider.id}"
                                                     th:text="${provider.firstName + ' ' + provider.lastName}"></option>
                                         </select>
-                &lt;!&ndash;
+                <!--
                                         <span class="help-block">Fournisseur</span>
-                &ndash;&gt;
+                -->
                                     </div>
-                                </div>-->
+                                </div>
 
                 <!-- list price -->
 

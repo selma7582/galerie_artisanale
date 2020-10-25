@@ -25,7 +25,7 @@ public class Product implements Serializable {
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private float price;
 
     @Column(name = "height")
     private float height;

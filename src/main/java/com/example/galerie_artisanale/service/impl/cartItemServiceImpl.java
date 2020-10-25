@@ -20,7 +20,7 @@ public class cartItemServiceImpl implements CartItemService {
     @Override
     public CartItem save(CartItem cartItem) {
 
-       return cartItemRepository.save(cartItem);
+        return cartItemRepository.save(cartItem);
 
     }
 
@@ -44,10 +44,7 @@ public class cartItemServiceImpl implements CartItemService {
     }
 
 
-    @Override
-    public List<CartItem> findByShoppingCart(ShoppingCart shoppingCart) {
-        return cartItemRepository.findByShoppingCart(shoppingCart);
-    }
+
 
     @Override
     public void remove(CartItem cartItem) {

@@ -1,0 +1,390 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header" />
+
+<style>
+    body{
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+    }
+</style>
+<body>
+
+<div th:replace="common/header :: navbar" />
+
+
+
+
+
+<div class="container">
+
+
+
+    <div class="row" style="margin-top: 10px;">
+        <form th:action="@{/confirm}" method="post">
+
+            <!-- Left Panel -->
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-warning btn-block">Confirmer</button>
+                        <p style="font-size: smaller;">
+                            By placing your order, you agree to Le's Bookstore <a href="#">privacy</a>
+                            notice and <a href="#">conditions</a> of use.
+                        </p>
+                        <hr />
+                        <h3>Order Summary</h3>
+                        <div class="row">
+                            <div class="col-xs-7 text-left">Total(TVAC
+                                ):</div>
+                            <div class="col-xs-5 text-right">
+                                <span th:text="${shoppingCart.total}"></span>DH
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-7 text-left">
+                                <h3 style="color: darkred;">
+                                    <strong>Order Total: </strong>
+                                </h3>
+                            </div>
+                            <div class="col-xs-5 text-right">
+                                <h3>
+                                    <strong style="color: darkred;">DH<span
+                                            th:with="total=${shoppingCart.total}"
+                                            th:text="${#numbers.formatDecimal(total, 0 ,2)}"></span></strong>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="panel-footer">Shipping and handling haven't
+                            applied.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Info -->
+            <div class="col-xs-8">
+                <div th:if="${missingRequiredField}">
+                    <h5 class="alert alert-warning">There are some fields
+                        missing. Field with * is required.</h5>
+                </div>
+
+                <div class="panel-group" id="accordion">
+
+                    <!-- 1. Shipping Address -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#shippingInfo"> 1. Adresse de livraison </a>
+                            </h4>
+                        </div>
+                        <div id="shippingInfo" class="panel-collapse collapse"
+                             th:classappend="${classActiveShipping}? 'in'">
+                            <div class="panel-body">
+                                <!--<table class="table" th:if="${not shippingAddress}">
+                                    <thead>
+                                    <tr>
+                                        <th>Available Shipping Address</th>
+                                        <th>Operations</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr >
+                                        <td
+                                                th:text="${shippingAddress.street}+' '+${shippingAddress.number}+', '+${shippingAddress.city.cityName}
+												+', '+${shippingAddress.city.cityName}"></td>
+                                        <td><a th:href="@{/setShippingAddress(shippingAddressId=${shippingAddress.id})}">use
+                                            this address</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>-->
+
+
+
+                                <div class="form-group">
+
+                                    <label for="street"> rue</label>&nbsp;
+                                    <input required  type="text" class="form-control"
+                                           id="street" name="street" th:field="*{address.street}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="Number1"> number</label>&nbsp;
+                                    <input required  type="number" class="form-control"
+                                           id="Number1" name="number" th:field="*{address.number}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="city">* City</label>
+                                    <div class="col-md-8">
+                                        <select th:field="*{city}" name="city" id="city" class="form-control" >
+                                            <option value=""></option>
+                                            <option th:each="city: ${cities}"
+                                                    th:value="${city.id}"
+                                                    th:text="${city.cityName}"></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <!--<div class="form-group">
+                                    <label for="shippingName">* Name</label> <input type="text"
+                                                                                    class="form-control" id="shippingName"
+                                                                                    placeholder="Receiver Name" name="shippingAddressName"
+                                                                                    th:value="${shippingAddress.shippingAddressName}" />
+                                </div>-->
+
+                                <!--<div class="form-group">
+                                    <label for="shippingStreet">* Street Address</label> <input
+                                        type="text" class="form-control" id="shippingStreet"
+                                        placeholder="Street Address 1" name="shippingAddressStreet1"
+                                        th:value="${shippingAddress.street}" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control"
+                                           placeholder="Street Address 2" name="shippingAddressStreet2"
+                                           th:value="${ordered.shippingAddress.number}" />
+                                </div>-->
+
+<!--
+                                <div class="row">
+&lt;!&ndash;
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="shippingCity">* City</label> <input type="text"
+                                                                                            class="form-control" id="shippingCity"
+                                                                                            placeholder="Shipping City" th:name="ordered.shippingAddressCity"
+                                                                                            required="required"
+                                                                                            th:value="${ordered.shippingAddress.city.cityName}" />
+                                        </div>
+                                    </div>
+&ndash;&gt;
+                                 &lt;!&ndash;   <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="shippingState">* State</label> <select
+                                                id="shippingState" class="form-control"
+                                                th:name="shippingAddressState"
+                                                th:value="${shippingAddress.shippingAddressState}"
+                                                required="required">
+                                            <option value="" disabled="disabled">Please select
+                                                an option</option>
+                                            <option th:each="state : ${stateList}" th:text="${state}"
+                                                    th:selected="(${shippingAddress.shippingAddressState}==${state})"></option>
+                                        </select>
+                                        </div>
+                                    </div>&ndash;&gt;
+&lt;!&ndash;
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="shippingZipcode">* Zipcode</label> <input
+                                                type="text" class="form-control" id="shippingZipcode"
+                                                placeholder="Shipping Zipcode"
+                                                th:name="shippingAddressZipcode" required="required"
+                                                th:value="${shippingAddress.shippingAddressZipcode}" />
+                                        </div>
+                                    </div>
+&ndash;&gt;
+                                </div>
+-->
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Billing Address -->
+                    <div class="checkbox">
+                        <label> <input id="theSameAsShippingAddress"
+                                       type="checkbox" name="billingSameAsShipping" value="true" />
+                            La même Adresse pour la livraison et la facturation
+                        </label>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#shippingInfo"> 2. Adresse de facturation </a>
+                            </h4>
+                        </div>
+                        <div id="billingInfo" class="panel-collapse collapse"
+                             th:classappend="${classActiveShipping}? 'in'">
+                            <div class="panel-body">
+                                <!--<table class="table" th:if="${not shippingAddress}">
+                                    <thead>
+                                    <tr>
+                                        <th>Available Shipping Address</th>
+                                        <th>Operations</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr >
+                                        <td
+                                                th:text="${shippingAddress.street}+' '+${shippingAddress.number}+', '+${shippingAddress.city.cityName}
+												+', '+${shippingAddress.city.cityName}"></td>
+                                        <td><a th:href="@{/setShippingAddress(shippingAddressId=${shippingAddress.id})}">use
+                                            this address</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>-->
+
+
+
+                                <div class="form-group">
+
+                                    <label for="street2"> rue</label>&nbsp;
+                                    <input required  type="text" class="form-control"
+                                           id="street2" name="street" th:field="*{address.street}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="Number"> number</label>&nbsp;
+                                    <input required  type="number" class="form-control"
+                                           id="Number" name="number" th:field="*{address.number}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="city">* City</label>
+                                    <div class="col-md-8">
+                                        <select th:field="*{city}" name="city" id="city" class="form-control" >
+                                            <option value=""></option>
+                                            <option th:each="city: ${cities}"
+                                                    th:value="${city.id}"
+                                                    th:text="${city.cityName}"></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 3. Review Items and Shipping -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="#reviewItems"> 3. Review Items and Shipping </a>
+                            </h4>
+                        </div>
+                        <div id="reviewItems" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <h4>Choose your shipping method:</h4>
+                                <div class="radio">
+                                    <label> <input type="radio" name="shippingMethod"
+                                                   value="groundShipping" checked="checked" /> Ground Shipping
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label> <input type="radio" name="shippingMethod"
+                                                   value="premiumShipping" /> Premium Shipping
+                                    </label>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <h4>Products</h4>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <h4>Price</h4>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <h4>Qty</h4>
+                                    </div>
+                                </div>
+
+                                <!-- display products in cart -->
+                                <div class="row" th:each="cartItem : ${cartItemList}">
+                                    <hr />
+                                    <div class="col-xs-2">
+                                        <a th:href="@{/bookDetail(id=${cartItem.product.id})}"> <img
+                                        />
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div style="margin-left: 50px;">
+                                            <a th:href="@{/productDetail?id=}+${cartItem.product.id}"><h4
+                                                    th:text="${cartItem.product.productName}"></h4></a>
+                                            <p th:if="${cartItem.product.inStockNumber&gt;10}"
+                                               style="color: green;">In Stock</p>
+                                            <p
+                                                    th:if="${cartItem.product.inStockNumber&lt;10 and cartItem.product.inStockNumber&gt;0}"
+                                                    style="color: green;">
+                                                Only <span th:text="${cartItem.product.inStockNumber}"></span>
+                                                In Stock
+                                            </p>
+                                            <p th:if="${cartItem.product.inStockNumber==0}"
+                                               style="color: darkred;">Product Unavailable</p>
+                                            <a th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}">delete</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xs-2">
+                                        <h5 style="color: #db3208; font-size: large;">
+                                            $<span th:text="${cartItem.product.price}"
+                                                   th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+                                        </h5>
+                                    </div>
+
+                                    <div class="col-xs-2">
+                                        <h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
+                                    </div>
+
+                                </div>
+
+                                <hr />
+                                <h4 class="col-xs-12 text-right">
+                                    <strong style="font-size: large;">Totale de la commande (<span
+                                            th:text="${#lists.size(cartItemList)}"></span> article):
+                                    </strong> <span style="color: #db3208; font-szie: large;">$<span
+                                        th:text="${shoppingCart.total}"></span></span>
+                                </h4>
+                                <br />
+                                <br />
+                                <button type="submit" class="btn btn-warning btn-block">Confirmer</button>
+                                <p style="font-size: smaller;">
+                                    By placing your order, you agree to Le's Bookstore <a href="#">privacy</a>
+                                    notice and <a href="#">conditions</a> of use.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- end of container -->
+
+
+
+
+
+
+<div th:replace="common/header :: footer"/>
+
+<div th:replace="common/header :: body-bottom-scripts" />
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>

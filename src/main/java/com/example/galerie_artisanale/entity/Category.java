@@ -27,11 +27,6 @@ public class Category implements Serializable {
 
 
 
-
-//    public void setRemoved(boolean removed) {
-//        this.removed = removed;
-//    }
-
     @Override
     public String toString() {
         return  categoryName ;

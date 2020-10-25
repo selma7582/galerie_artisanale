@@ -30,10 +30,11 @@
             style="position: absolute; width: 100%; height: 6px; background-color: #333; z-index: -1; margin-top: -80px;"/>-->
 
 
+<!--
     <div class="row" style="margin-top: 60px;">
 
 
-<!--        <div class="col-xs-3">
+&lt;!&ndash;        <div class="col-xs-3">
             <h3><label for="shape">Forme</label></h3>
             <div class="list-group" id="shape">
                 <a th:href="@{/searchByCategory(category='rectangle')}" th:classappend="${activeRectangle}? 'active'" class="list-group-item">Rectangle</a>
@@ -52,7 +53,7 @@
                 <a th:href="@{/searchByCategory(category='couverture')}" th:classappend="${activeTextiles}? 'active'" class="list-group-item">Couverture</a>
                 &lt;!&ndash;<a th:href="@{/searchByCategory(category='Arts &amp; Literature')}" th:classappend="${activeArtsLiterature}? 'active'" class="list-group-item">Arts &amp; Literature</a>&ndash;&gt;
             </div>
-        </div>-->
+        </div>&ndash;&gt;
 
 
         <div class="col-xs-9">
@@ -74,14 +75,14 @@
                                                 <img id="slideLeft" class="arrow" src="images/arrow-left.png" />
                                                 <div th:if="${product.haveImages()}"
                                                  th:each="image : ${product.imagesList}">
-                                                <!--
+                                                &lt;!&ndash;
                                                                                         <a th:href="@{/productDetail?id=}+${product.id}">
-                                                -->
-                                                <!--
+                                                &ndash;&gt;
+                                                &lt;!&ndash;
                                                                                             <div class="carousel-caption">
-                                                -->
+                                                &ndash;&gt;
 
-                                                <img th:if="${image.fullURL != null}"  th:src="@{${image.fullURL}}" class="thumbnail active"/><!--</div> --><!-- </a>-->
+                                                <img th:if="${image.fullURL != null}"  th:src="@{${image.fullURL}}" class="thumbnail active"/>&lt;!&ndash;</div> &ndash;&gt;&lt;!&ndash; </a>&ndash;&gt;
 
 
                                             </div>
@@ -89,7 +90,7 @@
 
 
                                         </tr>
-                      <!--                  <tr>
+                      &lt;!&ndash;                  <tr>
                                             <div th:if="${product.haveImages()}"
                                                  th:each="image : ${product.imagesList}">
                                                 &lt;!&ndash;
@@ -104,7 +105,7 @@
 
                                             </div>
 
-                                        </tr>-->
+                                        </tr>&ndash;&gt;
 
                                     </table>
 
@@ -116,30 +117,30 @@
 
                                 </div>
                                 <div class="col-xs-6">
-<!--
+&lt;!&ndash;
                                         <h4 th:text="${product.productName}"></h4>
--->
+&ndash;&gt;
 
                                     <a th:href="@{/productDetail?id=}+${product.id}"><h4
                                             th:text="${product.productName}"></h4></a>
 
                                     <span >Hauteur:  <span th:text="${product.height}"></span></span> m<br/>
                                     <span >Largeur:      <span th:text="${product.width}"></span> m</span><br/>
-                                    <!--     <span th:text="${#strings.capitalize(book.format)}"></span>-->
-                                    <!--   <a th:href=@{/productDetail?id=}+${product.id}" > -->
+                                    &lt;!&ndash;     <span th:text="${#strings.capitalize(book.format)}"></span>&ndash;&gt;
+                                    &lt;!&ndash;   <a th:href=@{/productDetail?id=}+${product.id}" > &ndash;&gt;
 
                                     <span >   <span th:text="${product.inStockNumber}"></span> pièce disponible</span><br/>
                                        <span style="font-size:x-large;color:#db3208;">Prix: <span
                                                th:text="${#numbers.formatDecimal(product.price, 0 , 'POINT', 2, 'POINT')}"></span> DH</span><br/>
 
-<!--
+&lt;!&ndash;
                                     <span th:text="${product.description}"></span>
--->
+&ndash;&gt;
 
 
-<!--
+&lt;!&ndash;
                                    <p th:utext="${#strings.abbreviate(product.description,1000)}"></p>
--->
+&ndash;&gt;
                                 </div>
                             </div>
                         </div>
@@ -157,6 +158,119 @@
 
 
     </div>
+-->
+
+    <div class="row" style="margin-top: 60px;">
+
+
+
+        <div th:if="${emptyList}">
+            <h5 style="font-style: italic;">Aucun resulta pour votre recherche.</h5>
+        </div>
+        <div class="row">
+            <div th:each="product : ${productList}" class="col-lg-4">
+                <form method="post" th:object="${cartItem}">
+                    <h3 th:text="${product.productName}"></h3>
+                    <input type="hidden" name="product" th:value="productList">
+                    <div th:if="${product.haveImages()}"
+                         th:each="image : ${product.imagesList}">
+                        <img th:if="${image.fullURL != null}"  th:src="@{${image.fullURL}}" width="200" height="250"/><!--</div> --><!-- </a>-->
+                        <br />
+
+                    </div>
+                    <a th:href="@{/productDetail?id=}+${product.id}"><h4
+                            th:text="${product.productName}"></h4></a>
+
+                    <span >Hauteur:  <span th:text="${product.height}"></span></span> m<br/>
+                    <span >Largeur:      <span th:text="${product.width}"></span> m</span><br/>
+
+
+                    <span >   <span th:text="${product.inStockNumber}"></span> pièce disponible</span><br/>
+                    <span style="font-size:x-large;color:#db3208;">Prix: <span
+                            th:text="${#numbers.formatDecimal(product.price, 0 , 'POINT', 2, 'POINT')}"></span> DH</span><br/>
+                </form>
+            </div>
+        </div>
+
+        <!--<div class="col-xs-9">
+            <div th:if="${emptyList}">
+                <h5 style="font-style: italic;">Aucun resulta pour votre recherche.</h5>
+            </div>
+
+            <table border="0" id="productList">
+                <tbody>
+                <tr class="product-item" data-th-each="product : ${productList}">
+                    <td >
+                        <div th:if="${product != null}">
+                            <div class="row" style="margin-bottom: 50px;">
+                                <div class="col-xs-3">
+                                    <table>
+                                        <tr>
+
+                                            <img id="slideLeft" class="arrow" src="images/arrow-left.png" />
+                                            <div th:if="${product.haveImages()}"
+                                                 th:each="image : ${product.imagesList}">
+                                                &lt;!&ndash;
+                                                                                        <a th:href="@{/productDetail?id=}+${product.id}">
+                                                &ndash;&gt;
+                                                &lt;!&ndash;
+                                                                                            <div class="carousel-caption">
+                                                &ndash;&gt;
+
+                                                <img th:if="${image.fullURL != null}"  th:src="@{${image.fullURL}}" class="thumbnail active"/>&lt;!&ndash;</div> &ndash;&gt;&lt;!&ndash; </a>&ndash;&gt;
+
+
+                                            </div>
+                                            <img id="slideRight" class="arrow" src="images/arrow-right.png" />
+
+
+                                        </tr>
+
+
+                                    </table>
+
+
+                                </div>
+
+                                <div class="col-xs-3">
+                                    <img id="featured"  class="arrow" src="images/arrow-left.png" />
+
+                                </div>
+                                <div class="col-xs-6">
+                                    &lt;!&ndash;
+                                                                            <h4 th:text="${product.productName}"></h4>
+                                    &ndash;&gt;
+
+                                    <a th:href="@{/productDetail?id=}+${product.id}"><h4
+                                            th:text="${product.productName}"></h4></a>
+
+                                    <span >Hauteur:  <span th:text="${product.height}"></span></span> m<br/>
+                                    <span >Largeur:      <span th:text="${product.width}"></span> m</span><br/>
+
+
+                                    <span >   <span th:text="${product.inStockNumber}"></span> pièce disponible</span><br/>
+                                    <span style="font-size:x-large;color:#db3208;">Prix: <span
+                                            th:text="${#numbers.formatDecimal(product.price, 0 , 'POINT', 2, 'POINT')}"></span> DH</span><br/>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+
+        </div>-->
+
+
+
+
+    </div>
+
 </div>
 
 <div th:replace="common/header :: footer"/>

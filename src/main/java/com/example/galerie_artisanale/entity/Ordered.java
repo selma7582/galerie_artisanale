@@ -16,12 +16,13 @@ public class Ordered {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+    // the date of confirmation of the order
     private Date orderDate;
-/*
-    private Date shippingDate;
-*/
-    private String orderStatus;
-    private String status;
+    /*
+        private Date shippingDate;
+    */
+    @Enumerated(EnumType.STRING)
+    private OrderedStatus status = OrderedStatus.NOT_VALID;
 
 
     @OneToMany(mappedBy = "ordered", cascade=CascadeType.ALL )
@@ -38,8 +39,28 @@ public class Ordered {
     @JoinColumn( name = "bill_address")
     private Address billingAddress;
 
-    @OneToOne (mappedBy = "ordered")
-    private ShoppingCart shoppingCart;
+    public double getTotal(){
+        if (cartItemList != null && !cartItemList.isEmpty()){
+            return  cartItemList.stream()
+                    .mapToDouble(item -> item.getQty() * item.getProduct().getPrice())
+                    .sum();
+        }else {
+            return 0d ;
+        }
+
+
+    }
+
+    public int getCartItemCount(){
+
+        if (cartItemList != null && !cartItemList.isEmpty()){
+            return  cartItemList.stream()
+                    .mapToInt(item -> item.getQty())
+                    .sum();
+        }else {
+            return 0 ;
+        }
+    }
 
 
 }

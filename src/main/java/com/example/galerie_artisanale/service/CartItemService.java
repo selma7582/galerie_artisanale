@@ -12,13 +12,10 @@ public interface CartItemService {
 
     CartItem updateCartItem(CartItem cartItem);
 
-
     List<CartItem> findByOrdered(Ordered ordered);
 
     CartItem findById(Long id);
 
-
-    List<CartItem> findByShoppingCart(ShoppingCart shoppingCart);
 
     void remove(CartItem cartItem);
 

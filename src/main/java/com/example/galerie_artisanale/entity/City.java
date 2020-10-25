@@ -19,6 +19,7 @@ public class City implements Serializable {
     private Long id;
     @Column(columnDefinition = "text")
     private String cityName;
+    private String zipCode;
 
 
    /* @ManyToOne

@@ -46,7 +46,7 @@ public class MailConstructor {
         context.setVariable("ordered", ordered);
         context.setVariable("user", user);
         context.setVariable("cartItemList", ordered.getCartItemList());
-        String text = templateEngine.process("orderConfirmationEmailTemplate", context);
+        String text = templateEngine.process("orderConfirmationEmail", context);
 
         MimeMessagePreparator messagePreparator = new MimeMessagePreparator() {
             @Override
@@ -55,7 +55,7 @@ public class MailConstructor {
                 email.setTo(user.getEmail());
                 email.setSubject("Order Confirmation - "+ordered.getId());
                 email.setText(text, true);
-                email.setFrom(new InternetAddress("ray.deng83@gmail.com"));
+                email.setFrom(new InternetAddress("faelkhadkhoudi@gmail.com"));
             }
         };
 

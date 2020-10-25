@@ -19,4 +19,7 @@ public interface ProviderService {
 
     void removeOne(Long id) ;
 
+    Provider findByEmail(String email);
+
+    Provider findOne(Long id);
 }

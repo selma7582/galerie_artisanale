@@ -1,6 +1,5 @@
 package com.example.galerie_artisanale.service.impl;
 
-import com.example.galerie_artisanale.entity.Product;
 import com.example.galerie_artisanale.entity.Provider;
 import com.example.galerie_artisanale.repository.ProviderRepository;
 import com.example.galerie_artisanale.service.ProviderService;
@@ -40,6 +39,17 @@ public class ProviderServiceImpl implements ProviderService {
         providerRepository.deleteById(id);
     }
 
+    @Override
+    public Provider findByEmail(String email) {
+        return providerRepository.findByEmail(email);
+    }
+
+
+    @Override
+    public Provider findOne(Long id) {
+        Optional<Provider> byId = providerRepository.findById(id);
+        return byId.orElse(null);
+    }
 
 
     @Override

@@ -1,10 +1,137 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/header :: common-header" />
+
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+
 <body>
+<div th:replace="admin/common/header :: navbar" />
+
+<div class="container">
+    <div class="row" style="/*margin-bottom: auto*/">
+        <div class="alert alert-success" th:if="${addSuccess}">
+            <strong>fournisseur Bien Modifié!</strong>
+        </div>
+
+        <div class="col-xs-8">
+            <h2 class="section-headline"><span>Ajouter un fournisseur</span></h2>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="row" style="">
+        <div class="">
+
+            <div class="tab-content">
+
+                <div class="panel-group">
+                    <div class="panel panel-default" style="border: none;">
+                        <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
+
+                            <form th:action="@{/provider/updateProvider}" method="post" th:objet="${provider}">
+
+                                <div class="form-group">
+                                    <label for="providerFirstName">Prenom</label>
+                                    <input required  type="text" class="form-control"
+                                           id="providerFirstName" name="firstName" th:field="*{provider.firstName}" />
+
+                                    <p style="color: #828282">Enter Provider FirstName .</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="providerLastName">Nom</label>
+                                    <input required  type="text" class="form-control"
+                                           id="providerLastName" name="lastName" th:field="*{provider.lastName}"/>
+                                    <p style="color: #828282">Enter Provider lastName .</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="providerEmail"> Email</label>
+                                    <input required  type="email" class="form-control"
+                                           id="providerEmail" name="email" th:field="*{provider.email}"/>
+                                    <p style="color: #828282">Enter Provider Email .</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="providerTel">Tel</label>&nbsp;
+                                    <input required  type="tel" class="form-control"
+                                           id="providerTel" name="tel" th:field="*{provider.tel}" />
+                                    <p style="color: #828282">Enter Provider Tel .</p>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="street"> rue</label>&nbsp;
+                                    <input required  type="text" class="form-control"
+                                           id="street" name="street" th:field="*{address.street}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="Number"> number</label>&nbsp;
+                                    <input required  type="number" class="form-control"
+                                           id="Number" name="number" th:field="*{address.number}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="city">* City</label>
+                                    <div class="col-md-8">
+                                        <select th:field="*{city}" name="city" id="city" class="form-control" >
+                                            <option value=""></option>
+                                            <option th:each="city: ${cities}"
+                                                    th:value="${city.id}"
+                                                    th:text="${city.cityName}"></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-8">
+
+                                    <div class="col-md-12" aria-atomic="form-group">
+                                        <button type="submit" class="btn btn-primary">Modifier fournisseur</button>
+                                        <a class="btn btn-danger" th:href="@{/}">Annuler</a>
+
+                                    </div>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<div th:replace="admin/common/header :: body-bottom-scripts" />
 
 </body>
 </html>
+

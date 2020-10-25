@@ -1,17 +1,19 @@
 package com.example.galerie_artisanale.controller;
 
-import com.example.galerie_artisanale.entity.Product;
-import com.example.galerie_artisanale.entity.Provider;
+import com.example.galerie_artisanale.entity.*;
+import com.example.galerie_artisanale.service.AddressService;
+import com.example.galerie_artisanale.service.CityService;
+import com.example.galerie_artisanale.service.ProductService;
 import com.example.galerie_artisanale.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/provider")
@@ -20,11 +22,46 @@ public class ProviderController {
     @Autowired
     private ProviderService providerService;
 
-    @RequestMapping(value="/addProvider", method = RequestMethod.POST)
-    public String addProviderPost(@ModelAttribute("provider")Provider provider, HttpServletRequest request){
+    @Autowired
+    private CityService cityService;
 
-        this.providerService.save(provider);
-        return ("admin/providerList");
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private AddressService addressService;
+
+    @RequestMapping(value="/addProvider", method = RequestMethod.POST)
+    public String addProviderPost(@ModelAttribute("provider")Provider provider,@ModelAttribute("address")Address address,City city, Model model){
+
+
+        model.addAttribute("email",provider.getEmail());
+        if(providerService.findByEmail(provider.getEmail()) !=null){
+            model.addAttribute("emailExists",true);
+            return "admin/addProvider";
+        }
+
+        Address address1 = new Address();
+        address1.setId(address.getId());
+        address1.setNumber(address.getNumber());
+        address1.setStreet(address.getStreet());
+
+
+        provider = providerService.save(provider);
+        address1.setProvider(provider);
+
+        addressService.save(address1);
+
+        model.addAttribute("addSuccess", true);
+
+
+        return "admin/addProvider";
+
+/*
+        return "redirect:providerList";
+*/
+
+
 
     }
 
@@ -55,43 +92,57 @@ public class ProviderController {
         return "admin/providerList";
     }
 
-  /*  @GetMapping(value = "/edit/{providerId}")
-    public String edit(Model model, @PathVariable Long providerId) {
-        Provider provider= providerService.findById(providerId);
-        if (provider != null) {
-            model.addAttribute("provider", provider.getId());
-            model.addAttribute("providerList", providerService.findByRemovedFalse());
 
-            return "admin/addProduct";
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-*/
 
-    @GetMapping(value = "/delete/{providerId}")
-    public String delete(Model model, @PathVariable Long providerId) {
-        final Provider provider = providerService.findById(providerId);
-        if (provider!=null) {
-            provider.setRemoved(true);
-            providerService.delete(provider);
-            return "admin/productList";
-        } else {
-            throw new IllegalArgumentException();
+    @GetMapping(value = "/delete/{provider}")
+    public String deleteProvider(@PathVariable("provider") Long id, Model model) {
+
+        Provider provider = providerService.findById(id);
+
+        if(provider.getProductList().size() == 0){
+            providerService.removeOne(id);
+            model.addAttribute("providerList", providerService.findAll());
+            model.addAttribute("deleteSuccess", true);
         }
+        else {
+            model.addAttribute("providerList", providerService.findAll());
+            model.addAttribute("notSuccess", true);
+        }
+        return "admin/providerList";
+
     }
 
-    @GetMapping(value = "/restore/{providerId}")
-    public String restore(Model model, @PathVariable Long providerId) {
-        final Provider provider = providerService.findById(providerId);
-        if (provider!= null) {
-            provider.setRemoved(false);
-            providerService.save(provider);
-            return "admin/productList";
-        } else {
-            throw new IllegalArgumentException();
-        }
+    @RequestMapping("/updateProvider")
+    public String updateProvider(@RequestParam("id") Long id, Model model) {
+        Provider provider = providerService.findOne(id);
+        model.addAttribute("provider", provider);
+
+
+        return "admin/updateProvider";
     }
+
+
+    @ModelAttribute("city")
+    public City newCity() {
+        return new City();
+    }
+
+    @ModelAttribute("cities")
+    Collection<City> findAllCity() {
+        Collection<City> cities = cityService.findAll();
+        return cities;
+    }
+
+    @ModelAttribute("address")
+    public Address newAddress(){ return new Address(); }
+
+    @ModelAttribute("Addresses")
+    Collection<Address>findAllAddress(){
+        Collection<Address> addresses = addressService.findAll();
+        return addresses;
+    }
+
+
 
 
 

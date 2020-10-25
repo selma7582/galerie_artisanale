@@ -92,6 +92,8 @@
 //
 //
 // });
+
+
 var deleteShapeUrl = $('#js-template-global').attr('data-delete-shape-url');
 $(document).ready(function () {
     initButtons();

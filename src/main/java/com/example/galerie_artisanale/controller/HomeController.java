@@ -29,10 +29,8 @@ import javax.websocket.server.PathParam;
 import java.nio.file.Path;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -62,9 +60,6 @@ public class HomeController {
 
 
     @Autowired
-    private ShoppingCartService shoppingCartService;
-
-    @Autowired
     private OrderService orderService;
 
     @Autowired
@@ -82,9 +77,9 @@ public class HomeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (User.class.isInstance(authentication.getPrincipal())) {
 
-            User connectecUser = (User) authentication.getPrincipal();
-            if (connectecUser.getRole().getRole().equals("ROLE_ADMIN")) {
-                return "admin/home";
+            User connectedUser = (User) authentication.getPrincipal();
+            if (connectedUser.getRole().getRole().equals("ROLE_ADMIN")) {
+                return "admin/orderedList";
             }
         }
 
@@ -120,26 +115,34 @@ public class HomeController {
 
     private String galerieForAll(Model model, Principal principal, HttpSession session, List<Product> productList) {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
-        ShoppingCart shoppingCart ;
+        Ordered shoppingCart ;
         if (principal != null) {
             String username = principal.getName();
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
-            shoppingCart = shoppingCartService.findByUser(user);
+            shoppingCart = orderService.findShoppingCart(user);
         } else {
-            shoppingCart =(ShoppingCart) session.getAttribute(ShoppingCartController.SHOPPING_CART);
+            shoppingCart =(Ordered) session.getAttribute(ShoppingCartController.SHOPPING_CART_SESSION);
         }
 
-        // construire l'url des images
-        productList.stream()
+        // construire l'url de plusieurs images
+        /*productList.stream()
                 .flatMap(product -> product.getImagesList().stream())
+                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));*/
+        // construire l'url d'une seule image
+        productList.stream()
+                .filter(product -> !product.getImagesList().isEmpty())
+                .map(product -> product.getImagesList().get(0))
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+
         // fin du construction des url des images
         model.addAttribute("productList", productList);
         model.addAttribute("activeAll", true);
         model.addAttribute("shoppingCart",shoppingCart);
         return "galerie";
     }
+
+
 
 
 
@@ -161,6 +164,7 @@ public class HomeController {
         model.addAttribute("product", product);
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
+        cartItem.setBuyinPrice(product.getPrice());
         cartItem.setQty(1);
         List<Integer> qtyList = new ArrayList<>();
         // Ajouter de i jusquau la quaitié s'il est < 10 ou bien 10
@@ -325,7 +329,6 @@ public class HomeController {
 
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
-        model.addAttribute("categories", categoryService.findAllCategoryNames());
 
 /*
         User currentUser = userService.findById(user.getId_user());

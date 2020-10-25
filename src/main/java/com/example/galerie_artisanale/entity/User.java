@@ -2,7 +2,6 @@ package com.example.galerie_artisanale.entity;
 
 import com.example.galerie_artisanale.security.Authority;
 import com.sun.istack.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -61,9 +62,6 @@ public class User implements UserDetails, Serializable {
     @JoinColumn(name="role_id")
     private UserRole role;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private ShoppingCart shoppingCart;
-
     public String getUsername() {
         return email;
     }
@@ -106,26 +104,6 @@ public class User implements UserDetails, Serializable {
         return authorities;
     }
 
-    //@NotNull(message="not match")
-/*    private String confirmPassword;
-
-    public void setPassword(String password) {
-        this.password = password;
-        checkPassword();//check
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-        checkPassword();//check
-    }
-
-    private void checkPassword() {
-        if(this.password == null || this.confirmPassword == null){
-            return;
-        }else if(!this.password.equals(confirmPassword)){
-            this.confirmPassword = null;
-        }
-    }*/
 
 }
 

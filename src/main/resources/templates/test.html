@@ -42,5 +42,148 @@
          </div>
      </td>
 
+     //////////////////////////////////////////////////////////
+     <div class="row" style="margin-bottom: -100px;">
+    <div class="col-xs-8">
+        <h2 class="section-headline">
+            <h2 class="section-headline">
+                <span th:text="${user}? ${#strings.toUpperCase(user.username)} : 'toute la collection'"></span>
+            </h2>
+        </h2>
+    </div>
+
+</div>
+<hr
+        style="position: absolute; width: 100%; height: 6px; background-color: #333; z-index: -1; margin-top: -80px;"/>
+
+
+         <div class="row" style="margin-top: 60px;">
+
+
+     <!--        <div class="col-xs-3">
+                 <h3><label for="shape">Forme</label></h3>
+                 <div class="list-group" id="shape">
+                     <a th:href="@{/searchByCategory(category='rectangle')}" th:classappend="${activeRectangle}? 'active'" class="list-group-item">Rectangle</a>
+                     <a th:href="@{/searchByCategory(category='ovale')}" th:classappend="${activeOvale}? 'active'" class="list-group-item">Ovale</a>
+                     <a th:href="@{/searchByCategory(category='carre')}" th:classappend="${activeCarre}? 'active'" class="list-group-item">Carré</a>
+                 </div>
+             </div>
+
+
+
+             <div class="col-xs-3">
+                 <h3><label for="category">Categorie</label></h3>
+                 <div class="list-group" id="category">
+                     <a th:href="@{/searchByCategory(category='tapis')}" th:classappend="${activeTapis}? 'active'" class="list-group-item">Tapis</a>
+                     <a th:href="@{/searchByCategory(category='tableaux')}" th:classappend="${activeTableaux}? 'active'" class="list-group-item">Tableaux</a>
+                     <a th:href="@{/searchByCategory(category='couverture')}" th:classappend="${activeTextiles}? 'active'" class="list-group-item">Couverture</a>
+                     &lt;!&ndash;<a th:href="@{/searchByCategory(category='Arts &amp; Literature')}" th:classappend="${activeArtsLiterature}? 'active'" class="list-group-item">Arts &amp; Literature</a>&ndash;&gt;
+                 </div>
+             </div>-->
+
+
+             <div class="col-xs-9">
+                 <div th:if="${emptyList}">
+                     <h5 style="font-style: italic;">Aucun resulta pour votre recherche.</h5>
+                 </div>
+
+                 <table border="0" id="productList">
+                     <thead><tr><th></th></tr></thead>
+                     <tbody>
+                     <tr class="product-item" data-th-each="product : ${productList}">
+                         <td >
+                             <div th:if="${product != null}">
+                                 <div class="row" style="margin-bottom: 50px;">
+                                     <div class="col-xs-3">
+                                         <table>
+                                             <tr>
+
+                                                     <img id="slideLeft" class="arrow" src="images/arrow-left.png" />
+                                                     <div th:if="${product.haveImages()}"
+                                                      th:each="image : ${product.imagesList}">
+                                                     <!--
+                                                                                             <a th:href="@{/productDetail?id=}+${product.id}">
+                                                     -->
+                                                     <!--
+                                                                                                 <div class="carousel-caption">
+                                                     -->
+
+                                                     <img th:if="${image.fullURL != null}"  th:src="@{${image.fullURL}}" class="thumbnail active"/><!--</div> --><!-- </a>-->
+
+
+                                                 </div>
+                                                     <img id="slideRight" class="arrow" src="images/arrow-right.png" />
+
+
+                                             </tr>
+                           <!--                  <tr>
+                                                 <div th:if="${product.haveImages()}"
+                                                      th:each="image : ${product.imagesList}">
+                                                     &lt;!&ndash;
+                                                                                             <a th:href="@{/productDetail?id=}+${product.id}">
+                                                     &ndash;&gt;
+                                                     &lt;!&ndash;
+                                                                                                 <div class="carousel-caption">
+                                                     &ndash;&gt;
+
+                                                     <img th:if="${image.fullURL != null}" class="img-responsive" th:src="@{${image.fullURL}}" width="50" height="60"/>&lt;!&ndash;</div> &ndash;&gt;&lt;!&ndash; </a>&ndash;&gt;
+
+
+                                                 </div>
+
+                                             </tr>-->
+
+                                         </table>
+
+
+                                     </div>
+
+                                     <div class="col-xs-3">
+                                         <img id="featured"  class="arrow" src="images/arrow-left.png" />
+
+                                     </div>
+                                     <div class="col-xs-6">
+     <!--
+                                             <h4 th:text="${product.productName}"></h4>
+     -->
+
+                                         <a th:href="@{/productDetail?id=}+${product.id}"><h4
+                                                 th:text="${product.productName}"></h4></a>
+
+                                         <span >Hauteur:  <span th:text="${product.height}"></span></span> m<br/>
+                                         <span >Largeur:      <span th:text="${product.width}"></span> m</span><br/>
+                                         <!--     <span th:text="${#strings.capitalize(book.format)}"></span>-->
+                                         <!--   <a th:href=@{/productDetail?id=}+${product.id}" > -->
+
+                                         <span >   <span th:text="${product.inStockNumber}"></span> pièce disponible</span><br/>
+                                            <span style="font-size:x-large;color:#db3208;">Prix: <span
+                                                    th:text="${#numbers.formatDecimal(product.price, 0 , 'POINT', 2, 'POINT')}"></span> DH</span><br/>
+
+     <!--
+                                         <span th:text="${product.description}"></span>
+     -->
+
+
+     <!--
+                                        <p th:utext="${#strings.abbreviate(product.description,1000)}"></p>
+     -->
+                                     </div>
+                                 </div>
+                             </div>
+                         </td>
+                     </tr>
+                     </tbody>
+                 </table>
+
+
+
+
+             </div>
+
+
+
+
+         </div>
+
 
 

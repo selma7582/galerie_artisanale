@@ -44,6 +44,9 @@ public class ProductController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private ProviderService providerService;
+
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addProduct(Model model) {
@@ -98,17 +101,17 @@ public class ProductController {
             storageService.store(file, image.getUrl_image());
 
         }
+
+        List<Product> productList = productService.findAll();
+        productList.stream()
+                .flatMap(products -> products.getImagesList().stream())
+                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+
         model.addAttribute("addSuccess", true);
-/*
-        model.addAttribute("classActiveAdd", true);
-*/
 
         return "admin/addProduct";
 
-/*
-        return "redirect:productList";
-*/
-
+        /*return "redirect:productList";*/
     }
 
 
@@ -208,6 +211,18 @@ public class ProductController {
         return categories;
     }
 
+    @ModelAttribute("provider")
+    public Provider newProvider(){
+        return new Provider();
+    }
+
+    @ModelAttribute("providers")
+    Collection<Provider> findAllProviders(){
+        Collection<Provider> providers = (Collection<Provider>) providerService.findAll();
+        return providers;
+    }
+
+
     @RequestMapping("/productInfo")
     public String productInfo(@RequestParam("id") Long id, Model model) {
         Product product = productService.findOne(id);
@@ -228,8 +243,8 @@ public class ProductController {
         model.addAttribute("product", product);
 
 
-        /*product.setCategory(product.getCategory());
-        product.setShape(product.getShape());*/
+        product.getShape();
+        product.getCategory();
         product.getImagesList()
                 .stream().forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
 
@@ -239,12 +254,10 @@ public class ProductController {
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
     public String updateProductPost(@ModelAttribute("product") Product product,@RequestParam("file") MultipartFile[] files,Model model) {
 
-        productService.save(product);
+        //Product productP = productService.save(product);
 
-        List<Product> productList = productService.findAll();
-
-      /* Container container = new Container() ;
-        container.getProductList();*/
+        product = this.productService.save(product);
+        //imageService.save(product.getImagesList().stream().reduce());
 
         for (MultipartFile file : files) {
             Image image = new Image();
@@ -286,26 +299,6 @@ public class ProductController {
 
 
 
-
-//    @RequestMapping(value = "/removeS", method = RequestMethod.POST)
-//    public String removeS(@ModelAttribute("id") String id, Model model){
-//
-//
-///*
-//        System.out.println("Removing Shape:"+shape.getId());
-//*/
-//
-//        shapeService.removeOne(Long.parseLong(id.substring(8)));
-//
-///*
-//        shapeService.removeOne(shape.getId());
-//*/
-//        List<Shape> shapeList = shapeService.findAll();
-//        model.addAttribute("shapeList", shapeList);
-//
-//        return "redirect:/product/shapeList";
-//
-//    }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(@RequestParam("shapes[]") List<Shape> shapes, RedirectAttributes redirectAttributes) {

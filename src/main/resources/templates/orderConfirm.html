@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header :: common-header" />
 
 <style>
@@ -30,11 +30,15 @@
                 <div class="col-xs-2"></div>
                 <div class="col-xs-2">
 
-                    <a th:href="@{/productDetail(id=${cartItem.product.id})}"> <img
-                            class=""
-                            th:src=""
-                            style="width: 70px;" />
+                    <a th:href="@{/productDetail(id=${cartItem.product.id})}">
+                        <img th:if="${cartItem.getFirstImageFullUrl() != null}"
+                             class=""
+                             th:src="@{${cartItem.getFirstImageFullUrl()}}"
+                             style="width: 70px;" />
+
                     </a>
+
+
                 </div>
                 <div class="col-xs-6">
                     <div style="margin-left: 50px;">
@@ -45,14 +49,15 @@
 
                 <div class="col-xs-2">
                     <h5 style="color: #db3208; font-size: large;">
-                        DH<span th:text="${cartItem.product.pice}"
-                               th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+                        DH<span th:text="${cartItem.product.price}"
+                                th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
                     </h5>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
 

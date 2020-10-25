@@ -11,7 +11,11 @@ import java.util.Optional;
 public interface ProviderRepository extends JpaRepository<Provider,Long> {
 
 
-    List<Provider> findAll();
+   //     List<Product> findByCategoryCategoryName(String category);
+
+
+
+    Provider findByEmail(String email);
 
 
 

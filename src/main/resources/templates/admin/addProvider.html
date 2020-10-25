@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/common/header :: common-header" />
 
 
@@ -16,25 +16,24 @@
 <div th:replace="admin/common/header :: navbar" />
 
 <div class="container">
-    <div class="row" style="margin-bottom: auto">
+    <div class="row" style="/*margin-bottom: auto*/">
+        <div class="alert alert-success" th:if="${addSuccess}">
+            <strong>fournisseur Bien Ajouté!</strong>
+        </div>
+
         <div class="col-xs-8">
-            <h2 class="section-headline"><span>Add New provider</span></h2>
+            <h2 class="section-headline"><span>Ajouter un fournisseur</span></h2>
         </div>
 
 
     </div>
-    <hr style="position:absolute; width:75%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
-    <hr />
-
-    <img class="img-responsive" src="" />
-
-    <div class="row" style="margin-top:120px">
-        <div class="col-xs-9 col-xs-offset-3">
-
-            <!-- Nav tabs -->
 
 
-            <!-- Tab panels -->
+
+    <div class="row" style="">
+        <div class="">
+
+
             <div class="tab-content">
 
 
@@ -45,62 +44,68 @@
                     <div class="panel panel-default" style="border: none;">
                         <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
 
-                            <form th:action="@{/add/addProvider}" method="post">
+                            <form th:action="@{/provider/addProvider}" method="post">
 
                                 <div class="form-group">
-                                    <label for="providerFirstName">Provider Name</label>
+                                    <label for="providerFirstName">Prenom</label>
                                     <input required  type="text" class="form-control"
-                                           id="providerFirstName" name="providerFirstName" />
+                                           id="providerFirstName" name="firstName" th:field="*{provider.firstName}" />
+
                                     <p style="color: #828282">Enter Provider FirstName .</p>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="providerLastName">Provider Name</label>&nbsp;<span
-                                        style="color: red;" th:if="${usernameExists}">Category alredy exists.</span>
+                                    <label for="providerLastName">Nom</label>
                                     <input required  type="text" class="form-control"
-                                           id="providerLastName" name="providerLastName" />
+                                           id="providerLastName" name="lastName" th:field="*{provider.lastName}"/>
                                     <p style="color: #828282">Enter Provider lastName .</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="providerEmail"> Email</label>&nbsp;<span
-                                        style="color: red;" th:if="${usernameExists}">Category alredy exists.</span>
+                                        style="color: red;" th:if="${emailExists}">Provider Existe déja.</span>
                                     <input required  type="email" class="form-control"
-                                           id="providerEmail" name="providerEmail" />
+                                           id="providerEmail" name="email" th:field="*{provider.email}"/>
                                     <p style="color: #828282">Enter Provider Email .</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="providerTel">Tel</label>&nbsp;
                                     <input required  type="tel" class="form-control"
-                                           id="providerTel" name="providerTel" />
+                                           id="providerTel" name="tel" th:field="*{provider.tel}" />
                                     <p style="color: #828282">Enter Provider Tel .</p>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label for="street"> rue</label>&nbsp;
+                                    <input required  type="text" class="form-control"
+                                           id="street" name="street" th:field="*{address.street}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
                                 </div>
 
                                 <div class="form-group">
 
                                     <label for="Number"> number</label>&nbsp;
                                     <input required  type="number" class="form-control"
-                                           id="Number" name="Number" />
-                                    <p style="color: #828282">Enter number .</p>
+                                           id="Number" name="number" th:field="*{address.number}"/>
+                                    <!--<p style="color: #828282">Enter number .</p>-->
                                 </div>
 
-                                <div>
-                                    <label for="city">City</label>&nbsp;
-                                    <input required  type="text" class="form-control"
-                                           id="city" name="city" />
-                                    <p style="color: #828282">Enter city .</p>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="city">* City</label>
+                                    <div class="col-md-8">
+                                        <select th:field="*{city}" name="city" id="city" class="form-control" >
+                                            <option value=""></option>
+                                            <option th:each="city: ${cities}"
+                                                    th:value="${city.id}"
+                                                    th:text="${city.cityName}"></option>
+
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div>
-                                <label for="country">Country</label>&nbsp;
-                                <input required  type="text" class="form-control"
-                                       id="country" name="country" />
-                                <p style="color: #828282">Enter country .</p>
-                                </div>
-
-
-                                <button type="submit" class="btn btn-primary">Add new Provider</button>
+                                <button type="submit" class="btn btn-primary">Ajouter fournisseur</button>
 
 
                             </form>

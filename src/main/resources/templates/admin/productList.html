@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml" >
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/common/header :: common-header" />
 
 
@@ -49,9 +49,8 @@
                             <input th:id="'selected'+${product.id}" class="checkboxProduct" type="checkbox"  th:field="*{container.productList[__${itemStat.index}__].selected}"/>
                         </td>
                        <td>
-
                                <span th:text="${product.productName}"></span>
-                           </a>
+
                        </td>
 
                         <td th:text="${product.shape.shapeName}"></td>
@@ -79,9 +78,7 @@
                                     <a th:href="${'/product/delete' +product.id}" onclick="return data-confirm('Etes-vous certain de vouloir supprimer?')"  value="delete" >
 -->
                                 <i class="glyphicon glyphicon-trash"></i></button>
-<!--
-                                        <i class="fa fa-times delete_forever"></i></button>
--->
+
                             </form>
                         </td>
 

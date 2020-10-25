@@ -1,10 +1,9 @@
-
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
-<head th:replace="admin/common/header :: common-header" />
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/header :: common-header"/>
 
 <style>
-    body{
+    body {
 
         background-image: url("../images/background/background.jpg");
         background-repeat: repeat
@@ -13,10 +12,17 @@
 </style>
 
 <body>
-<div th:replace="admin/common/header :: navbar" />
+<div th:replace="admin/common/header :: navbar"/>
 
 <div class="container">
     <div class=""></div>
+</div>
+
+<div class="alert alert-success" th:if="${deleteSuccess}">
+    <strong>Fournisseur Bien Supprimer!</strong>
+</div>
+<div class="alert alert-danger" th:if="${notSuccess}">
+    <strong>Fournisseur associé et ne peut pas etre Supprimer!</strong>
 </div>
 
 <div>
@@ -25,7 +31,7 @@
             <thead>
             <tr>
                 <th>Provider FirstName</th>
-                <th>Provider LastName </th>
+                <th>Provider LastName</th>
                 <th>Provider Tel</th>
                 <th>Provider Email</th>
                 <th>Provider Address</th>
@@ -37,32 +43,46 @@
             </tr>
             </thead>
             <tbody>
-          <!--  <tr data-th-each="provider : ${providerList}">-->
-            <tr th:style="${provider.removed} == FALSE ? '' : 'text-decoration:line-through;'" class="result"
+            <tr class="result"
                 data-th-each="provider : ${providerList}">
-                <!--<td><input hidden="hidden" name="id" th:value="${product.id}" /></td>-->
-                <td th:text="${provider.productName}"></td>
 
                 <td th:text="${provider.firstName}"></td>
                 <td th:text="${provider.lastName}"></td>
                 <td th:text="${provider.email}"></td>
                 <td th:text="${provider.tel}"></td>
-                <td th:text="${provider.}"></td>
-                <td th:text="${provider.}"></td>
-                <td th:text="${provider.}"></td>
-
                 <td>
-                    <a th:href="@{/provider/updateProvider(id=${provider.id})}">
+
+                    <!--<li><a th:href="@{/product/updateProduct?id=}+${product.id}">Editer</a></li>-->
+
+                    <a th:href="@{/provider/updateProvider?id=}+${provider.id}">
                         <i class="glyphicon glyphicon-pencil"></i></button></a>
                 </td>
-
                 <td>
-                    <form class="form-horizontal" th:action="@{/provider/removeP}" method="post"  enctype="multipart/form-data" th:objet="${provider}">
-                        <input hidden="hidden" name="id" th:value="${provider.id}" />
-                        <button th:id="'oneProvider-'+${provider.id}" class="btn btn-danger btn-xs delete-provider"  type="submit" value="delete" >
-                            <i class="glyphicon glyphicon-trash"></i></button>
-                    </form>
+                    <a class="glyphicon glyphicon-trash"
+                       th:attr="data-target='#modal-delete'+${provider?.id}"
+                       data-rel="tooltip" title="delete" data-toggle="modal"></a>
                 </td>
+                <div th:id="modal-delete+${provider?.id}" class="modal fade"
+                     tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header no-padding">
+                                <div class="table-header">Suppression</div>
+                            </div>
+                            <div class="modal-body no-padding">Vous étes sur de
+                                supprimer ce fournisseur?
+                            </div>
+                            <div class="modal-footer no-margin-top">
+                                <button class="btn btn-danger pull-left"
+                                        data-dismiss="modal"> Annuler
+                                </button>
+                                <a class="btn btn-danger pull-right" type="button"
+                                   th:href="${'delete/'+ provider?.id}"> Supprimer
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </tr>
             </tbody>
@@ -72,7 +92,7 @@
 
 <a th:href="@{/provider/addProvider}" role="button" class="btn btn-success">Add New provider</a>
 
-<div th:replace="admin/common/header :: body-bottom-scripts" />
+<div th:replace="admin/common/header :: body-bottom-scripts"/>
 
 </body>
 </html>
