@@ -9,9 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -103,6 +101,10 @@ public class User implements UserDetails, Serializable {
         authorities.add(new Authority(getRole().getRole()));
         return authorities;
     }
+
+//    @OneToMany(mappedBy = "user", cascade= {CascadeType.PERSIST,CascadeType.MERGE} )
+//    private List<Address> addresses = new ArrayList<>();
+
 
 
 }

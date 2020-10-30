@@ -36,7 +36,6 @@
                 <th>Provider Email</th>
                 <th>Provider Address</th>
                 <th>Provider City</th>
-                <th>Provider Country</th>
                 <th>Editer</th>
                 <th>Supprimer</th>
 
@@ -48,11 +47,11 @@
 
                 <td th:text="${provider.firstName}"></td>
                 <td th:text="${provider.lastName}"></td>
-                <td th:text="${provider.email}"></td>
                 <td th:text="${provider.tel}"></td>
-                <td>
+                <td th:text="${provider.email}"></td>
+               <!-- <td th:text="${provider.address.street}"></td>-->
 
-                    <!--<li><a th:href="@{/product/updateProduct?id=}+${product.id}">Editer</a></li>-->
+                <td>
 
                     <a th:href="@{/provider/updateProvider?id=}+${provider.id}">
                         <i class="glyphicon glyphicon-pencil"></i></button></a>

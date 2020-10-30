@@ -15,76 +15,93 @@
 <div th:replace="admin/common/header :: navbar" />
 
 
+
+
 <div class="container">
-    <div class="row" style="margin-bottom: auto">
-        <div class="col-xs-8">
-            <h2 class="section-headline"><span>Liste des categories</span></h2>
-        </div>
 
 
-    </div>
-    <hr style="position:absolute; width:75%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
+        <div class="table-responsive">
 
-    <img class="img-responsive" src="" />
+            <div class="alert alert-success" th:if="${deleteSuccess}">
+                <strong>C'est Bien Supprimer!</strong>
+            </div>
 
-    <div class="alert alert-danger" th:if="${canNotDelete}">
-        <strong>Impossible de supprimer cette categorie </strong> .
-    </div>
+            <div class="alert alert-danger" th:if="${notSuccess}"><strong> Suppression impossible à cause de l'association  avec des produits!</strong>
+            </div>
 
-    <div class="row" style="margin-top:120px">
-        <div class="col-xs-9 col-xs-offset-3">
+            <table id="productListTable" class="table table-bordered table-hover table-striped">
+
+                <thead>
+
+                <tr>
+                    <th>Categorie</th>
+                    <th>Editer</th>
+                    <th>supprimer</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-th-each="category : ${categoryList}">
+
+                    <td>
+                        <span th:text="${category.categoryName}"></span>
+
+                    </td>
+
+                    <td>
+                        <a th:href="@{/product/productInfo(id=${category.id})}">
+                            <i class="glyphicon glyphicon-pencil"></i></button></a>
+                    </td>
+
+                    <td>
+
+                        <a class="glyphicon glyphicon-trash"
+                           th:attr="data-target='#modal-delete'+${category?.id}"
+                           data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
 
-            <!-- list category -->
+                    </td>
 
 
+                    <div th:id="modal-delete+${category?.id}" class="modal fade"
+                         tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header no-padding">
+                                    <div class="table-header">Suppression</div>
+                                </div>
+                                <div class="modal-body no-padding">Vous étes sur de
+                                    supprimer  <span th:text="${category.categoryName}"></span>?
+                                </div>
 
-                <div>
-                    <div class="table-responsive">
-                        <table id="categoryListTable" class="table table-bordered table-hover table-striped">
-                            <thead>
-                            <tr>
+                                <div class="modal-footer no-margin-top">
+                                    <button class="btn btn-danger pull-left"
+                                            data-dismiss="modal"> Annuler
+                                    </button>
 
-                                <th>Categorie</th>
-                                <th>Editer</th>
-                                <th>Supprimer</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr data-th-each="category : ${categoryList}">
+                                    <a class="btn btn-danger pull-right" type="button"
+                                       th:href="${'deleteCategory/'+ category?.id}"> Supprimer
+                                    </a>
 
-
-                                <td th:text="${category.categoryName}"></td>
-<!--
-                                    <a th:href="@{/category/editCategory?id=}+${product.id}">
--->
-
-                                <td>
-                                    <a th:href="@{/product/updateCategory(id=${category.id})}">
-                                        <i class="glyphicon glyphicon-pencil"></i></a>
-                                </td>
-
-                                <td>
-                                    <form class="form-horizontal" th:action="@{/product/removeC}" method="post"  enctype="multipart/form-data" th:objet="${category}">
-                                        <input hidden="hidden" name="id" th:value="${category.id}" />
-                                        <button th:id="${category.id}" class="btn btn-danger btn-xs delete-category"  type="submit" value="delete" >
-                                            <i class="glyphicon glyphicon-trash"></i></button>
-                                    </form>
-                                </td>
-
-                            </tr>
-                            </tbody>
-                        </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+
+                </tr>
+                </tbody>
+            </table>
+
+
         </div>
-    </div>
 
 
+</div>
 
+<div class="text-center">
 
-
-<a th:href="@{/product/addCategory}" role="button" class="btn btn-login">Ajouter une categorie</a>
+    <a th:href="@{/product/addCategory}" role="button" class="btn btn-success">Ajouter une categorie</a>
 
 </div>
 

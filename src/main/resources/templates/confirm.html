@@ -21,7 +21,7 @@
 
 
     <div class="row" style="margin-top: 10px;">
-        <form th:action="@{/confirm}" method="post">
+        <form th:action="@{/confirm}" method="post" >
 
             <!-- Left Panel -->
             <div class="col-xs-4">
@@ -132,12 +132,6 @@
                                 </div>
 
 
-                                <!--<div class="form-group">
-                                    <label for="shippingName">* Name</label> <input type="text"
-                                                                                    class="form-control" id="shippingName"
-                                                                                    placeholder="Receiver Name" name="shippingAddressName"
-                                                                                    th:value="${shippingAddress.shippingAddressName}" />
-                                </div>-->
 
                                 <!--<div class="form-group">
                                     <label for="shippingStreet">* Street Address</label> <input
@@ -151,46 +145,46 @@
                                            th:value="${ordered.shippingAddress.number}" />
                                 </div>-->
 
-<!--
-                                <div class="row">
-&lt;!&ndash;
-                                    <div class="col-xs-4">
-                                        <div class="form-group">
-                                            <label for="shippingCity">* City</label> <input type="text"
-                                                                                            class="form-control" id="shippingCity"
-                                                                                            placeholder="Shipping City" th:name="ordered.shippingAddressCity"
-                                                                                            required="required"
-                                                                                            th:value="${ordered.shippingAddress.city.cityName}" />
-                                        </div>
-                                    </div>
-&ndash;&gt;
-                                 &lt;!&ndash;   <div class="col-xs-4">
-                                        <div class="form-group">
-                                            <label for="shippingState">* State</label> <select
-                                                id="shippingState" class="form-control"
-                                                th:name="shippingAddressState"
-                                                th:value="${shippingAddress.shippingAddressState}"
-                                                required="required">
-                                            <option value="" disabled="disabled">Please select
-                                                an option</option>
-                                            <option th:each="state : ${stateList}" th:text="${state}"
-                                                    th:selected="(${shippingAddress.shippingAddressState}==${state})"></option>
-                                        </select>
-                                        </div>
-                                    </div>&ndash;&gt;
-&lt;!&ndash;
-                                    <div class="col-xs-4">
-                                        <div class="form-group">
-                                            <label for="shippingZipcode">* Zipcode</label> <input
-                                                type="text" class="form-control" id="shippingZipcode"
-                                                placeholder="Shipping Zipcode"
-                                                th:name="shippingAddressZipcode" required="required"
-                                                th:value="${shippingAddress.shippingAddressZipcode}" />
-                                        </div>
-                                    </div>
-&ndash;&gt;
-                                </div>
--->
+                                <!--
+                                                                <div class="row">
+                                &lt;!&ndash;
+                                                                    <div class="col-xs-4">
+                                                                        <div class="form-group">
+                                                                            <label for="shippingCity">* City</label> <input type="text"
+                                                                                                                            class="form-control" id="shippingCity"
+                                                                                                                            placeholder="Shipping City" th:name="ordered.shippingAddressCity"
+                                                                                                                            required="required"
+                                                                                                                            th:value="${ordered.shippingAddress.city.cityName}" />
+                                                                        </div>
+                                                                    </div>
+                                &ndash;&gt;
+                                                                 &lt;!&ndash;   <div class="col-xs-4">
+                                                                        <div class="form-group">
+                                                                            <label for="shippingState">* State</label> <select
+                                                                                id="shippingState" class="form-control"
+                                                                                th:name="shippingAddressState"
+                                                                                th:value="${shippingAddress.shippingAddressState}"
+                                                                                required="required">
+                                                                            <option value="" disabled="disabled">Please select
+                                                                                an option</option>
+                                                                            <option th:each="state : ${stateList}" th:text="${state}"
+                                                                                    th:selected="(${shippingAddress.shippingAddressState}==${state})"></option>
+                                                                        </select>
+                                                                        </div>
+                                                                    </div>&ndash;&gt;
+                                &lt;!&ndash;
+                                                                    <div class="col-xs-4">
+                                                                        <div class="form-group">
+                                                                            <label for="shippingZipcode">* Zipcode</label> <input
+                                                                                type="text" class="form-control" id="shippingZipcode"
+                                                                                placeholder="Shipping Zipcode"
+                                                                                th:name="shippingAddressZipcode" required="required"
+                                                                                th:value="${shippingAddress.shippingAddressZipcode}" />
+                                                                        </div>
+                                                                    </div>
+                                &ndash;&gt;
+                                                                </div>
+                                -->
 
                             </div>
                         </div>
@@ -198,7 +192,7 @@
 
 
                     <!-- Billing Address -->
-                    <div class="checkbox">
+                    <!--<div class="checkbox">
                         <label> <input id="theSameAsShippingAddress"
                                        type="checkbox" name="billingSameAsShipping" value="true" />
                             La même Adresse pour la livraison et la facturation
@@ -215,7 +209,7 @@
                         <div id="billingInfo" class="panel-collapse collapse"
                              th:classappend="${classActiveShipping}? 'in'">
                             <div class="panel-body">
-                                <!--<table class="table" th:if="${not shippingAddress}">
+                                &lt;!&ndash;<table class="table" th:if="${not shippingAddress}">
                                     <thead>
                                     <tr>
                                         <th>Available Shipping Address</th>
@@ -231,7 +225,7 @@
                                             this address</a></td>
                                     </tr>
                                     </tbody>
-                                </table>-->
+                                </table>&ndash;&gt;
 
 
 
@@ -240,7 +234,7 @@
                                     <label for="street2"> rue</label>&nbsp;
                                     <input required  type="text" class="form-control"
                                            id="street2" name="street" th:field="*{address.street}"/>
-                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                    &lt;!&ndash;<p style="color: #828282">Enter number .</p>&ndash;&gt;
                                 </div>
 
                                 <div class="form-group">
@@ -248,7 +242,7 @@
                                     <label for="Number"> number</label>&nbsp;
                                     <input required  type="number" class="form-control"
                                            id="Number" name="number" th:field="*{address.number}"/>
-                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                    &lt;!&ndash;<p style="color: #828282">Enter number .</p>&ndash;&gt;
                                 </div>
 
                                 <div class="form-group">
@@ -264,15 +258,9 @@
                                     </div>
                                 </div>
 
-
-
-
-
-
-
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
 
                     <!-- 3. Review Items and Shipping -->
@@ -280,12 +268,12 @@
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion"
-                                   href="#reviewItems"> 3. Review Items and Shipping </a>
+                                   href="#reviewItems"> 3. Détail de la commande </a>
                             </h4>
                         </div>
                         <div id="reviewItems" class="panel-collapse collapse">
                             <div class="panel-body">
-                                <h4>Choose your shipping method:</h4>
+                                <!--<h4>Choose your shipping method:</h4>
                                 <div class="radio">
                                     <label> <input type="radio" name="shippingMethod"
                                                    value="groundShipping" checked="checked" /> Ground Shipping
@@ -295,7 +283,7 @@
                                     <label> <input type="radio" name="shippingMethod"
                                                    value="premiumShipping" /> Premium Shipping
                                     </label>
-                                </div>
+                                </div>-->
 
                                 <div class="row">
                                     <div class="col-xs-8">
@@ -313,7 +301,7 @@
                                 <div class="row" th:each="cartItem : ${cartItemList}">
                                     <hr />
                                     <div class="col-xs-2">
-                                        <a th:href="@{/bookDetail(id=${cartItem.product.id})}"> <img
+                                        <a th:href="@{/productDetail(id=${cartItem.product.id})}"> <img
                                         />
                                         </a>
                                     </div>
@@ -344,6 +332,8 @@
 
                                     <div class="col-xs-2">
                                         <h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
+                                        <p th:if="${cartItem.qty&gt;cartItem.product.inStockNumber}"
+                                           style="color: red;">Out of Stock </p>
                                     </div>
 
                                 </div>
@@ -352,7 +342,7 @@
                                 <h4 class="col-xs-12 text-right">
                                     <strong style="font-size: large;">Totale de la commande (<span
                                             th:text="${#lists.size(cartItemList)}"></span> article):
-                                    </strong> <span style="color: #db3208; font-szie: large;">$<span
+                                    </strong> <span style="color: #db3208; font-szie: large;">DH<span
                                         th:text="${shoppingCart.total}"></span></span>
                                 </h4>
                                 <br />

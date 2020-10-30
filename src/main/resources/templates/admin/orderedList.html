@@ -41,8 +41,9 @@
                 data-th-each="ordered : ${orderedList}">
 
                 <td th:text="${ordered.id}"></td>
-                <td th:text="${ordered.user}"></td>
+                <td th:text="${ordered.user.lastName+' '+ordered.user.firstName}"></td>
                 <td th:text="${ordered.orderDate}"></td>
+                <!--<td th:text="${ordered.shippingAddress.street+' '+ordered.shippingAddress.number}"></td>-->
                 <td th:text="${ordered.total}"></td>
                 <td th:text="${ordered.cartItemCount}"></td>
                 <td th:text="${ordered.status}"></td>

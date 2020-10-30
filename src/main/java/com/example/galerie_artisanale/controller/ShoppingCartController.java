@@ -24,6 +24,7 @@ public class ShoppingCartController {
 
     public static final String SHOPPING_CART_SESSION = "SHOPPING_CART";
     public static final String CART_ITEM_LIST = "cartItemList";
+    public static final String CART_ITEM = "cartItem";
     public static final String SHOPPING_CART_MODEL = "shoppingCart";
 
     @Autowired
@@ -238,22 +239,37 @@ public class ShoppingCartController {
 
 
     @RequestMapping("/updateCartItem")
-    public String updateShoppingCart(Model model,
-            @ModelAttribute("id") Long cartItemId,
+    public String updateShoppingCart(Model model,HttpSession session,
             @ModelAttribute("qty") int qty
     ) {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
-        CartItem cartItem = cartItemService.findById(cartItemId);
-        cartItem.setQty(qty);
-        cartItemService.updateCartItem(cartItem);
+        CartItem cartItem = (CartItem) session.getAttribute(CART_ITEM);
+       // int a = cartItem.getQty();
+       // System.out.println(a+"coucouuuuu");
+        if ( cartItem != null) {
 
-        return "forward:/shoppingCart/cart";
+                cartItem.setQty(qty);
+                if(cartItem.getId() != null){
+                    cartItemRepository.save(cartItem);
+                }
+            }else {
+
+                CartItem cart = new CartItem() ;
+                cart.setQty(qty);
+                session.setAttribute(CART_ITEM, cart);
+            }
+
+        return "redirect:/shoppingCart/cart";
+       // return "forward:/shoppingCart/cart";
+
     }
 
     @RequestMapping("/removeItem")
-    public String removeItem(@RequestParam("id") Long id) {
+    public String removeItem(@RequestParam("id") Long id, HttpSession session) {
 
+        CartItem cartItem = (CartItem) session.getAttribute(CART_ITEM);
+        session.removeAttribute(CART_ITEM);
         cartItemService.removeOne(id);
 
         return "forward:/shoppingCart/cart";

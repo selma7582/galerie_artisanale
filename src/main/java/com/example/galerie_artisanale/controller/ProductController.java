@@ -9,17 +9,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.apache.commons.collections.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.galerie_artisanale.controller.HomeController.fileToPath;
 
@@ -55,7 +50,68 @@ public class ProductController {
         return "/admin/addProduct";
     }
 
-    @RequestMapping(value = "/remove2", method = RequestMethod.POST)
+    @GetMapping(value = "/delete/{product}")
+    public String deleteProduct(@PathVariable("product") Long id, Model model) {
+
+
+        productService.removeOne(id);
+
+        model.addAttribute("productList", productService.findAll());
+
+        model.addAttribute("deleteSuccess", true);
+
+        return "redirect:/product/productList";
+
+    }
+    @GetMapping(value = "/deleteCategory/{category}")
+    public String deleteCategory(@PathVariable("category") Long id, Model model) {
+
+        Category category = categoryService.findById(id);
+        if(category.getProductList().size() == 0){
+
+            categoryService.removeOne(id);
+
+            model.addAttribute("deleteSuccess", true);
+
+        }else {
+            model.addAttribute("notSuccess", true);
+        }
+        model.addAttribute("categoryList", categoryService.findAll());
+
+       // return "redirect:/product/categoryList";
+
+        return "admin/categoryList";
+    }
+
+
+
+    @GetMapping(value = "/deleteShape/{shape}")
+    public String deleteShape(@PathVariable("shape") Long id, Model model) {
+
+        Shape shape = shapeService.findById(id);
+        List<Shape> shapeList = shapeService.findAll();
+
+        if(shape.getProductList().size() == 0){
+
+            shapeService.removeOne(id);
+
+            model.addAttribute("shapeList", shapeList);
+            model.addAttribute("deleteSuccess", true);
+
+        }else{
+            model.addAttribute("shapeList", shapeList);
+            model.addAttribute("notSuccess", true);
+
+
+
+
+        }
+        return "admin/shapeList";
+
+    }
+
+
+    /*@RequestMapping(value = "/remove2", method = RequestMethod.POST)
     public String remove(@ModelAttribute Product product) {
         System.out.println("Removing :" + product.getId());
         productService.removeOne(product.getId());
@@ -64,11 +120,9 @@ public class ProductController {
 
     }
 
-
     @RequestMapping(value = "/removelist", method = RequestMethod.POST)
     public String remove(@ModelAttribute Container container) {
         System.out.println("Removing  List:");
-
 
         container.getProductList().stream().filter(Product::isSelected)
                 .forEach(p -> {
@@ -78,7 +132,7 @@ public class ProductController {
 
         return "redirect:/product/productList";
 
-    }
+    }*/
 
     @PostMapping(value = "/add")
     public String addProductPost(@ModelAttribute("product") Product product, Model model,
@@ -102,11 +156,11 @@ public class ProductController {
 
         }
 
-        List<Product> productList = productService.findAll();
+        /*List<Product> productList = productService.findAll();
         productList.stream()
                 .flatMap(products -> products.getImagesList().stream())
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
-
+*/
         model.addAttribute("addSuccess", true);
 
         return "admin/addProduct";
@@ -127,6 +181,7 @@ public class ProductController {
 
     @RequestMapping("/categoryList")
     public String categoryList(Model model) {
+
         List<Category> categoryList = categoryService.findAll();
         model.addAttribute("categoryList", categoryList);
         return "admin/categoryList";
@@ -237,19 +292,18 @@ public class ProductController {
 
     }
 
+
     @RequestMapping("/updateProduct")
     public String updateProduct(@RequestParam("id") Long id, Model model) {
         Product product = productService.findOne(id);
         model.addAttribute("product", product);
-
-
         product.getShape();
         product.getCategory();
         product.getImagesList()
                 .stream().forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
-
         return "admin/updateProduct";
     }
+
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
     public String updateProductPost(@ModelAttribute("product") Product product,@RequestParam("file") MultipartFile[] files,Model model) {
@@ -273,34 +327,33 @@ public class ProductController {
 
         model.addAttribute("updateSuccess", true);
 
-
-
         return "admin/updateProduct";
 
         /*return "redirect:/product/productInfo?id="+product.getId();*/
-
     }
 
-    @RequestMapping(value = "/removeC", method = RequestMethod.POST)
+
+
+/*    @RequestMapping(value = "/removeC", method = RequestMethod.POST)
     public String removeC(
             @ModelAttribute("id") String id, Model model
     ) {
 
-      /*  if(productService.findByCategory(categoryService.findById(Long.parseLong(id))) != null){
+      *//*  if(productService.findByCategory(categoryService.findById(Long.parseLong(id))) != null){
             model.addAttribute("canNotDelete",true);
 
-        }*/
+        }*//*
         categoryService.removeOne(Long.parseLong(id));
         List<Category> categoryList = categoryService.findAll();
         model.addAttribute("categoryList", categoryList);
 
         return "redirect:/product/categoryList";
-    }
+    }*/
 
 
 
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+   /* @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(@RequestParam("shapes[]") List<Shape> shapes, RedirectAttributes redirectAttributes) {
 
         if (CollectionUtils.isNotEmpty(shapes)) {
@@ -323,5 +376,5 @@ public class ProductController {
         shapeService.removeOne(id);
         return "redirect:/product/shapeList";
     }
-
+*/
 }

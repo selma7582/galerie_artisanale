@@ -91,26 +91,27 @@ public class ConfirmController {
                 }
             }
 
-            Address shippingAddress = new Address();
-            if (shippingAddress.getUser() instanceof User) {
+            // GET THE ADDRESS  of the connected user
 
+            User user  = (User)authentication.getPrincipal() ;
+            List<Address> addresses = addressService.findByUser(user);
+            if (addresses != null && !addresses.isEmpty()){
+                ordered.setShippingAddress(addresses.get(addresses.size()-1));
+                ordered.setBillingAddress(ordered.getShippingAddress());
             }
-            shippingAddress = ordered.getShippingAddress();
-            Address billingAddress = new Address();
-            billingAddress = ordered.getBillingAddress();
-
-            model.addAttribute("shippingAddress", ordered.getShippingAddress());
-            model.addAttribute("billingAddress", ordered.getBillingAddress());
+            model.addAttribute("addresses", addresses);
             model.addAttribute("cartItemList", cartItemList);
             // model.addAttribute("shoppingCart",ordered);
             List<City> cityList = cityService.findAll();
-            model.addAttribute("stateList", cityList);
+            model.addAttribute("cityList", cityList);
 
             model.addAttribute("classActiveShipping", true);
 
             if (missingRequiredField) {
                 model.addAttribute("missingRequiredField", true);
             }
+            // Validate Order !
+            model.addAttribute(SHOPPING_CART_MODEL, ordered);
 
         }else {
 
@@ -118,17 +119,13 @@ public class ConfirmController {
 
         }
 
-        Ordered shoppingCart = orderService.findShoppingCart((User) authentication.getPrincipal());
-
-        model.addAttribute(SHOPPING_CART_MODEL, shoppingCart);
         return "confirm";
     }
 
 
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
     public String confirmShoppingCartPost(Model model, HttpSession session,
-                                          @ModelAttribute("shippingAddress")Address shippingAddress,
-                                          @ModelAttribute("billingAddress")Address billingAddress){
+                                          @ModelAttribute("addresses")Address address){
 
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
@@ -141,16 +138,21 @@ public class ConfirmController {
 
             // TODO: update the stock
 
-            /*ordered.getCartItemList()
-                    .forEach(item -> item.getProduct().setInStockNumber());*/
-
-            // model.addAttribute("notEnoughStock",true);
+            ordered.getCartItemList()
+                    .forEach(cartItem -> cartItem.getProduct().setInStockNumber(cartItem.getProduct().getInStockNumber()-cartItem.getQty()));
 
             ordered.setStatus(OrderedStatus.VALID);
             ordered.setOrderDate(new Date());
             ordered.getCartItemList()
                     .forEach(item -> item.setBuyinPrice(item.getProduct().getPrice()));
 
+            Address address1 = new Address();
+            address1.setStreet(address.getStreet());
+            address1.setNumber(address.getNumber());
+            address1.setCity(address.getCity());
+            Address persestideAddress = addressService.save(address1);
+
+            ordered.setBillingAddress(persestideAddress);
 
 
             ordered = orderService.save(ordered);
@@ -184,20 +186,22 @@ public class ConfirmController {
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
     }
 
-/*    @GetMapping("/all")
+    @GetMapping("/myOrderedList")
     public String view(Model model) {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof User) {
 
 
-            List<Ordered> validOrdered = orderService.findByUserIdAndValidTrue((User) authentication.getPrincipal());
+            List<Ordered> myOrderedList = orderService.findByUserAndStatus((User) authentication.getPrincipal(),OrderedStatus.VALID);
 
-            model.addAttribute("ordered", validOrdered);
+            model.addAttribute("myOrderedList", myOrderedList);
         } else {
             throw new IllegalArgumentException("This service requires identification");
         }
-        return "/CustumerOrderedList";
-    }*/
+        return  "redirect:/myOrderedList";
+    }
+
+
 
     @GetMapping("/orderedList")
     public String viewAll(Model model) {
@@ -211,7 +215,7 @@ public class ConfirmController {
     @ModelAttribute("address")
     public Address newAddress(){ return new Address(); }
 
-    @ModelAttribute("Addresses")
+    @ModelAttribute("addresses")
     Collection<Address> findAllAddress(){
         Collection<Address> addresses = addressService.findAll();
         return addresses;
@@ -228,16 +232,13 @@ public class ConfirmController {
         return cities;
     }
 
-  /*  @ModelAttribute("ordered")
-    public Ordered newOrdered(){return new Ordered();}
-*/
-   /* @ModelAttribute("ordereds")
-    Collection<Ordered> findAllOrdered(){
-        Collection<Ordered> ordereds = orderService.findAll();
-        return ordereds;
+    @RequestMapping("/decrease/{id}/{qty}")
+    public String decreaseStockOf(@PathVariable Long id,@PathVariable int qty) {
 
-    }*/
-
-
+        Product product = productRepository.getOne(id);
+        product.setInStockNumber(product.getInStockNumber() - qty);
+        productRepository.saveAndFlush(product);
+        return "redirect: ..";
+    }
 
 }

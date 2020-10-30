@@ -54,8 +54,9 @@ public class Config extends WebSecurityConfigurerAdapter {
             "/productDetail",
             "/shoppingCart/cart",
             "/shoppingCart/view",
-
-            "/products/remove"
+            "/shoppingCart/updateCartItem",
+            "/products/remove",
+            "/searchProduct"
     };
 
     @Override

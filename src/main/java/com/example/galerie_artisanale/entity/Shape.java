@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +23,9 @@ public class Shape implements Serializable{
 
     @Transient
     private boolean removed ;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shape")
+    private List<Product> productList;
 
     @Override
     public String toString() {

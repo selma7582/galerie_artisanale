@@ -29,6 +29,7 @@ import javax.websocket.server.PathParam;
 import java.nio.file.Path;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,13 +80,13 @@ public class HomeController {
 
             User connectedUser = (User) authentication.getPrincipal();
             if (connectedUser.getRole().getRole().equals("ROLE_ADMIN")) {
-                return "admin/orderedList";
+                /*return "admin/orderedList";*/
+                return "redirect:/orderedList";
             }
         }
 
         return "index";
     }
-
 
     @RequestMapping("/login")
     public String login(Model model) {
@@ -418,4 +419,6 @@ public class HomeController {
         return MvcUriComponentsBuilder.fromMethodName(HomeController.class,
                 "loadImageFromServer", path.toString().replaceAll("\\\\", ">")).build().toString();
     }
+
+
 }

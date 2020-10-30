@@ -42,7 +42,7 @@ public class ProviderController {
         }
 
         Address address1 = new Address();
-        address1.setId(address.getId());
+        //address1.setId(address.getId());
         address1.setNumber(address.getNumber());
         address1.setStreet(address.getStreet());
 

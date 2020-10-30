@@ -61,8 +61,9 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<Product> findByProvider(Long id) {
-        return productRepository.findByProvider(id);
+    public List<Product> blurrySearch(String productName) {
+        List<Product> productList = productRepository.findByProductNameContaining(productName);
+        return productList;
     }
 
 }

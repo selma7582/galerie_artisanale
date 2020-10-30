@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.service.impl;
 
 import com.example.galerie_artisanale.entity.Address;
+import com.example.galerie_artisanale.entity.User;
 import com.example.galerie_artisanale.repository.AddressRepository;
 import com.example.galerie_artisanale.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<Address> findAll() {
         return addressRepository.findAll();
+    }
+
+    @Override
+    public List<Address> findByUser(User user) {
+        return addressRepository.findByUser(user);
     }
 }

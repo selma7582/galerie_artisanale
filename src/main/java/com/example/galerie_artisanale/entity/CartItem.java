@@ -13,6 +13,9 @@ public class CartItem {
     private int qty;
     private float buyinPrice;
 
+    @Transient
+    private int availableInStock ;
+
     @ManyToOne
     private Product product;
 
@@ -20,10 +23,14 @@ public class CartItem {
     @JoinColumn(name="order_id")
     private Ordered ordered;
 
+
+
     @Override
     public int hashCode(){
         return super.hashCode();
     }
+
+
 
 
     public String getFirstImageFullUrl(){

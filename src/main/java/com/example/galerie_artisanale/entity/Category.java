@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,8 +25,8 @@ public class Category implements Serializable {
     transient
     private boolean removed ;
 
-
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    private List<Product> productList;
 
     @Override
     public String toString() {

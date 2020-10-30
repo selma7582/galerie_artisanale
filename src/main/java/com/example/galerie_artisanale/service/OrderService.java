@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.service;
 
 import com.example.galerie_artisanale.entity.Ordered;
+import com.example.galerie_artisanale.entity.OrderedStatus;
 import com.example.galerie_artisanale.entity.User;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public interface OrderService {
     Ordered findShoppingCart(User user);
 
     void remove(Ordered persistedShoppingCart);
+
+    List<Ordered> findByUserAndStatus(User user, OrderedStatus status);
 }
 
 

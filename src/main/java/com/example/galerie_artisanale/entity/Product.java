@@ -62,7 +62,8 @@ public class Product implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<Image> imagesList;
 
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<CartItem> cartItemList;
 
     public String getMainImage(){
 
