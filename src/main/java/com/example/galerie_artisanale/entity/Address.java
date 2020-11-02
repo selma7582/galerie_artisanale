@@ -35,4 +35,8 @@ public class Address implements Serializable {
     @JoinColumn(name = "id_provider")
     private Provider provider;
 
+    public String fullAdress(){
+        return street + ", " + number +" " + city.getZipCode()+" " + city.getCityName();
+    }
+
 }

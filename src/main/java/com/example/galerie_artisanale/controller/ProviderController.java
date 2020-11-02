@@ -32,7 +32,7 @@ public class ProviderController {
     private AddressService addressService;
 
     @RequestMapping(value="/addProvider", method = RequestMethod.POST)
-    public String addProviderPost(@ModelAttribute("provider")Provider provider,@ModelAttribute("address")Address address,City city, Model model){
+    public String addProviderPost(@ModelAttribute("provider")Provider provider,@ModelAttribute("address")Address address, Model model){
 
 
         model.addAttribute("email",provider.getEmail());
@@ -41,16 +41,9 @@ public class ProviderController {
             return "admin/addProvider";
         }
 
-        Address address1 = new Address();
-        //address1.setId(address.getId());
-        address1.setNumber(address.getNumber());
-        address1.setStreet(address.getStreet());
-
-
         provider = providerService.save(provider);
-        address1.setProvider(provider);
-
-        addressService.save(address1);
+        address.setProvider(provider);
+        addressService.save(address);
 
         model.addAttribute("addSuccess", true);
 
@@ -60,8 +53,6 @@ public class ProviderController {
 /*
         return "redirect:providerList";
 */
-
-
 
     }
 
@@ -89,6 +80,8 @@ public class ProviderController {
     public String providerList(Model model){
         List<Provider> providerList = providerService.findAll();
         model.addAttribute("providerList",providerList);
+
+
         return "admin/providerList";
     }
 
@@ -108,7 +101,7 @@ public class ProviderController {
             model.addAttribute("providerList", providerService.findAll());
             model.addAttribute("notSuccess", true);
         }
-        return "admin/providerList";
+        return "redirect:/provider/providerList";
 
     }
 

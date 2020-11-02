@@ -12,16 +12,10 @@
 
 <div th:replace="common/header :: navbar" />
 
-
-
-
-
 <div class="container">
 
-
-
     <div class="row" style="margin-top: 10px;">
-        <form th:action="@{/confirm}" method="post" >
+        <form th:action="@{/confirm}" method="post" th:object="${address}" >
 
             <!-- Left Panel -->
             <div class="col-xs-4">
@@ -81,7 +75,16 @@
                         </div>
                         <div id="shippingInfo" class="panel-collapse collapse"
                              th:classappend="${classActiveShipping}? 'in'">
-                            <div class="panel-body">
+
+                            <div class="panel-body" th:if="${not #lists.isEmpty(addresses)}">
+                                <select id="adress" name="address" class="form-control" th:value="${shoppingCart.shippingAddress}" required>
+                                    <option th:each="address: ${addresses}"
+                                            th:value="${address.id}"
+                                            th:text="${address.fullAdress()}"></option>
+                                </select>
+
+                            </div>
+                            <div class="panel-body" th:if="${#lists.isEmpty(addresses)}">
                                 <!--<table class="table" th:if="${not shippingAddress}">
                                     <thead>
                                     <tr>
@@ -106,7 +109,7 @@
 
                                     <label for="street"> rue</label>&nbsp;
                                     <input required  type="text" class="form-control"
-                                           id="street" name="street" th:field="*{address.street}"/>
+                                           id="street" name="street" th:field="*{street}"/>
                                     <!--<p style="color: #828282">Enter number .</p>-->
                                 </div>
 
@@ -114,7 +117,7 @@
 
                                     <label for="Number1"> number</label>&nbsp;
                                     <input required  type="number" class="form-control"
-                                           id="Number1" name="number" th:field="*{address.number}"/>
+                                           id="Number1" name="number" th:field="*{number}"/>
                                     <!--<p style="color: #828282">Enter number .</p>-->
                                 </div>
 

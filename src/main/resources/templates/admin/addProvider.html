@@ -95,7 +95,7 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label" for="city">* City</label>
                                     <div class="col-md-8">
-                                        <select th:field="*{city}" name="city" id="city" class="form-control" >
+                                        <select th:field="*{address.city}" name="city" id="city" class="form-control" >
                                             <option value=""></option>
                                             <option th:each="city: ${cities}"
                                                     th:value="${city.id}"

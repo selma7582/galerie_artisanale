@@ -123,9 +123,9 @@ public class ConfirmController {
     }
 
 
-    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
+    @PostMapping(value = "/confirm")
     public String confirmShoppingCartPost(Model model, HttpSession session,
-                                          @ModelAttribute("addresses")Address address){
+                                          @ModelAttribute("address")Address address){
 
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
@@ -146,14 +146,11 @@ public class ConfirmController {
             ordered.getCartItemList()
                     .forEach(item -> item.setBuyinPrice(item.getProduct().getPrice()));
 
-            Address address1 = new Address();
-            address1.setStreet(address.getStreet());
-            address1.setNumber(address.getNumber());
-            address1.setCity(address.getCity());
-            Address persestideAddress = addressService.save(address1);
+            address.setUser((User) authentication.getPrincipal() );
+            Address persestideAddress = addressService.save(address);
 
             ordered.setBillingAddress(persestideAddress);
-
+            ordered.setShippingAddress(persestideAddress);
 
             ordered = orderService.save(ordered);
 
@@ -166,6 +163,7 @@ public class ConfirmController {
             //
             fillFullURLOfFirstImage(ordered);
             model.addAttribute(SHOPPING_CART_MODEL, ordered);
+            model.addAttribute("address",new Address());
             // try again to clear the session (may be itsnt necessary )
             session.removeAttribute(SHOPPING_CART_SESSION);
 
@@ -200,8 +198,6 @@ public class ConfirmController {
         }
         return  "redirect:/myOrderedList";
     }
-
-
 
     @GetMapping("/orderedList")
     public String viewAll(Model model) {

@@ -39,8 +39,6 @@ public class ProductController {
     @Autowired
     private StorageService storageService;
 
-    @Autowired
-    private ProviderService providerService;
 
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -78,9 +76,9 @@ public class ProductController {
         }
         model.addAttribute("categoryList", categoryService.findAll());
 
-       // return "redirect:/product/categoryList";
+        return "redirect:/product/categoryList";
 
-        return "admin/categoryList";
+        //return "admin/categoryList";
     }
 
 
@@ -101,12 +99,10 @@ public class ProductController {
         }else{
             model.addAttribute("shapeList", shapeList);
             model.addAttribute("notSuccess", true);
-
-
-
-
         }
-        return "admin/shapeList";
+        return "redirect:/product/shapeList";
+
+        //return "admin/shapeList";
 
     }
 
@@ -266,18 +262,6 @@ public class ProductController {
         return categories;
     }
 
-    @ModelAttribute("provider")
-    public Provider newProvider(){
-        return new Provider();
-    }
-
-    @ModelAttribute("providers")
-    Collection<Provider> findAllProviders(){
-        Collection<Provider> providers = (Collection<Provider>) providerService.findAll();
-        return providers;
-    }
-
-
     @RequestMapping("/productInfo")
     public String productInfo(@RequestParam("id") Long id, Model model) {
         Product product = productService.findOne(id);
@@ -291,7 +275,6 @@ public class ProductController {
         return "admin/productInfo";
 
     }
-
 
     @RequestMapping("/updateProduct")
     public String updateProduct(@RequestParam("id") Long id, Model model) {
@@ -332,49 +315,4 @@ public class ProductController {
         /*return "redirect:/product/productInfo?id="+product.getId();*/
     }
 
-
-
-/*    @RequestMapping(value = "/removeC", method = RequestMethod.POST)
-    public String removeC(
-            @ModelAttribute("id") String id, Model model
-    ) {
-
-      *//*  if(productService.findByCategory(categoryService.findById(Long.parseLong(id))) != null){
-            model.addAttribute("canNotDelete",true);
-
-        }*//*
-        categoryService.removeOne(Long.parseLong(id));
-        List<Category> categoryList = categoryService.findAll();
-        model.addAttribute("categoryList", categoryList);
-
-        return "redirect:/product/categoryList";
-    }*/
-
-
-
-
-   /* @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String delete(@RequestParam("shapes[]") List<Shape> shapes, RedirectAttributes redirectAttributes) {
-
-        if (CollectionUtils.isNotEmpty(shapes)) {
-            for (Shape shape : shapes) {
-                shapeService.removeOne(shape.getId());
-            }
-//            //Adapt message result to guaranty
-//            redirectAttributes.addFlashAttribute("messageResult",
-//                    MessageUtils.getMessageResult(validationResult,
-//                            SucessMessage.SuccessType.CUSTOM,
-//                            APPLICATION_DELETE_SUCCESS_MESSAGE));
-        }
-
-        return "redirect:/product/shapeList";
-    }
-
-    @RequestMapping(value = "/deleteOne/{shape}", method = RequestMethod.POST)
-    public String deleteOne(@PathVariable("shape") Long id) {
-
-        shapeService.removeOne(id);
-        return "redirect:/product/shapeList";
-    }
-*/
 }

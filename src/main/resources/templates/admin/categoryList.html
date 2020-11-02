@@ -41,7 +41,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr data-th-each="category : ${categoryList}">
+
+                <tr data-th-each="category : ${categoryList}" >
 
                     <td>
                         <span th:text="${category.categoryName}"></span>
@@ -53,14 +54,27 @@
                             <i class="glyphicon glyphicon-pencil"></i></button></a>
                     </td>
 
-                    <td>
 
-                        <a class="glyphicon glyphicon-trash"
-                           th:attr="data-target='#modal-delete'+${category?.id}"
-                           data-rel="tooltip" title="delete" data-toggle="modal"></a>
+                    <div th:if="${category.getProductList().size() == 0}">
+                        <td>
+
+                            <a class="glyphicon glyphicon-trash"
+                               th:attr="data-target='#modal-delete'+${category?.id}"
+                               data-rel="tooltip" title="delete" data-toggle="modal"></a>
 
 
-                    </td>
+                        </td>
+                    </div>
+
+                    <div th:if="${category.getProductList().size() != 0}">
+                        <td>
+
+                            <span>Suppression impossible</span>
+
+
+                        </td>
+                    </div>
+
 
 
                     <div th:id="modal-delete+${category?.id}" class="modal fade"

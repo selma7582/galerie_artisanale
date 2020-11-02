@@ -97,11 +97,11 @@ public class ShoppingCartController {
             Object shoppingCart = session.getAttribute(SHOPPING_CART_SESSION);
             if (shoppingCart == null) {
 
-                    Ordered cart = new Ordered();
+                Ordered cart = new Ordered();
 
-                    cartItem.setOrdered(cart);
-                    cart.getCartItemList().add(cartItem);
-                    session.setAttribute(SHOPPING_CART_SESSION, cart);
+                cartItem.setOrdered(cart);
+                cart.getCartItemList().add(cartItem);
+                session.setAttribute(SHOPPING_CART_SESSION, cart);
 
 
             } else {
@@ -133,7 +133,7 @@ public class ShoppingCartController {
 
     }
 
- @RequestMapping("/view")
+    @RequestMapping("/view")
     public String shoppingCart(Model model, HttpSession session) {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
@@ -208,7 +208,7 @@ public class ShoppingCartController {
             /*ordered.getCartItemList()
                     .forEach(item -> item.getProduct().setInStockNumber());*/
 
-           // model.addAttribute("notEnoughStock",true);
+            // model.addAttribute("notEnoughStock",true);
 
             ordered.setStatus(OrderedStatus.VALID);
             ordered.setOrderDate(new Date());
@@ -239,46 +239,30 @@ public class ShoppingCartController {
 
 
     @RequestMapping("/updateCartItem")
-    public String updateShoppingCart(Model model,HttpSession session,
-            @ModelAttribute("qty") int qty
-    ) {
-        model.addAttribute("categories", categoryService.findAllCategoryNames());
-
-        CartItem cartItem = (CartItem) session.getAttribute(CART_ITEM);
-       // int a = cartItem.getQty();
-       // System.out.println(a+"coucouuuuu");
-        if ( cartItem != null) {
-
-                cartItem.setQty(qty);
-                if(cartItem.getId() != null){
-                    cartItemRepository.save(cartItem);
-                }
-            }else {
-
-                CartItem cart = new CartItem() ;
-                cart.setQty(qty);
-                session.setAttribute(CART_ITEM, cart);
-            }
-
-        return "redirect:/shoppingCart/cart";
-       // return "forward:/shoppingCart/cart";
+    public String updateShoppingCart( @ModelAttribute("qty") int qty, @ModelAttribute("itemID") long itemID) {
+        CartItem persistedCartItem = cartItemService.findById(itemID);
+        persistedCartItem.setQty(qty);
+        cartItemService.save(persistedCartItem);
+        return "redirect:/shoppingCart/view";
+        // return "forward:/shoppingCart/cart";
 
     }
 
-    @RequestMapping("/removeItem")
-    public String removeItem(@RequestParam("id") Long id, HttpSession session) {
+    @RequestMapping("/removeItem/{itemID}")
+    public String removeItem(@ModelAttribute("itemID") long itemID, HttpSession session) {
 
-        CartItem cartItem = (CartItem) session.getAttribute(CART_ITEM);
-        session.removeAttribute(CART_ITEM);
-        cartItemService.removeOne(id);
+        CartItem persistedCartItem = cartItemService.findById(itemID);
 
-        return "forward:/shoppingCart/cart";
+        cartItemService.save(persistedCartItem);
+        cartItemService.removeOne(persistedCartItem.getId());
+
+        return "redirect:/shoppingCart/view";
     }
+
 
     private void fillFulImgUrl(List<Product> products) {
         products.forEach(product -> product.getImagesList().stream().forEach(image -> image.setFullURL((fileToPath(storageService.load(image.getUrl_image()))))));
     }
-
 
 
     private CartItem currentCartItem(Long id, Ordered ordered ) {
