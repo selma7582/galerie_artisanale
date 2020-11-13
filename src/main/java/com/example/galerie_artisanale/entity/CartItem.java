@@ -19,7 +19,8 @@ public class CartItem {
     @ManyToOne
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
+//            (cascade = CascadeType.REMOVE)
     @JoinColumn(name="order_id")
     private Ordered ordered;
 

@@ -28,17 +28,38 @@
 
     <div class="row">
         <div class="col-xs-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <!--<div class="panel panel-default">
+                <div class="panel-body">-->
 
-                    <div th:if="${product.haveImages()}"
+                    <!--<div th:if="${product.haveImages()}"
                          th:each="image : ${product.imagesList}">
                             <img th:if="${image.fullURL != null}" class="img-responsive" th:src="@{${image.fullURL}}" width=""/>
 
-                    </div>
-              <!--      <img th:src="@{/image/product/}+${product.id}+'.png'" class="img-responsive center-block" />-->
-                </div>
-            </div>
+                    </div>-->
+
+                    <table>
+
+                        <td>
+
+                            <div th:if="${product.haveImages()}"
+                                 th:each="image : ${product.imagesList}">
+                                <img th:if="${image.fullURL != null}" th:src="@{${image.fullURL}}"
+                                     class="thumbnail active" width="50" height="60"/>
+                            </div>
+
+                        </td>
+
+                        <td>
+                            <div class="col-xs-3">
+                                <img id="featured" class="arrow" width="190" height="210"
+                                     th:src="@{${product.imagesList.get(1).fullURL}}"/>
+
+                            </div>
+                        </td>
+
+                    </table>
+                <!--</div>
+            </div>-->
         </div>
         <div class="col-xs-9">
             <h3 th:text="${product.productName}"></h3>

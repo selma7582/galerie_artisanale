@@ -2,6 +2,7 @@ package com.example.galerie_artisanale.controller;
 
 import com.example.galerie_artisanale.entity.Product;
 import com.example.galerie_artisanale.entity.User;
+import com.example.galerie_artisanale.service.CategoryService;
 import com.example.galerie_artisanale.service.ProductService;
 import com.example.galerie_artisanale.service.StorageService;
 import com.example.galerie_artisanale.service.UserService;
@@ -31,11 +32,16 @@ public class SearchController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @RequestMapping("/searchProduct")
     public String searchBook(
             @ModelAttribute("keyword") String keyword,
             Principal principal, Model model
     ) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
         if(principal!=null) {
             String username = principal.getName();
             User user = userService.findByUsername(username);

@@ -1,10 +1,10 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="common/header :: common-header" />
+<head th:replace="common/header :: common-header"/>
 
 
 <style>
-    body{
+    body {
 
         background-image: url("../images/background/background.jpg");
         background-repeat: repeat
@@ -13,42 +13,39 @@
 </style>
 <body>
 
-<div th:replace="common/header :: navbar" />
+<div th:replace="common/header :: navbar"/>
 
 
-<div class="container">
-    <div class="row" >
-
-
+<div class="container login">
+    <div class="">
 
 
         <div class="col-xs-8">
-            <h2 class="section-headline"><span th:text="${#strings.toUpperCase(user.username)}">User Profile</span></h2>
+
+            <h2 class=""><span>Inscription</span></h2>
+
         </div>
 
     </div>
-    <hr style="position:absolute; width:75%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
 
 
-    <!--
-        <img class="img-responsive" src="" />
-    -->
-
-    <div class="row" style="margin-top:120px">
-        <div class="col-xs-9 col-xs-offset-3">
+    <div class="">
+        <div class="">
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
                 <li th:classappend="${classActiveEdit}? 'active'"><a
                         href="#tab1" data-toggle="tab"><span
-                        style="color: red;">Profile</span></a></li>
-                <li th:classappend="${classActiveOrders}? 'active'"><a
-                        href="#tab-2" data-toggle="tab"><span
-                        style="color: red;">Commande</span></a></li>
+                        style="color: red;">Profile</span></a>
 
-                <li th:classappend="${classActiveShipping}? 'active'"><a
-                        href="#tab-3" data-toggle="tab"><span
-                        style="color: red;">Livraison</span></a></li>
+                    <!--<li th:classappend="${classActiveOrders}? 'active'"><a
+                            href="#tab-2" data-toggle="tab"><span
+                            style="color: red;">Commande</span></a></li>
+
+                    <li th:classappend="${classActiveShipping}? 'active'"><a
+                            href="#tab-3" data-toggle="tab"><span
+                            style="color: red;">Livraison</span></a></li>
+                    -->
             </ul>
 
             <!-- Tab panels -->
@@ -71,20 +68,22 @@
 
                                 <div class="bg-info" th:if="${updateUserInfo}">Profile mis à jour mise a jour.</div>
 
-                                <form th:action="@{/updateUserInfo}" method="post" >
-                                    <input type="hidden" name="id" th:value="${user.id_user}" /><!-- id_user -->
+                                <form th:action="@{/updateUserInfo}" method="post">
+                                    <input type="hidden" name="id" th:value="${user.id_user}"/><!-- id_user -->
 
 
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-xs-6">
                                                 <label for="firstName">First Name</label>
-                                                <input type="text" class="form-control" id="firstName" name="firstName" th:value="${user.firstName}" />
+                                                <input type="text" class="form-control" id="firstName" name="firstName"
+                                                       th:value="${user.firstName}"/>
                                             </div>
 
                                             <div class="col-xs-6">
                                                 <label for="lastName">Last Name</label>
-                                                <input type="text" class="form-control" id="lastName" name="lastName" th:value="${user.lastName}" />
+                                                <input type="text" class="form-control" id="lastName" name="lastName"
+                                                       th:value="${user.lastName}"/>
                                             </div>
 
                                         </div>
@@ -92,50 +91,50 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="userName">UserName</label>
-                                        <input type="text" class="form-control" id="username" name="username" th:value="${user.username}" />
-
-                                    </div>
-
-                                    <div class="form-group">
                                         <label for="tel">Tel</label>
-                                        <input type="text" class="form-control" id="tel" name="tel" th:value="${user.tel}" />
+                                        <input type="text" class="form-control"  id="tel" name="tel"
+                                               th:value="${user.tel}"/>
 
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="currentPassword">Current Password</label>  <input
+                                        <label for="currentPassword">Current Password</label> <input
                                             type="password" class="form-control" id="currentPassword"
-                                            name="password" th:value="${currentPassword}" />
+                                            name="password" th:value="${currentPassword}"/>
                                     </div>
 
                                     <p style="color: #828282">Enter le mot de passe envoyé</p>
 
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email" th:value="${user.email}" />
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               th:value="${user.email}"/>
 
                                     </div>
                                     <p style="color: #828282"> Une Adresse mail valide. </p>
 
 
                                     <div class="form-group">
-                                        <label for="txtNewPassword">Password</label>&nbsp;<span
-                                            id="checkPasswordMatch" style="color: red;"></span> <input
-                                            type="password" class="form-control" id="txtNewPassword"
-                                            name="newPassword" />
-                                    </div>
+                                        <div class="col-xs-6">
+                                            <label for="txtNewPassword">Password</label>&nbsp;<span
+                                                id="checkPasswordMatch" style="color: red;"></span> <input
+                                                type="password" class="form-control" id="txtNewPassword"
+                                                name="newPassword"/>
+                                        </div>
+                                        <div class="col-xs-6">
 
-                                    <div class="form-group">
-                                        <label for="txtConfirmPassword">Confirm Password</label> ' <input
-                                            type="password" class="form-control" id="txtConfirmPassword" />
-                                    </div>
+                                            <label for="txtConfirmPassword">Confirm Password</label> ' <input
+                                                type="password" class="form-control" id="txtConfirmPassword"/>
 
+                                        </div>
+                                    </div>
 
 
                                     <p style="color: #828282"> valider votre mot de passe.</p>
 
-                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    <button id="updateUserInfoButton" type="submit" class="btn btn-primary">
+                                        Enregistrer
+                                    </button>
 
                                 </form>
                             </div>
@@ -144,8 +143,7 @@
                 </div>
 
 
-
-                <!-- Order Information -->
+                <!-- Order Information
                 <div class="tab-pane fade" id="tab-2"
                      th:classappend="${classActiveOrders}? 'in active'">
                     <div class="panel-group">
@@ -203,7 +201,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!--
+                                                &lt;!&ndash;
                                                                                                 <div class="col-xs-4">
                                                                                                     <div class="panel panel-default height">
                                                                                                         <div class="panel-heading">
@@ -218,7 +216,7 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
-                                                -->
+                                                &ndash;&gt;
                                                 <div class="col-xs-4">
                                                     <div class="panel panel-default height">
                                                         <div class="panel-heading">
@@ -291,7 +289,7 @@
                 </div>
 
 
-                <!-- Shipping Information -->
+                &lt;!&ndash; Shipping Information &ndash;&gt;
                 <div class="tab-pane fade" id="tab-3"
                      th:classappend="${classActiveShipping}? 'in active'">
                     <div class="panel-group">
@@ -347,7 +345,7 @@
                                         <input hidden="hidden" name="id"
                                                th:value="${userShipping.id}" />
 
-                                        <!-- Shipping Address -->
+                                        &lt;!&ndash; Shipping Address &ndash;&gt;
                                         <hr />
                                         <div class="form-group">
                                             <h4>Shipping Address</h4>
@@ -413,17 +411,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-
-
-
-
-
+                </div>-->
 
 
             </div>
-
 
 
         </div>
@@ -433,7 +424,7 @@
 <div th:replace="common/header :: footer"/>
 
 
-<div th:replace="common/header :: body-bottom-scripts" />
+<div th:replace="common/header :: body-bottom-scripts"/>
 
 
 <!-- Bootstrap core JavaScript

@@ -13,9 +13,7 @@ import java.util.List;
 @Transactional
 public interface CartItemRepository extends JpaRepository<CartItem,Long> {
 
-
     List<CartItem> findByOrdered(Ordered ordered);
-
 
 
 }

@@ -16,6 +16,10 @@ public class cartItemServiceImpl implements CartItemService {
     CartItemRepository cartItemRepository;
 
 
+    @Override
+    public List<CartItem> findAll() {
+        return  cartItemRepository.findAll();
+    }
 
     @Override
     public CartItem save(CartItem cartItem) {

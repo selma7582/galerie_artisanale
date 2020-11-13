@@ -101,8 +101,14 @@ public class HomeController {
 
     @RequestMapping("/galerie/{category}")
     public String galerieByCategory(@PathVariable String category, Model model, Principal principal, HttpSession session) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
 
         List<Product> productList = productService.findByCategory(category);
+        if (productList.isEmpty()) {
+            model.addAttribute("emptyList", true);
+            return "galerie";
+        }
+
         return galerieForAll(model, principal, session, productList);
     }
 
@@ -110,6 +116,10 @@ public class HomeController {
     public String galerie(Model model, Principal principal, HttpSession session) {
 
         List<Product> productList = productService.findAll();
+        if (productList.isEmpty()) {
+            model.addAttribute("emptyList", true);
+            return "galerie";
+        }
         return galerieForAll(model, principal, session, productList);
     }
 
@@ -142,10 +152,6 @@ public class HomeController {
         model.addAttribute("shoppingCart",shoppingCart);
         return "galerie";
     }
-
-
-
-
 
     @RequestMapping("/productDetail")
     public String productDetail(
@@ -369,7 +375,7 @@ public class HomeController {
                 currentUser.setPassword(passwordEncoder.encode(newPassword));
             } else {
                 model.addAttribute("incorrectPassword", true);
-
+                model.addAttribute("classActiveEdit", true);
                 return "myProfile";
             }
         }

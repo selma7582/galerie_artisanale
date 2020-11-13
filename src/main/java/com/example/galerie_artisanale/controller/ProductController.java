@@ -39,6 +39,8 @@ public class ProductController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private ProviderService providerService;
 
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -61,17 +63,18 @@ public class ProductController {
         return "redirect:/product/productList";
 
     }
+
     @GetMapping(value = "/deleteCategory/{category}")
     public String deleteCategory(@PathVariable("category") Long id, Model model) {
 
         Category category = categoryService.findById(id);
-        if(category.getProductList().size() == 0){
+        if (category.getProductList().size() == 0) {
 
             categoryService.removeOne(id);
 
             model.addAttribute("deleteSuccess", true);
 
-        }else {
+        } else {
             model.addAttribute("notSuccess", true);
         }
         model.addAttribute("categoryList", categoryService.findAll());
@@ -82,21 +85,20 @@ public class ProductController {
     }
 
 
-
     @GetMapping(value = "/deleteShape/{shape}")
     public String deleteShape(@PathVariable("shape") Long id, Model model) {
 
         Shape shape = shapeService.findById(id);
         List<Shape> shapeList = shapeService.findAll();
 
-        if(shape.getProductList().size() == 0){
+        if (shape.getProductList().size() == 0) {
 
             shapeService.removeOne(id);
 
             model.addAttribute("shapeList", shapeList);
             model.addAttribute("deleteSuccess", true);
 
-        }else{
+        } else {
             model.addAttribute("shapeList", shapeList);
             model.addAttribute("notSuccess", true);
         }
@@ -132,11 +134,11 @@ public class ProductController {
 
     @PostMapping(value = "/add")
     public String addProductPost(@ModelAttribute("product") Product product, Model model,
-                                 @RequestParam("file") MultipartFile[] files) throws Exception{
+                                 @RequestParam("file") MultipartFile[] files) throws Exception {
 
-        model.addAttribute("productName",product.getProductName());
-        if(productService.findByProductName(product.getProductName()) != null){
-            model.addAttribute("productExists",true);
+        model.addAttribute("productName", product.getProductName());
+        if (productService.findByProductName(product.getProductName()) != null) {
+            model.addAttribute("productExists", true);
             return "admin/addProduct";
         }
         product = this.productService.save(product);
@@ -262,6 +264,17 @@ public class ProductController {
         return categories;
     }
 
+    @ModelAttribute("provider")
+    public Provider newProvider() {
+        return new Provider();
+    }
+
+    @ModelAttribute("providers")
+    Collection<Provider> findAllProvider() {
+        Collection<Provider> providers = (Collection<Provider>) providerService.findAll();
+        return providers;
+    }
+
     @RequestMapping("/productInfo")
     public String productInfo(@RequestParam("id") Long id, Model model) {
         Product product = productService.findOne(id);
@@ -280,8 +293,7 @@ public class ProductController {
     public String updateProduct(@RequestParam("id") Long id, Model model) {
         Product product = productService.findOne(id);
         model.addAttribute("product", product);
-        product.getShape();
-        product.getCategory();
+
         product.getImagesList()
                 .stream().forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
         return "admin/updateProduct";
@@ -289,30 +301,40 @@ public class ProductController {
 
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
-    public String updateProductPost(@ModelAttribute("product") Product product,@RequestParam("file") MultipartFile[] files,Model model) {
+    public String updateProductPost(@RequestParam("id") Long id, @RequestParam("file") MultipartFile[] files, Model model) {
 
-        //Product productP = productService.save(product);
+        Product product = productService.findOne(id);
 
-        product = this.productService.save(product);
-        //imageService.save(product.getImagesList().stream().reduce());
 
-        for (MultipartFile file : files) {
-            Image image = new Image();
-            image.setProduct(product);
+        if (product.haveImages() ) {
+            List<Image> imageList = product.getImagesList();
+            for (Image image : imageList) {
 
-            image = imageService.save(image);
-            image.setUrl_image("products/product_" + product.getId() + "/" + image.getId() + ".jpeg");
-            // image.setUrl_image(String.format("product_%s/%s.jpeg",product.getId(),image.getId()));
-            image = imageService.save(image);
-            storageService.store(file, image.getUrl_image());
+            }
+        }
+        else {
+            for (MultipartFile file : files) {
+                Image image = new Image();
+                image.setProduct(product);
 
+                image = imageService.save(image);
+                image.setUrl_image("products/product_" + product.getId() + "/" + image.getId() + ".jpeg");
+                image = imageService.save(image);
+                storageService.store(file, image.getUrl_image());
+
+            }
         }
 
-        model.addAttribute("updateSuccess", true);
+        return "redirect:/product/productInfo?id="+ product.getId();
+    }
+
+    @GetMapping(value = "/deleteImage/{image}")
+    public String deleteImage(@PathVariable("image") Long id, Model model) {
+
+        imageService.removeOne(id);
+
 
         return "admin/updateProduct";
-
-        /*return "redirect:/product/productInfo?id="+product.getId();*/
     }
 
 }

@@ -3,13 +3,11 @@
 <head th:replace="common/header :: common-header"/>
 
 
-
 <body>
 <div th:replace="common/header :: navbar"/>
 
 
 <div class="container">
-
 
 
     <div class="alert alert-success" th:if="${addSuccess}">
@@ -85,7 +83,6 @@
         </div>
     -->
 
-    ///////////////////////
 
     <div class="row" style="margin-top: 10px;">
         <div class="col-xs-12">
@@ -93,22 +90,22 @@
                 <div class="col-xs-6 text-left">
                     <a class="btn btn-warning" th:href="@{/galerie}">Continuer le shopping</a>
                 </div>
-                <a th:if="${shoppingCart != null and shoppingCart.cartItemList != null}" th:href="@{/confirm(id=${shoppingCart.id})}"  class="btn btn-success">Valider le panier</a>
+                <a th:if="${shoppingCart != null and shoppingCart.cartItemList != null}"
+                   th:href="@{/confirm(id=${shoppingCart.id})}" class="btn btn-success">Valider le panier</a>
 
 
-                <br />
-                <div th:if="${notEnoughStock}" class="alert alert-warning">
+                <br/>
+                <!--<div th:if="${notEnoughStock}" class="alert alert-warning">
                     Oops, some of the products don't have enough stock. Please update
-                    product quantity.</div>
-                <!--<div th:if="${emptyCart}" class="alert alert-warning">Oops,
-                    your cart is empty. See if you can find what you like in the
-                    bookshelf and add them to cart.</div>-->
+                    product quantity.</div>-->
 
-                <div th:if="${shoppingCart == null or shoppingCart.getCartItemCount()==0}" class="alert alert-warning">Oops,
-                    Votre panier est vide
+
+                <div th:if="${shoppingCart == null or shoppingCart.getCartItemCount()==0}" class="alert alert-warning">
+                    Oops,
+                    Votre panier est vide....
                 </div>
 
-                <br /> <br />
+                <br/> <br/>
                 <div class="row">
                     <div class="col-xs-8 ">
                         <h4 style="margin-left:70px;">Produits</h4>
@@ -123,9 +120,9 @@
 
                 <!--**************** display products in cart ****************-->
                 <div th:unless="${shoppingCart == null or shoppingCart.getCartItemCount()==0}">
-                    <div
-                            class="row" th:each="cartItem : ${shoppingCart.getCartItemList()}">
+                    <div class="row" th:each="cartItem : ${shoppingCart.getCartItemList()}">
                         <form th:action="@{/shoppingCart/updateCartItem}" method="post">
+
                             <hr/>
 
                             <div class="col-xs-2">
@@ -150,20 +147,23 @@
                                     <p
                                             th:if="${cartItem.product.inStockNumber&lt;10 and cartItem.product.inStockNumber&gt;0}"
                                             style="color: green;">
-                                        Only <span th:text="${cartItem.product.inStockNumber}"></span> In
+                                        Que <span th:text="${cartItem.product.inStockNumber}"></span> En
                                         Stock
                                     </p>
 
                                     <p th:if="${cartItem.product.inStockNumber==0}"
                                        style="color: darkred;">Produit indisponible</p>
-                                    <a  class="glyphicon glyphicon-trash"
-                                        th:attr="data-target='#modal-delete'+${cartItem?.id}"
-                                        data-rel="tooltip" title="delete" data-toggle="modal">supprimer</a>
 
-                                    <!--th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}"-->
+                                    <div>
+                                        <input hidden="hidden" name="itemId" th:value="${cartItem.getId()}"/>
+
+                                        <a class="glyphicon glyphicon-trash"
+                                           th:attr="data-target='#modal-delete'+${cartItem?.getId()}"
+                                           data-rel="tooltip" title="delete" data-toggle="modal"></a>
+                                    </div>
                                 </div>
 
-                                <div th:id="modal-delete+${cartItem?.id}" class="modal fade"
+                                <div th:id="modal-delete+${cartItem?.getId()}" class="modal fade"
                                      tabindex="-1">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -171,7 +171,7 @@
                                                 <div class="table-header">Suppression</div>
                                             </div>
                                             <div class="modal-body no-padding">Vous étes sur de
-                                                supprimer  cette ligne de commande?
+                                                supprimer cette ligne de commande?
                                             </div>
 
                                             <div class="modal-footer no-margin-top">
@@ -180,7 +180,7 @@
                                                 </button>
 
                                                 <a class="btn btn-danger pull-right" type="button"
-                                                   th:href="${'removeItem/'+ cartItem?.id}"> Supprimer
+                                                   th:href="${'deleteItem/'+ cartItem?.getId()}">Supprimer
                                                 </a>
 
                                             </div>
@@ -216,12 +216,13 @@
                                      <option th:each="qty : ${qtyList}" th:value="${cartItem.id}" th:text="${cartItem.qty}" th:disabled="${cartItem.product.inStockNumber==0}" class="form-control cartItemQty">
                                      </option>
                                  </select>-->
+
                             </div>
                         </form>
                     </div>
 
                     <div class="row">
-                        <hr />
+                        <hr/>
                         <h4 class="col-xs-12 text-right">
                             <strong style="font-size: large;">Prix total :
                             </strong> <span style="color: #db3208; font-szie: large;"><span

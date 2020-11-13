@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface CartItemService {
 
+    List<CartItem>findAll();
+
     CartItem save(CartItem cartItem);
 
     CartItem updateCartItem(CartItem cartItem);
@@ -18,7 +20,6 @@ public interface CartItemService {
 
 
     void remove(CartItem cartItem);
-
 
     void removeOne(Long id);
 

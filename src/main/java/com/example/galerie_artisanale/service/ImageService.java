@@ -13,4 +13,8 @@ public interface ImageService {
 
     void removeOne(Long id) ;
 
+    Image findById(Long id);
+
+
+
 }

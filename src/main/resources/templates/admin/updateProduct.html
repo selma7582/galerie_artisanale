@@ -113,7 +113,7 @@
                     <label class="col-md-2 control-label" for="provider">*Fournisseur</label>
                     <div class="col-md-8">
 
-                        <select id="provider" name="provider" class="form-control" th:value="${provider.firstName + ' ' + provider.lastName}"  >
+                        <select id="provider" name="provider" class="form-control" th:value="${product.provider.firstName + ' ' + product.provider.lastName}"  >
 
                             <option th:each="provider: ${providers}"
                                     th:value="${provider.id}"
@@ -155,25 +155,7 @@
                         -->
                     </div>
                 </div>
-                <!-- status of product -->
 
-<!--
-                <div class="form-group">
-                    <label class="col-md-2 control-label " for="active">*Statut</label>
-                    <div class="col-md-8">
-                        <label><input id="active" value="true" type="radio" name="active"
-                                      checked="checked"/>Active</label>
-                        <label><input value="false" type="radio" name="active">InActive</label>
-
-
-                        &lt;!&ndash;
-                                                <span class="help-block">active</span>
-                        &ndash;&gt;
-                    </div>
-                </div>
--->
-
-                <!--Description -->
 
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="description">*Description</label>
@@ -196,20 +178,70 @@
                     </div>
 
                     <div class="col-md-8">
-                        <input id="urlImage" type="file" name="file" multiple th:value="${product.imagesList}"required/>
+                        <input id="urlImage" type="file" name="file" multiple th:value="${product.imagesList}"/>
                     </div>
                 </div>
 
 
 
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="urlImage"> Images</label>
+                    <div class="col-md-8">
 
-                        <div th:if="${product.haveImages()}"
-                             th:each="image : ${product.imagesList}">
-                            <img th:if="${image.fullURL != null}" class="img-responsive" th:src="@{${image.fullURL}}"
-                                 width=""/>
+                        <table >
 
+                            <td>
+
+                                <div th:if="${product.haveImages()}"
+                                     th:each="image : ${product.imagesList}">
+                                    <img th:if="${image.fullURL != null}" th:src="@{${image.fullURL}}"
+                                         class="thumbnail active" width="50" height="60"/>
+                                </div>
+
+                            </td>
+
+                            <td>
+                                <div class="col-xs-3">
+
+                                    <img id="featured" class="arrow" width="190" height="210"
+                                         th:src="@{${product.imagesList.get(1).fullURL}}"/>
+
+                                </div>
+                            </td>
+
+                            <td>
+                                <a class="glyphicon glyphicon-trash"
+                                   th:attr="data-target='#modal-delete'+${product.imagesList.get(1)?.id}"
+                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>
+                            </td>
+
+
+                        </table>
+
+                    </div>
+
+                    <div th:id="modal-delete+${product.imagesList.get(1)?.id}" class="modal fade"
+                         tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header no-padding">
+                                    <div class="table-header">Suppression</div>
+                                </div>
+                                <div class="modal-body no-padding">Vous étes sur de
+                                    supprimer l'image?
+                                </div>
+
+                                <div class="modal-footer no-margin-top">
+                                    <button class="btn btn-danger pull-left"
+                                            data-dismiss="modal"> Annuler
+                                    </button>
+
+                                    <a class="btn btn-danger pull-right" type="button"
+                                       th:href="${'deleteImage/'+ product.imagesList.get(1)?.id}"> Supprimer
+                                    </a>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

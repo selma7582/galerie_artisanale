@@ -163,18 +163,21 @@
     <div class="row" style="margin-top: 60px;">
 
 
-
-        <div th:if="${emptyList}">
-            <h5 style="font-style: italic;">Aucun resulta pour votre recherche.</h5>
-        </div>
-        <div class="row">
+        <div class="col-xs-9">
+            <div th:if="${emptyList}">
+                <h5 style="font-style: italic;
+">Aucun resulta pour votre recherche.</h5>
+            </div>
+            <div class="row" >
             <div th:each="product : ${productList}" class="col-lg-4">
-                <form method="post" th:object="${cartItem}">
+                <form method="post" th:object="${cartItemList}">
                     <h3 th:text="${product.productName}"></h3>
                     <input type="hidden" name="product" th:value="productList">
+
                     <div th:if="${product.haveImages()}"
                          th:each="image : ${product.imagesList}">
-                        <img th:if="${image.fullURL != null}"  th:src="@{${image.fullURL}}" width="200" height="250"/><!--</div> --><!-- </a>-->
+                        <a th:href="@{/productDetail?id=}+${product.id}"><div>
+                        <img th:if="${image.fullURL != null}"  th:src="@{${image.fullURL}}" width="200" height="250"/></div>  </a>
                         <br />
 
                     </div>
@@ -190,6 +193,8 @@
                             th:text="${#numbers.formatDecimal(product.price, 0 , 'POINT', 2, 'POINT')}"></span> DH</span><br/>
                 </form>
             </div>
+        </div>
+
         </div>
 
         <!--<div class="col-xs-9">

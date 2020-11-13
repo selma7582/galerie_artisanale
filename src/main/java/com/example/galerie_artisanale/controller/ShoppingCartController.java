@@ -24,7 +24,7 @@ public class ShoppingCartController {
 
     public static final String SHOPPING_CART_SESSION = "SHOPPING_CART";
     public static final String CART_ITEM_LIST = "cartItemList";
-    public static final String CART_ITEM = "cartItem";
+   // public static final String CART_ITEM = "cartItem";
     public static final String SHOPPING_CART_MODEL = "shoppingCart";
 
     @Autowired
@@ -248,16 +248,36 @@ public class ShoppingCartController {
 
     }
 
-    @RequestMapping("/removeItem/{itemID}")
-    public String removeItem(@ModelAttribute("itemID") long itemID, HttpSession session) {
+    @RequestMapping("/deleteItem/{itemId}")
+    public String removeItem(@PathVariable("itemId")long itemId, Model model){
 
-        CartItem persistedCartItem = cartItemService.findById(itemID);
+        CartItem persistedCartItem = cartItemService.findById(itemId);
 
-        cartItemService.save(persistedCartItem);
-        cartItemService.removeOne(persistedCartItem.getId());
+
+        cartItemService.remove(persistedCartItem);
+
+
+        model.addAttribute("shoppingCart", cartItemService.findAll());
 
         return "redirect:/shoppingCart/view";
     }
+
+
+    /*@RequestMapping("/deleteItem/{cartItem}")
+    public String removeItem(@PathVariable("cartItem") Long id,Model model, HttpSession session) {
+
+        *//*CartItem cartItem = (CartItem) session.getAttribute(CART_ITEM);*//*
+
+        CartItem persistedCartItem = cartItemService.findById(id);
+
+        //session.removeAttribute(cartItem.);
+        //cartItemService.removeOne(id);
+        cartItemService.remove(persistedCartItem);
+
+        model.addAttribute("shoppingCart", cartItemService.findAll());
+
+        return "redirect:/shoppingCart/view";
+    }*/
 
 
     private void fillFulImgUrl(List<Product> products) {

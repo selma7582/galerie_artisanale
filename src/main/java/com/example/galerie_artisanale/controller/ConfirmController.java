@@ -76,6 +76,7 @@ public class ConfirmController {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof User) {
             Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
+
             if (ordered.getId() == null) {
                 throw new IllegalStateException("Shopping cart should be persisted at this level: id shouldn't be null");
             }
@@ -106,6 +107,8 @@ public class ConfirmController {
             model.addAttribute("cityList", cityList);
 
             model.addAttribute("classActiveShipping", true);
+
+
 
             if (missingRequiredField) {
                 model.addAttribute("missingRequiredField", true);
@@ -235,6 +238,18 @@ public class ConfirmController {
         product.setInStockNumber(product.getInStockNumber() - qty);
         productRepository.saveAndFlush(product);
         return "redirect: ..";
+    }
+
+    @RequestMapping("/deleteItemC/{cartItem}")
+    public String removeItem(@PathVariable("cartItem") Long id) {
+
+
+        CartItem persistedCartItem = cartItemService.findById(id);
+
+        cartItemService.remove(persistedCartItem);
+
+
+        return "confirm";
     }
 
 }

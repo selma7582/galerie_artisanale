@@ -25,31 +25,28 @@
         <div class="row" style="margin-top: 120px;">
             <div class="col-xs-3">
 
-                <a th:href="@{/galerie}"> Continuer mes achats </a><br /><br>
+                <a th:href="@{/galerie}"> Continuer mes achats </a><br/><br>
                 <table>
 
                     <td>
 
                         <div th:if="${product.haveImages()}"
                              th:each="image : ${product.imagesList}">
-
                             <img th:if="${image.fullURL != null}" th:src="@{${image.fullURL}}"
                                  class="thumbnail active" width="50" height="60"/>
-
                         </div>
 
                     </td>
 
                     <td>
                         <div class="col-xs-3">
-                            <img id="featured" class="arrow" width="150" height="200" src="images/arrow-left.png"/>
+                            <img id="featured" class="arrow" width="190" height="210"
+                                 th:src="@{${product.imagesList.get(1).fullURL}}"/>
 
                         </div>
-                    </td>>
+                    </td>
 
                 </table>
-
-
 
 
             </div>
