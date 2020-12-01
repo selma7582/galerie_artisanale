@@ -20,9 +20,9 @@
     <div class="">
 
 
-        <div class="container login">
+        <div class="col-xs-8">
 
-            <h2 class=""><span>Inscription</span></h2>
+            <h2 class=""><span>Profil</span></h2>
 
         </div>
 
@@ -33,27 +33,27 @@
         <div class="">
 
             <!-- Nav tabs -->
-            <!--<ul class="nav nav-tabs">
-                <li th:classappend="${classActiveEdit}? 'active'"><a
+            <ul class="nav nav-tabs">
+                <!--li th:classappend="${classActiveEdit}? 'active'"><a
                         href="#tab1" data-toggle="tab"><span
-                        style="color: red;">Inscription</span></a>
+                        style="color: red;">Inscription</span></a></li>-->
 
-                    &lt;!&ndash;<li th:classappend="${classActiveOrders}? 'active'"><a
-                            href="#tab-2" data-toggle="tab"><span
-                            style="color: red;">Commande</span></a></li>
+                <!--<li th:classappend="${classActiveOrders}? 'active'"><a
+                        href="#tab-2" data-toggle="tab"><span
+                        style="color: red;">Commande</span></a></li>
 
-                    <li th:classappend="${classActiveShipping}? 'active'"><a
-                            href="#tab-3" data-toggle="tab"><span
-                            style="color: red;">Livraison</span></a></li>
-                    &ndash;&gt;
-            </ul>-->
+                <li th:classappend="${classActiveShipping}? 'active'"><a
+                        href="#tab-3" data-toggle="tab"><span
+                        style="color: red;">Livraison</span></a></li>
+                -->
+            </ul>
 
             <!-- Tab panels -->
             <div class="tab-content">
 
                 <!-- Edit user information -->
 
-                <div class="tab-pane fade" id="tab1" th:classappend="${classActiveEdit}? 'in active'">
+                <div> <!--class="tab-pane fade" id="tab1" th:classappend="${classActiveEdit}? 'in active'"-->
                     <div class="panel-group">
                         <div class="panel panel-default" style="border: none;">
                             <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
@@ -62,13 +62,13 @@
                                     <strong>Mot de passe incorrect!</strong> Veuillez réessayer.
                                 </div>
 
-                                <!--<div class="alert alert-success" th:if="${updateSuccess}">
-                                    <strong>Update Success!</strong>
-                                </div>-->
+                                <div class="alert alert-success" th:if="${updateSuccess}">
+                                    <strong>Profil est mis à jour.</strong>
+                                </div>
 
-                                <div class="bg-info" th:if="${updateSuccess}">Profil est mis à jour.</div>
+                                <!--<div class="bg-info" th:if="${updateSuccess}">Profile Bien mis à jour.</div>-->
 
-                                <form th:action="@{/updateUserInfo}" method="post">
+                                <form th:action="@{/updateInfo}" method="post">
                                     <input type="hidden" name="id" th:value="${user.id_user}"/><!-- id_user -->
 
 
@@ -97,11 +97,6 @@
 
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="currentPassword">Mot de passe envoyé </label> <input
-                                            type="password" class="form-control" id="currentPassword"
-                                            name="password" th:value="${currentPassword}"/>
-                                    </div>
 
 
                                     <div class="form-group">
@@ -110,25 +105,6 @@
                                                th:value="${user.email}"/>
 
                                     </div>
-
-
-                                    <div class="form-group">
-                                        <div class="row">
-                                        <div class="col-xs-6">
-                                            <label for="txtNewPassword">Mot de passe</label>&nbsp;<span
-                                                id="checkPasswordMatch"></span> <input
-                                                type="password" class="form-control" id="txtNewPassword"
-                                                name="newPassword"/>
-                                        </div>
-                                        <div class="col-xs-6">
-
-                                            <label for="txtConfirmPassword">Confirmer</label> <input
-                                                type="password" class="form-control" id="txtConfirmPassword" />
-
-                                        </div>
-                                            </div>
-                                    </div>
-
 
 
                                     <button id="updateUserInfoButton" type="submit" class="btn btn-primary">

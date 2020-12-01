@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.repository;
 
 
+import com.example.galerie_artisanale.entity.Ordered;
 import com.example.galerie_artisanale.entity.User;
 //import com.example.galerie_artisanale.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findByEmail(String email);
 
 	List<User> findAll();
+
 
 
 }

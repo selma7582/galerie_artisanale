@@ -1,0 +1,113 @@
+
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/header :: common-header" />
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+<div th:replace="admin/common/header :: navbar" />
+
+
+
+
+<div class="container">
+
+
+    <div class="table-responsive">
+
+        <table id="productListTable" class="table table-bordered table-hover table-striped">
+
+            <thead>
+
+            <tr>
+                <th>Dimension</th>
+                <th>Editer</th>
+                <th>supprimer</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr data-th-each="dimension : ${dimensionList}" >
+
+                <td>
+                    <span th:text="${dimension.description}"></span>
+
+                </td>
+
+                <td>
+                    <a  th:href="@{/product/editDimension?id=}+${dimension.id}"> <i class="glyphicon glyphicon-pencil"></i></a>
+                </td>
+
+
+                <div th:if="${dimension.getProductList().size() == 0}">
+                    <td>
+                        <a class="glyphicon glyphicon-trash"
+                           th:attr="data-target='#modal-delete'+${dimension?.id}"
+                           data-rel="tooltip" title="delete" data-toggle="modal"></a>
+                    </td>
+                </div>
+
+                <div th:if="${dimension.getProductList().size() != 0}">
+                    <td>
+                        <span>Suppression impossible</span>
+                    </td>
+                </div>
+
+
+                <div th:id="modal-delete+${dimension?.id}" class="modal fade"
+                     tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header no-padding">
+                                <div class="table-header">Suppression</div>
+                            </div>
+                            <div class="modal-body no-padding">Vous étes sur de
+                                supprimer  <span th:text="${dimension.description}"></span>?
+                            </div>
+
+                            <div class="modal-footer no-margin-top">
+                                <button class="btn btn-danger pull-left"
+                                        data-dismiss="modal"> Annuler
+                                </button>
+
+                                <a class="btn btn-danger pull-right" type="button"
+                                   th:href="${'deleteDimension/'+ dimension?.id}"> Supprimer
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+</div>
+
+<div class="text-center">
+
+    <a th:href="@{/product/addDimension}" role="button" class="btn btn-success">Ajouter une Dimension</a>
+
+</div>
+
+<div th:replace="admin/common/header :: body-bottom-scripts" />
+
+</body>
+</html>
+
+

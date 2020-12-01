@@ -1,0 +1,156 @@
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/common/header :: common-header" />
+
+<style>
+    body{
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+<div th:replace="admin/common/header :: navbar" />
+
+
+
+<div class="container">
+
+    <div class="row" style="margin-top: 10px;">
+        <form th:action="@{/}" method="post" >
+
+            <div class="col-xs-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <button type="submit" class="btn btn-warning btn-block">Modifier le statut</button>
+
+                        <hr/>
+                        <h3>Status</h3>
+                        <div class="row">
+
+                            <div class="col-xs-5 text-right">
+                                <select id="ordered.status" name="ordered.status" class="form-control" th:value="${ordered.status}">
+                                    <option th:each="status : ${T(com.example.galerie_artisanale.entity.OrderedStatus).values()}"
+                                            th:value="${status}" th:text="${status}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xs-8">
+
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                1. Détail de la commande
+                            </h4>
+                        </div>
+                        <div >
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <h4>Produits</h4>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <h4>Prix</h4>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <h4>Quantité</h4>
+                                    </div>
+                                </div>
+
+                                <!-- display products in cart -->
+                                <div class="row" th:each="cartItem : ${ordered.getCartItemList()}">
+                                    <hr/>
+                                    <div class="col-xs-2">
+
+                                        <a th:href="@{/productDetail(id=${cartItem.product.id})}">
+                                            <div class="col-xs-3">
+                                                <img  width="100" height="80"
+                                                      th:src="@{${cartItem.product.imagesList.get(0).fullURL}}"/>
+
+                                            </div>
+                                        </a>
+
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div style="margin-left: 50px;">
+                                            <a th:href="@{/productDetail?id=}+${cartItem.product.id}"><h4
+                                                    th:text="${cartItem.product.productName}"></h4></a>
+                                            <p th:if="${cartItem.product.inStockNumber&gt;10}"
+                                               style="color: green;">En Stock</p>
+                                            <p
+                                                    th:if="${cartItem.product.inStockNumber&lt;10 and cartItem.product.inStockNumber&gt;0}"
+                                                    style="color: green;">
+                                                Que <span th:text="${cartItem.product.inStockNumber}"></span>
+                                                en Stock
+                                            </p>
+                                            <p th:if="${cartItem.product.inStockNumber==0}"
+                                               style="color: darkred;">Produit indisponible</p>
+                                            <!--<a  class="glyphicon glyphicon-trash"
+                                                th:attr="data-target='#modal-delete'+${cartItem?.getId()}"
+                                                data-rel="tooltip" title="delete" data-toggle="modal"></a>-->
+
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-xs-2">
+                                        <h5 style="color: #db3208; font-size: large;">
+                                            <span th:text="${cartItem.product.price}"
+                                                  th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''">DH</span>DH<span
+                                        </h5>
+                                    </div>
+
+                                    <div class="col-xs-2">
+                                        <h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
+                                        <p th:if="${cartItem.qty&gt;cartItem.product.inStockNumber}"
+                                           style="color: red;">Stock indisponible </p>
+                                    </div>
+
+                                </div>
+
+                                <hr/>
+                                <h4 class="col-xs-12 text-right">
+                                    <strong style="font-size: large;">Total de la commande</strong>
+                                    <!--<strong style="font-size: large;">Total de la commande (<span
+                                            th:text="${#lists.size(cartItemList)}"></span> article):
+                                    </strong> <span style="color: #db3208; font-szie: large;">-->
+                                    <span th:text="${ordered.total}">DH</span><span>DH</span>
+                                </h4>
+                                <br/>
+                                <br/>
+                                <!--<button type="submit" class="btn btn-warning btn-block">Confirmer</button>-->
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- end of container -->
+
+
+<div th:replace="common/header :: footer"/>
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>

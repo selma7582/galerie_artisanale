@@ -23,5 +23,9 @@ public interface ProductService {
 
     List<Product> findByCategory(String category);
 
+    List<Product> findByDimension(String dimension);
+
     List<Product> blurrySearch(String productName);
+
+    List<Product> findByShape(String shape);
 }

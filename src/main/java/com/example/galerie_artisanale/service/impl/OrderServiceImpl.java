@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Ordered findShoppingCart(User user) {
-        List<Ordered> shoppingCarts = orderRepository.findByUserAndStatus(user,OrderedStatus.NOT_VALID);
+        List<Ordered> shoppingCarts = orderRepository.findByUserAndStatus(user,OrderedStatus.INVALID);
         if (shoppingCarts.size() >1 ){
 
             throw new IllegalStateException("We should have at most one invalid ordered");

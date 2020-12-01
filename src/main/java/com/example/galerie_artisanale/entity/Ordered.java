@@ -22,7 +22,7 @@ public class Ordered {
         private Date shippingDate;
     */
     @Enumerated(EnumType.STRING)
-    private OrderedStatus status = OrderedStatus.NOT_VALID;
+    private OrderedStatus status = OrderedStatus.INVALID;
 
 
     @OneToMany(mappedBy = "ordered", cascade=CascadeType.ALL )

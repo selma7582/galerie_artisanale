@@ -206,7 +206,7 @@ margin-left: 40px;}
     border: 2px solid black;
 }
 
-.thumbnail{
+.thumbnails{
     object-fit: cover;
     max-height: 100px;
     max-width: 180px;
@@ -216,7 +216,7 @@ margin-left: 40px;}
     border: 2px solid black;
 }
 
-.thumbnail:hover{
+.thumbnails:hover{
     opacity: 1;
 }
 .active{

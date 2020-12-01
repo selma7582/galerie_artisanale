@@ -1,5 +1,6 @@
 package com.example.galerie_artisanale.service;
 
+import com.example.galerie_artisanale.entity.Ordered;
 import com.example.galerie_artisanale.entity.User;
 import com.example.galerie_artisanale.security.PasswordResetToken;
 
@@ -24,5 +25,6 @@ public interface UserService {
 	List<User> findAll();
 
 	void createPasswordResetTokenForUser(final User user, final String token);
-	
+
+
 }

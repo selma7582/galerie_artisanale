@@ -25,18 +25,18 @@
 <p>Bonjour <span th:text="${user.firstName}"></span>,</p>
 <br/>
 <p>Merci pour votre confiance</p>
-<p>Votre numero de commande: <strong>#<span th:text="${ordered.id}"></span></strong>. Les détail de votre Commande:</p>
-<h2>Detail de la commande<span th:text="${ordered.id}"></span></h2>
+<p>Votre numéro de commande: <strong>#<span th:text="${ordered.id}"></span></strong>.  </p>
+<h2>Détails de la commande<span th:text="${' '+ordered.id}"></span></h2>
 <hr/>
 
 <table>
     <tr>
-        <th>Adresse de facturation</th>
         <th>Adresse de livraison</th>
+        <th>Adresse de facturation</th>
     </tr>
     <tr>
         <td>
-            <span th:text="${ordered.billingAddress.fullAdress()}"></span><br/>
+            <span th:text="${ordered.shippingAddress.fullAdress()}"></span><br/>
 
         </td>
 
@@ -47,7 +47,7 @@
     </tr>
 </table>
 
-<h3><strong>Order Summary</strong></h3>
+<h3><strong>Détails des produits</strong></h3>
 <table>
     <thead>
     <tr>
@@ -76,7 +76,7 @@
 
 <br/>
 <p>Bien à vous,</p>
-<p>Galerie Artisanal</p>
+<p>Galerie Artisanale</p>
 
 </body>
 </html>

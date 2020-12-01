@@ -61,4 +61,18 @@ public class MailConstructor {
 
         return messagePreparator;
     }
+
+     /*public  SimpleMailMessage constructResetTokenPasswordEmail(
+            String contextPath, Locale locale, String token, User user, String password
+    ){
+
+        String url = contextPath + "/newPassword?token="+token;
+        String message = "\n Changer votre mot passe avec ce lien et ce mot de passe :\n"+password;
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setSubject("Galerie Artisanale- Réenitialisez le mot de passe ");
+        email.setText(url+message);
+        email.setFrom(env.getProperty("support.email"));
+        return email;
+    }*/
 }

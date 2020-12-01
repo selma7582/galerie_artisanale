@@ -22,14 +22,19 @@
     <strong>Commande Bien Supprimer!</strong>
 </div>
 
-<div>
+
+<div class="container">
+
+
     <div class="table-responsive">
+        <!--< class="table-responsive">-->
         <table id="" class="table table-bordered table-hover table-striped">
             <thead>
             <tr>
                 <th>Numero</th>
                 <th>Client</th>
-                <th>Date</th>
+                <th>Date Commande</th>
+                <th>Adresse</th>
                 <th>Prix Total</th>
                 <th>Nbre des produits</th>
                 <th>Status</th>
@@ -38,16 +43,78 @@
             </thead>
             <tbody>
             <tr class="result"
-                data-th-each="ordered : ${orderedList}">
+                data-th-each="ordered : ${orderedList}"
+                th:if="${ordered.shippingAddress != null and ordered.user != null and ordered.shippingAddress.city != null }">
 
-                <td th:text="${ordered.id}"></td>
+                <td>
+                    <a th:href="@{product/orderedDetail(id=${ordered.id})}">
+                        <div th:text="${ordered.id}"></div>
+                    </a>
+                </td>
+
+
+                <!--<div th:if="${ordered.user != null}">-->
                 <td th:text="${ordered.user.lastName+' '+ordered.user.firstName}"></td>
+
+                <!--</div>-->
                 <td th:text="${ordered.orderDate}"></td>
-                <!--<td th:text="${ordered.shippingAddress.street+' '+ordered.shippingAddress.number}"></td>-->
+                <div th:if="${ordered.shippingAddress != null}">
+                    <td th:text="${ordered.shippingAddress.street+' '+ordered.shippingAddress.number+', '+ordered.shippingAddress.city.zipCode+' '+ordered.shippingAddress.city.cityName}"></td>
+
+                </div>
+
+                <div th:if="${ordered.shippingAddress == null}">
+                    <td th:text="${'Aucune Adresse'}"></td>
+                </div>
+
                 <td th:text="${ordered.total}"></td>
                 <td th:text="${ordered.cartItemCount}"></td>
                 <td th:text="${ordered.status}"></td>
 
+                <td>
+                    <input hidden="hidden" name="orderID" th:value="${ordered.getId()}"/>
+
+
+                    <select id="ordered.status" name="ordered.status" class="form-control " th:value="${ordered.status}">
+
+                        <option th:each="status : ${T(com.example.galerie_artisanale.entity.OrderedStatus).values()}"
+                                th:value="${status}" th:text="${status}"
+                                th:selected="${ordered.status} == ${status}"></option>
+
+                    </select>
+
+                    <button style="display: none;"
+                            th:id="'update-stat-'+${ordered.id}" type="submit"
+                            class="btn btn-warning btn-xs">Editer
+                    </button>
+
+
+                </td>
+
+
+
+                <!--<div class="col-xs-2">
+                    <input hidden="hidden" name="itemID" th:value="${cartItem.getId()}"/>
+                    <input
+                            th:id="${cartItem.product.getId()}" th:name="qty"
+                            th:disabled="${cartItem.product.inStockNumber==0}"
+                            class="form-control cartItemQty"
+                            th:value="${cartItem.qty}"
+                            type="number"
+                            min="1"
+                            th:max="${cartItem.product.inStockNumber}"/>
+
+                    <button style="display: none;"
+                            th:id="'update-item-'+${cartItem.product.getId()}" type="submit"
+                            class="btn btn-warning btn-xs">Editer
+                    </button>
+
+                    &lt;!&ndash; <select th:field="*{cartItem.qty}">
+                         <option th:each="qty : ${qtyList}" th:value="${cartItem.id}" th:text="${cartItem.qty}" th:disabled="${cartItem.product.inStockNumber==0}" class="form-control cartItemQty">
+                         </option>
+                     </select>&ndash;&gt;
+
+                </div>-->
 
 
             </tr>
@@ -55,7 +122,6 @@
         </table>
     </div>
 </div>
-
 
 <div th:replace="admin/common/header :: body-bottom-scripts"/>
 

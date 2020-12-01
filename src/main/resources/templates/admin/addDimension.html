@@ -18,7 +18,7 @@
     <div class="container login">
         <div class="container login">
             <div class="">
-                <h2><span>Nouvelle forme</span></h2>
+                <h2><span>Nouvelle dimension</span></h2>
             </div>
         </div>
 
@@ -31,15 +31,15 @@
                 <div class="panel-body"
                      style="background-color:#ededed; margin-top: 20px;">
 
-                    <form th:action="@{/product/addShape}" method="post" th:object="${shape}">
+                    <form th:action="@{/product/addDimension}" method="post" th:object="${dimension}">
 
                         <!--input type="hidden" th:field="*{id}">-->
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="shapeName">Description</label>&nbsp;<span
-                                style="color: red;" th:if="${shapeExists}">Forme Existe Déja.</span>
+                            <label class="col-md-2 control-label" for="description">Description</label>&nbsp;<span
+                                style="color: red;" th:if="${dimensionExists}">Dimension Existe Déja.</span>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="shapeName" name="shapeName"
-                                       th:value="${shape.shapeName}"
+                                <input type="text" class="form-control" id="description" name="description"
+                                       th:value="${dimension.description}"
                                        placeholder="" required/>
                                 <span class="help-block"></span>
                             </div>
@@ -47,24 +47,24 @@
 
                         <div class="col-md-8">
                             <div class="">
-                                <button type="submit" class="btn btn-login">Ajouter forme</button>
+                                <button type="submit" class="btn btn-login">Ajouter dimension</button>
                             </div>
 
                             <br>
 
                             <div class="">
-                                <a th:href="@{/product/shapeList}" role="button" class="btn btn-login">Liste des
-                                    formes</a>
+                                <a th:href="@{/product/dimensionList}" role="button" class="btn btn-login">Liste des
+                                    dimensions</a>
 
                             </div>
 
-                           <!-- <div class="col-md-8">
-                                <div class="col-md-12" aria-atomic="form-group">
-                                    <button type="submit" class="btn btn-success">Modifier la forme</button>
+                            <!-- <div class="col-md-8">
+                                 <div class="col-md-12" aria-atomic="form-group">
+                                     <button type="submit" class="btn btn-success">Modifier la forme</button>
 
-                                    <a class="btn btn-danger" th:href="@{/}">Annuler</a>
-                                </div>
-                            </div>-->
+                                     <a class="btn btn-danger" th:href="@{/}">Annuler</a>
+                                 </div>
+                             </div>-->
 
                         </div>
                     </form>

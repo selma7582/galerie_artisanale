@@ -36,8 +36,8 @@ public class Product implements Serializable {
     @Column(name = "inStockNumber")
     private int inStockNumber;
 
-    @Column(name = "active")
-    private boolean active= true;
+    /*@Column(name = "active")
+    private boolean active= true;*/
 
     @Transient
     private boolean removed ;
@@ -54,6 +54,10 @@ public class Product implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_shape")
     private Shape shape;
+
+    @ManyToOne
+    @JoinColumn(name = "id_dimension")
+    private Dimension dimension;
 
     @ManyToOne
     @JoinColumn(name = "id_provider")

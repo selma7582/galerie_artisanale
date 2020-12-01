@@ -22,9 +22,11 @@
 
 <div class="container">
     <div class="row">
-        <form class="form-horizontal" th:action="@{/product/updateProduct}" method="post" enctype="multipart/form-data"
-              th:objet="${product}">
+        <form class="form-horizontal" th:action="@{/product/updateProduct}" method="post"  th:objet="${product}">
             <fieldset>
+                <input type="hidden" th:value="${product.id}" th:attr="name='id'"/>
+                <input type="hidden" th:value="${product.imagesList}" th:attr="name='imagesList'"/>
+                <input type="hidden" th:value="${product.cartItemList}" th:attr="name='cartItemList'"/>
                 <!-- -->
 
                 <legend class="center-block">Modifier le produit
@@ -43,6 +45,7 @@
                 </div>
 
                 <!--Shape -->
+
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="shape">* Forme</label>
                     <div class="col-md-8">
@@ -57,7 +60,23 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="shape">* Dimension</label>
+                    <div class="col-md-8">
+                        <select th:value="${product.dimension.description}" name="dimension" id="dimension" class="form-control" required>
+                            <<!--option value=""></option>-->
+                            <option th:each="dimension: ${dimensions}"
+                                    th:value="${dimension.id}"
+                                    th:text="${dimension.description}"></option>
+                            <!--
+                                                        <span class="help-block">Forme du produit</span>
+                            -->
+                        </select>
+                    </div>
+                </div>
                 <!-- Width-->
+<!--
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="width"> *Largeur</label>
                     <div class="col-md-8">
@@ -69,12 +88,12 @@
                                    th:value="${product.width}" required
                                    placeholder="width" step="0.01"/>
                         </div>
-                        <!--
-                                                <span class="help-block">Largeur du produit</span>
-                        -->
+
                     </div>
                 </div>
+-->
                 <!-- Height -->
+<!--
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="height">*Hauteur</label>
                     <div class="col-md-8">
@@ -84,11 +103,12 @@
                                    th:value="${product.height}" required
                                    placeholder="height" step="0.01"/>
                         </div>
-                        <!--
+                        &lt;!&ndash;
                                                 <span class="help-block">*Largeur du produit</span>
-                        -->
+                        &ndash;&gt;
                     </div>
                 </div>
+-->
                 <!-- Categorie -->
 
                 <div class="form-group">
@@ -99,9 +119,6 @@
                                     th:value="${category.id}"
                                     th:text="${category.categoryName}"></option>
                         </select>
-                        <!--
-                                                <span class="help-block">Categorie</span>
-                        -->
 
                     </div>
 
@@ -163,7 +180,7 @@
 
                             <textarea name="description" rows="5" class="form-control" id="description"
                                       th:value="${product.description}"
-                                      placeholder="description"></textarea>
+                                      placeholder="description">[[${product.description}]]</textarea>
                         <!--
                                                 <span class="help-block">description du produit</span>
                         -->
@@ -171,91 +188,12 @@
                 </div>
 
 
-                <!--upload image -->
-                <div class="form-group">
-                    <div class="col-md-2 control-label">
-                        <label for="urlImage">Téléchargé Image</label>
-                    </div>
-
-                    <div class="col-md-8">
-                        <input id="urlImage" type="file" name="file" multiple th:value="${product.imagesList}"/>
-                    </div>
-                </div>
-
-
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="urlImage"> Images</label>
-                    <div class="col-md-8">
-
-                        <table >
-
-                            <td>
-
-                                <div th:if="${product.haveImages()}"
-                                     th:each="image : ${product.imagesList}">
-                                    <img th:if="${image.fullURL != null}" th:src="@{${image.fullURL}}"
-                                         class="thumbnail active" width="50" height="60"/>
-                                </div>
-
-                            </td>
-
-                            <td>
-                                <div class="col-xs-3">
-
-                                    <img id="featured" class="arrow" width="190" height="210"
-                                         th:src="@{${product.imagesList.get(1).fullURL}}"/>
-
-                                </div>
-                            </td>
-
-                            <td>
-                                <a class="glyphicon glyphicon-trash"
-                                   th:attr="data-target='#modal-delete'+${product.imagesList.get(1)?.id}"
-                                   data-rel="tooltip" title="delete" data-toggle="modal"></a>
-                            </td>
-
-
-                        </table>
-
-                    </div>
-
-                    <div th:id="modal-delete+${product.imagesList.get(1)?.id}" class="modal fade"
-                         tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header no-padding">
-                                    <div class="table-header">Suppression</div>
-                                </div>
-                                <div class="modal-body no-padding">Vous étes sur de
-                                    supprimer l'image?
-                                </div>
-
-                                <div class="modal-footer no-margin-top">
-                                    <button class="btn btn-danger pull-left"
-                                            data-dismiss="modal"> Annuler l'action
-                                    </button>
-
-                                    <a class="btn btn-danger pull-right" type="button"
-                                       th:href="${'deleteImage/'+ product.imagesList.get(1)?.id}"> Supprimer
-                                    </a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
                 <div class="col-md-8">
-
                     <div class="col-md-12" aria-atomic="form-group">
                         <button type="submit" class="btn btn-success">Modifier le produit</button>
                         <a class="btn btn-danger" th:href="@{/}">Annuler</a>
-
                     </div>
                 </div>
-
             </fieldset>
         </form>
     </div>

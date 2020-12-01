@@ -17,11 +17,8 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-
 import java.util.Locale;
-/*
-import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
-*/
+
 
 @Configuration
 @EnableWebSecurity
@@ -55,7 +52,8 @@ public class Config extends WebSecurityConfigurerAdapter {
             "/shoppingCart/cart",
             "/shoppingCart/view",
             "/products/remove",
-            "/searchProduct"
+            "/searchProduct",
+            "/searchByCategory"
     };
 
     @Override
@@ -77,11 +75,7 @@ public class Config extends WebSecurityConfigurerAdapter {
 
 
     }
-/*
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
-    }*/
+
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -90,14 +84,6 @@ public class Config extends WebSecurityConfigurerAdapter {
 
 
 
-
-
-
- /*   @Bean
-    public HeaderHttpSessionStrategy HttpSessionStrategy(){
-
-        return new HeaderHttpSessionStrategy();
-    }*/
 
     @Bean
     public LocaleResolver localeResolver() {

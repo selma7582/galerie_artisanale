@@ -250,34 +250,11 @@ public class ShoppingCartController {
 
     @RequestMapping("/deleteItem/{itemId}")
     public String removeItem(@PathVariable("itemId")long itemId, Model model){
-
         CartItem persistedCartItem = cartItemService.findById(itemId);
-
-
         cartItemService.remove(persistedCartItem);
-
-
         model.addAttribute("shoppingCart", cartItemService.findAll());
-
         return "redirect:/shoppingCart/view";
     }
-
-
-    /*@RequestMapping("/deleteItem/{cartItem}")
-    public String removeItem(@PathVariable("cartItem") Long id,Model model, HttpSession session) {
-
-        *//*CartItem cartItem = (CartItem) session.getAttribute(CART_ITEM);*//*
-
-        CartItem persistedCartItem = cartItemService.findById(id);
-
-        //session.removeAttribute(cartItem.);
-        //cartItemService.removeOne(id);
-        cartItemService.remove(persistedCartItem);
-
-        model.addAttribute("shoppingCart", cartItemService.findAll());
-
-        return "redirect:/shoppingCart/view";
-    }*/
 
 
     private void fillFulImgUrl(List<Product> products) {
@@ -294,7 +271,6 @@ public class ShoppingCartController {
                 .filter(lcc -> lcc.getProduct().getId().equals(id))
                 .findFirst().orElse(null);
     }
-
 
 
 }

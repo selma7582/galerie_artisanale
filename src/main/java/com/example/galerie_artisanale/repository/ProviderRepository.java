@@ -1,5 +1,6 @@
 package com.example.galerie_artisanale.repository;
 
+import com.example.galerie_artisanale.entity.Address;
 import com.example.galerie_artisanale.entity.Product;
 import com.example.galerie_artisanale.entity.Provider;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,8 @@ public interface ProviderRepository extends JpaRepository<Provider,Long> {
 
 
     Provider findByEmail(String email);
+
+    //Provider findByAddressList.Provider(Address address);
 
 
 

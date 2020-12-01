@@ -20,9 +20,6 @@
     <div class="alert alert-success" th:if="${deleteSuccess}">
         <strong>Fournisseur Bien Supprimer!</strong>
     </div>
-    <div class="alert alert-danger" th:if="${notSuccess}">
-        <strong>Fournisseur associé et ne peut pas etre Supprimer!</strong>
-    </div>
 
     <div>
         <div class="table-responsive">
@@ -47,12 +44,17 @@
                     <td th:text="${provider.lastName}"></td>
                     <td th:text="${provider.tel}"></td>
                     <td th:text="${provider.email}"></td>
-                    <td>
-                        <div th:if="${provider.addressList != 0}"
-                             th:each="address : ${provider.addressList}"
-                             th:text="${address.number+', '+address.street}">
+                    <td    th:if="${provider.addressList != 0}"   th:each="address : ${provider.addressList}">
+
+                        <div
+                             th:text="${address.fullAdress()}"  >
 
                         </div>
+
+                        <a th:href="@{/provider/updateProviderAddress?id=}+${address.id}">
+
+                        <i class="glyphicon glyphicon-pencil"></i></button></a>
+
                     </td>
 
                     <td>

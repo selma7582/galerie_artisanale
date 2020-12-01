@@ -102,6 +102,20 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle"
                                data-toggle="dropdown" role="button" aria-haspopup="true"
+                               aria-expanded="false">Dimension <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/product/addDimension}">Ajouter une Dimension</a></li>
+                                <li><a th:href="@{/product/dimensionList}">Liste des Dimension</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav">
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle"
+                               data-toggle="dropdown" role="button" aria-haspopup="true"
                                aria-expanded="false">fournisseur <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/provider/addProvider}">Ajouter un fournisseur</a></li>
@@ -128,7 +142,8 @@
         <script th:src="@{/js/bootbox.min.js}"></script>
         <script th:src="@{/js/script1.js}"></script>
         <script th:src="@{/js/scripts.js}"></script>
-        <script th:src="@{/js/scriptSh.js}"></script>
+        <!--<script th:src="@{/js/scriptSh.js}"></script>-->
+        <script th:src="@{/js/order.js}"></script>
         <script th:src="@{/js/scriptGalerie.js}"></script>
 
 

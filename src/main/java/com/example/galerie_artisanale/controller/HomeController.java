@@ -66,9 +66,14 @@ public class HomeController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private DimensionService dimensionService;
 
     @Autowired
     private CategoryService categoryService ;
+
+    @Autowired
+    private  ShapeService shapeService;
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -103,6 +108,8 @@ public class HomeController {
     public String galerieByCategory(@PathVariable String category, Model model, Principal principal, HttpSession session) {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
+        model.addAttribute("dimensions",dimensionService.findAll());
+
         List<Product> productList = productService.findByCategory(category);
         if (productList.isEmpty()) {
             model.addAttribute("emptyList", true);
@@ -111,6 +118,38 @@ public class HomeController {
 
         return galerieForAll(model, principal, session, productList);
     }
+
+    /*@RequestMapping("/galerie/{dimension}")
+    public String galerieByDimension(@PathVariable String dimension, Model model, Principal principal, HttpSession session) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+        model.addAttribute("dimensions",dimensionService.findAll());
+
+        List<Product> productList = productService.findByDimension(dimension);
+        if (productList.isEmpty()) {
+            model.addAttribute("emptyList", true);
+            return "galerie";
+        }
+
+        return galerieForAll(model, principal, session, productList);
+    }*/
+
+   /* @RequestMapping("/galerie/{shape}")
+    public String galerieByShape(@PathVariable String shape, Model model, Principal principal, HttpSession session) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+        model.addAttribute("shapes",shapeService.findAll());
+
+        List<Product> productList = productService.findByShape(shape);
+        if (productList.isEmpty()) {
+            model.addAttribute("emptyList", true);
+            return "galerie";
+        }
+
+        return galerieForAll(model, principal, session, productList);
+    }*/
+
+
 
     @RequestMapping("/galerie")
     public String galerie(Model model, Principal principal, HttpSession session) {
@@ -126,6 +165,9 @@ public class HomeController {
 
     private String galerieForAll(Model model, Principal principal, HttpSession session, List<Product> productList) {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
+        model.addAttribute("dimensions",dimensionService.findAll());
+        model.addAttribute("shapes",shapeService.findAll());
+
         Ordered shoppingCart ;
         if (principal != null) {
             String username = principal.getName();
@@ -244,6 +286,27 @@ public class HomeController {
 
         return "myProfile";
     }
+    @RequestMapping("/profile")
+    public String profile(Model model, Principal principal) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+        User user = userService.findByUsername(principal.getName());
+        /*Ordered ordered = (Ordered) orderService.findByUser(user);
+        Address address = new Address();
+        City city = new City();*/
+        model.addAttribute("user", user);/*
+        model.addAttribute("orderedList",user.getOrderedList());
+        model.addAttribute("userShipping",ordered.getShippingAddress());
+        model.addAttribute("userBilling",ordered.getBillingAddress());*/
+/*
+        model.addAttribute("cityList",address.getCity());
+*/
+        /*List<City> cityList = cityService.findAll();
+        model.addAttribute("cityList",cityList);
+        model.addAttribute("classActiveEdit",true);*/
+
+        return "profile";
+    }
 
 
 
@@ -327,6 +390,77 @@ public class HomeController {
 
     }
 
+
+    @RequestMapping(value="/updateInfo", method=RequestMethod.POST)
+    public String updateInfo(
+            @ModelAttribute("user") User user,
+            Model model
+    ) throws Exception {
+
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+
+/*
+        User currentUser = userService.findById(user.getId_user());
+*/
+
+        User currentUser = userService.findByUsername(user.getUsername());
+
+
+        if(currentUser == null) {
+            throw new Exception ("User not found");
+        }
+
+        /*check email already exists*/
+        if (userService.findByEmail(user.getEmail())!=null) {
+            if(userService.findByEmail(user.getEmail()).getId_user() != currentUser.getId_user()) {
+                model.addAttribute("emailExists", true);
+                return "myProfile";
+            }
+        }
+
+        /*check username already exists*/
+        if (userService.findByUsername(user.getUsername())!=null) {
+            if(userService.findByUsername(user.getUsername()).getId_user() != currentUser.getId_user()) {
+                model.addAttribute("usernameExists", true);
+                return "myProfile";
+            }
+        }
+
+//		update password
+
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setLastName(user.getLastName());
+        currentUser.setUsername(user.getUsername());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setTel(user.getTel());
+/*
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+*/
+
+
+        userService.save(currentUser);
+
+        model.addAttribute("updateSuccess", true);
+        model.addAttribute("user",currentUser );
+        model.addAttribute("classActiveEdit", true);
+
+        model.addAttribute("listOfShippingAddresses", true);
+
+        UserDetails userDetails = userSecurityService.loadUserByUsername(currentUser.getUsername());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+                userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+/*
+        model.addAttribute("orderList", user.getOrderedList());
+*/
+
+        return "profile";
+    }
+
+
     @RequestMapping(value="/updateUserInfo", method=RequestMethod.POST)
     public String updateUserInfo(
             @ModelAttribute("user") User user,
@@ -406,8 +540,8 @@ public class HomeController {
 /*
         model.addAttribute("orderList", user.getOrderedList());
 */
-
-        return "myProfile";
+       // return "redirect:../product/shapeList";
+        return "redirect:/";
     }
 
     @GetMapping("/imgs/{filename:images.+}")

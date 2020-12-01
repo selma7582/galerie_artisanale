@@ -24,10 +24,10 @@ function checkPasswordMatch() {
         $("#updateUserInfoButton").prop('disabled', false);
     } else {
         if(password != confirmPassword) {
-            $("#checkPasswordMatch").html("Passwords do not match!");
+            $("#checkPasswordMatch").html("Valider votre mot de passe!!!").css("color","red");
             $("#updateUserInfoButton").prop('disabled', true);
         } else {
-            $("#checkPasswordMatch").html("Passwords match");
+            $("#checkPasswordMatch").html("Mot de passe correct").css("color","green");
             $("#updateUserInfoButton").prop('disabled', false);
         }
     }

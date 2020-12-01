@@ -41,8 +41,7 @@
 
                     <th>Nom</th>
                     <th>Forme</th>
-                    <th>Largeur</th>
-                    <th>Hauteur</th>
+                    <th>Dimensions</th>
                     <th>Catégorie</th>
                     <th>Prix</th>
                     <th>Stock</th>
@@ -65,10 +64,9 @@
                     </td>
 
                     <td th:text="${product.shape.shapeName}"></td>
-                    <td th:text="${product.width}"></td>
-                    <td th:text="${product.height}"></td>
+                    <td th:text="${product.dimension}"></td>
                     <td th:text="${product.category.categoryName}"></td>
-                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.price+' '+'DH'}"></td>
                     <td th:text="${product.inStockNumber}"></td>
 
                     <td>
@@ -80,7 +78,6 @@
                         <form class="form-horizontal" th:action="@{/product/remove2}" method="post"  enctype="multipart/form-data" th:objet="${product}">
 
                         <input hidden="hidden" name="id" th:value="${product.id}" />
-
 
                         <button th:id="'oneProd-'+${product.id}" class="btn btn-danger btn-xs delete-product"   type="submit" value="delete" >
 

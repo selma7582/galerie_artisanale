@@ -22,7 +22,7 @@
         </div>
 
         <div class="col-xs-8">
-            <h2 class="section-headline"><span>Ajouter un fournisseur</span></h2>
+            <h2 class="section-headline"><span>Modifier un fournisseur</span></h2>
         </div>
 
 
@@ -40,65 +40,88 @@
                         <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
 
                             <form th:action="@{/provider/updateProvider}" method="post" th:objet="${provider}">
+                                <input type="hidden" th:value="${provider.id}" th:attr="name='id'"/>
+                                <input type="hidden" th:value="${provider.addressList}" th:attr="name='addressList'" >
 
                                 <div class="form-group">
                                     <label for="providerFirstName">Prenom</label>
                                     <input required  type="text" class="form-control"
                                            id="providerFirstName" name="firstName" th:field="*{provider.firstName}" />
 
-                                    <p style="color: #828282">Enter Provider FirstName .</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="providerLastName">Nom</label>
                                     <input required  type="text" class="form-control"
                                            id="providerLastName" name="lastName" th:field="*{provider.lastName}"/>
-                                    <p style="color: #828282">Enter Provider lastName .</p>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="providerEmail"> Email</label>
                                     <input required  type="email" class="form-control"
                                            id="providerEmail" name="email" th:field="*{provider.email}"/>
-                                    <p style="color: #828282">Enter Provider Email .</p>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="providerTel">Tel</label>&nbsp;
+                                    <label for="providerTel">Téléphone</label>&nbsp;
                                     <input required  type="tel" class="form-control"
                                            id="providerTel" name="tel" th:field="*{provider.tel}" />
-                                    <p style="color: #828282">Enter Provider Tel .</p>
                                 </div>
 
-                                <div class="form-group">
+                                <!--<div class="form-group" th:if="${addressList != 0}"
+                                     th:each="address : ${addressList}">
 
-                                    <label for="street"> rue</label>&nbsp;
-                                    <input required  type="text" class="form-control"
-                                           id="street" name="street" th:field="*{address.street}"/>
-                                    <!--<p style="color: #828282">Enter number .</p>-->
-                                </div>
+                                    <div class="form-group">
 
-                                <div class="form-group">
-
-                                    <label for="Number"> number</label>&nbsp;
-                                    <input required  type="number" class="form-control"
-                                           id="Number" name="number" th:field="*{address.number}"/>
-                                    <!--<p style="color: #828282">Enter number .</p>-->
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="city">* City</label>
-                                    <div class="col-md-8">
-                                        <select th:field="*{city}" name="city" id="city" class="form-control" >
-                                            <option value=""></option>
-                                            <option th:each="city: ${cities}"
-                                                    th:value="${city.id}"
-                                                    th:text="${city.cityName}"></option>
-
-                                        </select>
+                                        <label for="street"> rue</label>&nbsp;
+                                        <input required  type="text" class="form-control"
+                                               id="street" name="street" th:field="*{address.street}"/>
+                                        &lt;!&ndash;<p style="color: #828282">Enter number .</p>&ndash;&gt;
                                     </div>
-                                </div>
 
+                                    <div class="form-group">
+
+                                        <label for="Number"> number</label>&nbsp;
+                                        <input required  type="text" class="form-control"
+                                               id="Number" name="number" th:field="*{address.number}" />
+                                        &lt;!&ndash;<p style="color: #828282">Enter number .</p>&ndash;&gt;
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label" for="city">* City</label>
+                                        <div class="col-md-8">
+                                            <select th:field="*{address.city}" name="city" id="city" class="form-control" >
+                                                <option value=""></option>
+                                                <th:block th:if="!${#lists.isEmpty(cities)}">
+                                                <option th:each="city: ${cities}"
+                                                        th:value="${city.id}"
+                                                        th:text="${city.cityName+','+city.zipCode}"
+                                                        th:selected="${provider?.addressList.get(0)?.city.id} == ${city.id}">
+
+                                                </option>
+                                                </th:block>
+
+                                            </select>
+                                        </div>
+                                    </div>-->
+
+                                    <!--<label >Adresse</label>&nbsp;
+                                    <table>
+                                        <td>
+                                            <div th:if="${provider.addressList != 0}"
+                                                 th:each="address : ${provider.addressList}"
+                                                 th:text="${address.number+', '+address.street+' '+address.city}">
+
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/provider/updateProviderAdress?id=}+${address.id}">
+                                                <i class="glyphicon glyphicon-pencil"></i>Modifier l'adresse</button></a>
+                                        </td>
+                                    </table>-->
+
+                                <!--</div>-->
 
                                 <div class="col-md-8">
 
@@ -113,7 +136,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                <!--</div>-->
 
 
 

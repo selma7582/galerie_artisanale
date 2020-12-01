@@ -1,0 +1,82 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header"/>
+
+<style>
+    body {
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+    }
+</style>
+<body>
+
+<div th:replace="common/header :: navbar"/>
+
+<div class="container login">
+    <div class="container login">
+        <div class="">
+            <h2><span>Modifier l'adresse</span></h2>
+        </div>
+    </div>
+
+    <div class="panel panel-default" style="border: none;">
+
+        <form th:action="@{/updateUserAddress}" method="post" th:objet="${address}">
+            <input type="hidden" th:value="${address.id}" th:attr="name='id'"/>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="street"> rue</label>&nbsp;
+                <input required type="text" class="form-control"
+                       id="street" name="street" th:field="*{address.street}"/>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="Number"> numéro</label>&nbsp;
+                <input required type="text" class="form-control"
+                       id="Number" name="number" th:field="*{address.number}"/>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="city">* City</label>
+                <div class="">
+
+                    <select name="city" id="city" class="form-control">
+                        <option value=""></option>
+                        <!--<th:block th:if="!${#lists.isEmpty(cities)}">-->
+                        <option th:each="city: ${cities}"
+                                th:value="${city.id}"
+                                th:text="${city.cityName+','+city.zipCode}"
+                                th:selected="${address?.city?.id} == ${city.id}">
+
+
+                        </option>
+                        <!--</th:block>-->
+
+
+
+                    </select>
+                </div>
+
+
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-12" aria-atomic="form-group">
+                    <button type="submit" class="btn btn-success">Modifier l'adresse</button>
+
+                    <a class="btn btn-danger" th:href="@{/}">Annuler</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div th:replace="common/header :: footer"/>
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>

@@ -61,7 +61,23 @@
                         </select>
                     </div>
                 </div>
-                <!-- Width-->
+
+                <!--Shape -->
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="shape">* Dimension</label>
+                    <div class="col-md-8">
+                        <select th:value="${dimension}" name="dimension" id="dimension" class="form-control" required>
+                            <option value=""></option>
+                            <option th:each="dimension: ${dimensions}"
+                                    th:value="${dimension.id}"
+                                    th:text="${dimension.description}"></option>
+                            <!--
+                                                        <span class="help-block">Forme du produit</span>
+                            -->
+                        </select>
+                    </div>
+                </div>
+              <!--  &lt;!&ndash; Width&ndash;&gt;
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="width"> *Largeur</label>
                     <div class="col-md-8">
@@ -73,12 +89,12 @@
                                    th:value="${product.width}" required
                                    placeholder="width" step="0.01"/>
                         </div>
-                        <!--
+                        &lt;!&ndash;
                                                 <span class="help-block">Largeur du produit</span>
-                        -->
+                        &ndash;&gt;
                     </div>
                 </div>
-                <!-- Height -->
+                &lt;!&ndash; Height &ndash;&gt;
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="height">*Hauteur</label>
                     <div class="col-md-8">
@@ -88,11 +104,11 @@
                                    th:value="${product.height}" required
                                    placeholder="height" step="0.01"/>
                         </div>
-                        <!--
+                        &lt;!&ndash;
                                                 <span class="help-block">*Largeur du produit</span>
-                        -->
+                        &ndash;&gt;
                     </div>
-                </div>
+                </div>-->
                 <!-- Categorie -->
 
                 <div class="form-group">

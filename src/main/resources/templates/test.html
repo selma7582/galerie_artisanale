@@ -1,26 +1,182 @@
-<a class="btn btn-link fa fa-trash-alt"
-   th:attr="data-target='#modal-delete'+${per?.id}"
-   data-rel="tooltip" title="delete" data-toggle="modal"></a>
+@GetMapping(value = "/edit/{school}")
+public String schoolDetails(@PathVariable("school") Long id, Model model) {
 
-<div th:id="modal-delete+${
-}" class="modal fade"
-     tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header no-padding">
-                <div class="table-header">Suppression</div>
-            </div>
-            <div class="modal-body no-padding">Vous étes sur de
-                supprimer cette durée d'abonnement?
-            </div>
-            <div class="modal-footer no-margin-top">
-                <button class="btn btn-danger pull-left"
-                        data-dismiss="modal"> Annuler
-                </button>
-                <a class="btn btn-danger pull-right" type="button"
-                   th:href="${'delete/'+ per?.id}"> Supprimer
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+List<Categories> list = new ArrayList<>();
+
+    School school = schoolService.findById(id);
+
+    List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+        for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+        if (categoryBySchool.getSchool().getId().equals(school.getId())) {
+        list.add(categoryBySchool.getCat());
+        }
+        }
+
+        model.addAttribute(SCHOOL, school);
+        model.addAttribute(ADDRESS, school.getAddress());
+        model.addAttribute("listCat", list);
+        model.addAttribute("cityList", cityService.getAllCity());
+        model.addAttribute("categoryList", categoriesService.getAllCategory());
+
+        return "adminPart/school/addSchool";
+        }
+
+        @PostMapping(value = "/edit")
+        public String editSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model) {
+
+            List<Categories> listCat = new ArrayList<>();
+
+                City c = cityService.findById(city.getIdCity());
+                school.getAddress().setCity(c);
+                addressService.save(school.getAddress());
+                List<CategoryBySchool> categoryBySchoolList = categoryBySchoolService.getAllCategoryBySchool();
+                    for (CategoryBySchool categoryBySchool : categoryBySchoolList) {
+                    if (categoryBySchool.getSchool().getId() == school.getId()) {
+                    categoryBySchoolService.delete(categoryBySchool);
+                    }
+                    }
+                    for (Categories categories : categoriesList) {
+                    CategoryBySchool categoryBySchool = new CategoryBySchool();
+                    categoryBySchool.setSchool(school);
+                    categoryBySchool.setCat(categories);
+                    categoryBySchoolService.save(categoryBySchool);
+                    listCat.add(categoryBySchool.getCat());
+                    }
+                    schoolService.save(school);
+
+                    model.addAttribute(SCHOOL, school);
+                    model.addAttribute(ADDRESS, school.getAddress());
+                    model.addAttribute("cityList", cityService.getAllCity());
+                    model.addAttribute("schoolList", schoolService.getAllSchool());
+                    model.addAttribute("categoryList", categoriesService.getAllCategory());
+                    model.addAttribute("listCat", listCat);
+
+                    return "redirect:/admin/school/schoolList";
+                    }
+
+
+
+                    ////////////////////////////////////////
+                    @PostMapping(value = "/addSchool")
+                    public String addSchool(School school, City city, @RequestParam("categoriesList[]") List<Categories> categoriesList, Model model) {
+
+                        List<Categories> listAdd = new ArrayList<>();
+
+                            City c = cityService.findById(city.getIdCity());
+                            school.getAddress().setCity(c);
+                            Optional<Address> firstAddress = addressService.getAllAddress().stream()
+                                .filter(a -> a.getStreet().equals(school.getAddress().getStreet()) && a.getNumber().equals(school.getAddress().getNumber()) && a.getCity().equals(school.getAddress().getCity()))
+                                .findFirst();
+                                if (firstAddress.isPresent()) {
+                                school.setAddress(firstAddress.get());
+                                } else {
+                                addressService.save(school.getAddress());
+                                }
+                                schoolService.save(school);
+
+                                /////////////////////////////////////////////////
+
+
+                                <input type="hidden" th:field="*{address.id}">
+                                <div class="form-group required col-6 col-lg-8">
+                                    <label class="control-label" for="street"> Rue :</label>
+                                    <input id="street" type="text" class="form-control py-4" name="street" required data-placement="right"
+                                           maxlength="50" th:field="*{address.street}"/>
+                                </div>
+                                <div class="form-group required col-6 col-lg-8">
+                                    <label class="control-label" for="number"> Numero :</label>
+                                    <input id="number" type="text" class="form-control py-4" name="number" required data-placement="right"
+                                           maxlength="50" th:field="*{address.number}"/>
+                                </div>
+
+                                <div class="form-group required col-6 col-lg-8">
+                                    <label class="control-label" for="postalCode"> Code postal:</label>
+                                    <input id="postalCode" type="text" class="form-control py-4" required name="postalCode"
+                                           data-placement="right"
+                                           maxlength="50" th:field="*{address.city.postalCode}"/>
+                                </div>
+
+                                <div class="form-group required col-6 col-lg-8">
+                                    <label class="control-label" for="idCity"> Ville :</label>
+                                    <div class="select-awesome" data-placement="right" maxlength="50">
+                                        <label>
+                                            <select id="idCity"
+                                                    class="form-control" required
+                                                    aria-invalid="false"
+                                                    name="idCity">
+                                                <option></option>
+                                                <th:block th:if="!${#lists.isEmpty(cityList)}">
+                                                    <option th:each="city : ${cityList}"
+                                                            th:value="${city.idCity}"
+                                                            th:text="${city.cityName}"
+                                                            th:selected="${school?.address?.city?.idCity} == ${city.idCity}">
+                                                    </option>
+                                                </th:block>
+                                            </select>
+                                        </label>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label"> Catégorie :</label>
+                                            <div id="chek" th:each="category, row : ${categoryList}" class="js-row-link-alt">
+                                                <input type="checkbox" th:id="${'checkbox' + row.index}" name="categoriesList[]"
+                                                       th:value="${category?.idCategory}"
+                                                       th:checked="${listCat != null and listCat.contains(category)}"
+                                                       class="checkboxGroup with-font"/>
+                                                <label th:for="${'checkbox' + row.index}"
+                                                       th:text="${category?.categoryName}"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                ///////////////////////////////////////////////////////////////////////////////////////////////
+
+                                <div class="col-auto">
+                                    <button th:if="${school.id == null}" id="saveButton" onclick="validCheckbox()" type="submit"
+                                            class="btn btn-dark">
+                                        Ajouter
+                                    </button>
+
+                                    <button th:unless="${school.id == null}" id="editButton" onclick="validCheckbox()"
+                                            type="submit" class="btn btn-dark">
+                                        Modifier
+                                    </button>
+                                </div>
+
+
+                                //////////////////////////////////////////////////////////////////////////
+
+                                <div class="container-fluid" th:with="hasSchool = ${school.id != null}">
+                                    <form id="idAddSchoolForm" class="form-horizontal" th:object="${school}"
+                                          th:action="@{(${hasSchool ? '/admin/school/edit' : '/admin/school/addSchool'})}" method="post">
+
+
+                                //////////////////////////////////////////////////////////////////////////
+
+                                        <div data-placement="right"
+                                             class="select-awesome"
+                                             maxlength="25">
+                                            <label>
+                                                <select
+                                                        id="applicationGuaranteeType"
+                                                        class="form-control required"
+                                                        aria-invalid="false"
+                                                        name="applicationGuaranteeType"
+                                                        onchange="checkSelected()">
+                                                    <option
+                                                            th:each="typeGuaranty : ${T(com.mainsys.fhome.module.pmv.guaranty.model.ApplicationGuaranteeType).values()}"
+                                                            th:value="${typeGuaranty}"
+                                                            th:text="|#{guaranty.guarantyCreate.__${typeGuaranty.name()}__}|"
+                                                            th:selected="${guaranty?.applicationGuaranteeType} == ${typeGuaranty}">
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        </div>
+
+
+

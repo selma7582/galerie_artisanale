@@ -25,9 +25,9 @@
                 <li th:classappend="${classActiveNewAccount}? 'active'"><a href="#tab1" data-toggle="tab"><span
                         style="color: black;">Nouveau compte</span></a></li>
                 <li th:classappend="${classActiveLogin}? 'active'"><a href="#tab-2" data-toggle="tab"><span
-                        style="color: black;">se connecter</span></a></li>
+                        style="color: black;">Se connecter</span></a></li>
                 <li th:classappend="${classActiveForgetPassword}? 'active'"><a href="#tab-3" data-toggle="tab"><span
-                        style="color: black;">Mot de passe oublier</span></a></li>
+                        style="color: black;">Mot de passe oublié</span></a></li>
             </ul>
 
             <div class="tab-content ">
@@ -42,7 +42,7 @@
                             <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
 
                                 <div class="alert alert-info" th:if="${emailSent}">
-                                    Un Email a été envoyer, pouriez vous le valider
+                                    Un email a été envoyé, pourriez-vous le valider
                                 </div>
 
                                 <form th:action="@{/newUser}" method="post">
@@ -57,10 +57,9 @@
 
                                     <div class="form-group">
                                         <label for="email">* Email</label> <span
-                                            style="color: red;" th:if="${emailExists}">Email already exists</span>
+                                            style="color: red;" th:if="${emailExists}">Email existe déja</span>
                                         <input required="required" type="email" class="form-control"
                                                id="email" name="email" />
-                                        <p style="color: #828282">Enter un email Valide</p>
                                     </div>
 
                                     <!--              <div class="form-group">
@@ -99,14 +98,12 @@
                                         <label for="username">* Adresse mail</label>
                                         <input type="text" class="form-control"
                                                id="username" name="username" required autofocus>
-                                        <p style="color: #828282">Entrer votre Adresse mail.</p>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="passwordL">* Mot de passe</label>
                                         <input required="required" type="password" class="form-control"
                                                id="passwordL" name="password" />
-                                        <p style="color: #828282">Entrer le Mot de passe</p>
                                     </div>
 
                                     <button type="submit" class="btn btn-login">Se connecter</button>
@@ -133,7 +130,6 @@
                                         <label for="recoverEmail"> Adresse mail </label>
                                         <input required autofocus type="email" class="form-control"
                                                id="recoverEmail" name="email" />
-                                        <p style="color: #828282">Entrer un email valide</p>
                                     </div>
 
                                     <button type="submit" class="btn btn-login">Envoyer</button>

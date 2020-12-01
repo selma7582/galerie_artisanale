@@ -2,10 +2,8 @@ package com.example.galerie_artisanale.service;
 
 
 import com.example.galerie_artisanale.entity.Category;
-import com.example.galerie_artisanale.entity.Product;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CategoryService {
 

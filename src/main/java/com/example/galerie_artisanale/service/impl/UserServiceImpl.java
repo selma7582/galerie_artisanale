@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.service.impl;
 
 
+import com.example.galerie_artisanale.entity.Ordered;
 import com.example.galerie_artisanale.entity.Product;
 import com.example.galerie_artisanale.entity.User;
 import com.example.galerie_artisanale.entity.UserRole;
@@ -69,6 +70,7 @@ public class UserServiceImpl implements UserService {
 		final PasswordResetToken myToken = new PasswordResetToken(token,user);
 		passwordResetTokenRepository.save(myToken);
 	}
+
 
 	@Override
 	public User save(User user)  {

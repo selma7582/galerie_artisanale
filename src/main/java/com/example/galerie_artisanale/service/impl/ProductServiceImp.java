@@ -61,9 +61,19 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    public List<Product> findByDimension(String dimension) {
+        return productRepository.findByDimensionDescription(dimension);
+    }
+
+    @Override
     public List<Product> blurrySearch(String productName) {
         List<Product> productList = productRepository.findByProductNameContaining(productName);
         return productList;
+    }
+
+    @Override
+    public List<Product> findByShape(String shape) {
+        return productRepository.findByShapeShapeName(shape);
     }
 
 }

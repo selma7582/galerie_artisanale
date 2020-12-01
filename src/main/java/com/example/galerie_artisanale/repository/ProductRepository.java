@@ -18,8 +18,11 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
 
     List<Product> findByCategoryCategoryName(String category);
 
+    List<Product> findByDimensionDescription(String dimension);
+
     List<Product> findByProvider(Long id);
 
+    List<Product> findByShapeShapeName(String shape);
 
     Product findByProductName(String productName);
 }

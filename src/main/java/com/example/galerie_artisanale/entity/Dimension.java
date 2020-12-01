@@ -10,25 +10,25 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-
-public class Category implements Serializable {
+public class Dimension implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_category")
+    @Column(name = "id_dimension")
     private Long id;
     @Column(columnDefinition = "text")
-    private String categoryName;
+    private String description;
 
     transient
     private boolean removed ;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimension")
     private List<Product> productList;
 
     @Override
     public String toString() {
-        return  categoryName ;
+        return  description ;
     }
+
 }

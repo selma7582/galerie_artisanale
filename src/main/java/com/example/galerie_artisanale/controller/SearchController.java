@@ -73,4 +73,40 @@ public class SearchController {
                 "loadImageFromServer", path.toString().replaceAll("\\\\", ">")).build().toString();
     }
 
+    @RequestMapping("/searchByCategory")
+    public String searchByCategory(
+            @RequestParam("category") String category,
+            Model model, Principal principal
+    ){
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+        if(principal!=null) {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
+        String classActiveCategory = "active"+category;
+        classActiveCategory = classActiveCategory.replaceAll("\\s+", "");
+        classActiveCategory = classActiveCategory.replaceAll("&", "");
+        model.addAttribute(classActiveCategory, true);
+
+        List<Product> productList = productService.findByCategory(category);
+
+        if (productList.isEmpty()) {
+            model.addAttribute("emptyList", true);
+            return "galerie";
+        }
+
+        productList.stream()
+                .filter(product -> !product.getImagesList().isEmpty())
+                .map(product -> product.getImagesList().get(0))
+                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+
+        model.addAttribute("productList", productList);
+
+        return "galerie";
+    }
+
+
 }
