@@ -45,29 +45,16 @@
                             </div>
                         </div>
 
-                        <div class="col-md-8">
-                            <div class="">
-                                <button type="submit" class="btn btn-login">Ajouter forme</button>
-                            </div>
-
-                            <br>
-
-                            <div class="">
-                                <a th:href="@{/product/shapeList}" role="button" class="btn btn-login">Liste des
-                                    formes</a>
+                            <div class="container login" aria-atomic="form-group">
+                                <button type="submit" class="btn btn-success">Ajouter</button>
+                            <a class="btn btn-danger" th:href="@{/product/shapeList}">Annuler</a>
 
                             </div>
+                        </di>
 
-                           <!-- <div class="col-md-8">
-                                <div class="col-md-12" aria-atomic="form-group">
-                                    <button type="submit" class="btn btn-success">Modifier la forme</button>
-
-                                    <a class="btn btn-danger" th:href="@{/}">Annuler</a>
-                                </div>
-                            </div>-->
-
-                        </div>
                     </form>
+                    <br>
+
                 </div>
 
 

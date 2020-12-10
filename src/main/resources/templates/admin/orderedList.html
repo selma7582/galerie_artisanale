@@ -14,43 +14,40 @@
 <body>
 <div th:replace="admin/common/header :: navbar"/>
 
-<div class="container">
-    <div class=""></div>
-</div>
 
-<div class="alert alert-success" th:if="${deleteSuccess}">
-    <strong>Commande Bien Supprimer!</strong>
-</div>
+
+
 
 
 <div class="container">
 
 
     <div class="table-responsive">
+        <div class="alert alert-success" th:if="${deleteSuccess}">
+            <strong>Commande Bien Supprimer!</strong>
+        </div>
         <!--< class="table-responsive">-->
-        <table id="" class="table table-bordered table-hover table-striped">
+        <table id="productListTable" class="table table-bordered table-hover table-striped">
+            <caption>Liste des Commandes</caption>
             <thead>
             <tr>
-                <th>Numero</th>
+                <th>Numéro</th>
                 <th>Client</th>
-                <th>Date Commande</th>
+                <th>Date commande</th>
                 <th>Adresse</th>
-                <th>Prix Total</th>
+                <th>Total</th>
                 <th>Nbre des produits</th>
                 <th>Status</th>
+                <th>Editer</th>
 
             </tr>
             </thead>
             <tbody>
-            <tr class="result"
+            <tr class=""
                 data-th-each="ordered : ${orderedList}"
                 th:if="${ordered.shippingAddress != null and ordered.user != null and ordered.shippingAddress.city != null }">
 
-                <td>
-                    <a th:href="@{product/orderedDetail(id=${ordered.id})}">
-                        <div th:text="${ordered.id}"></div>
-                    </a>
-                </td>
+                <td th:text="${ordered.id}"></td>
 
 
                 <!--<div th:if="${ordered.user != null}">-->
@@ -70,8 +67,13 @@
                 <td th:text="${ordered.total}"></td>
                 <td th:text="${ordered.cartItemCount}"></td>
                 <td th:text="${ordered.status}"></td>
-
                 <td>
+                    <a th:href="@{product/orderedDetail(id=${ordered.id})}">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
+                </td>
+
+                <!--<td>
                     <input hidden="hidden" name="orderID" th:value="${ordered.getId()}"/>
 
 
@@ -89,7 +91,7 @@
                     </button>
 
 
-                </td>
+                </td>-->
 
 
 
@@ -124,6 +126,7 @@
 </div>
 
 <div th:replace="admin/common/header :: body-bottom-scripts"/>
+
 
 </body>
 </html>

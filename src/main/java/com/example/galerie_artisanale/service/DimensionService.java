@@ -15,4 +15,6 @@ public interface DimensionService {
     Dimension findById(Long id);
 
     void removeOne(Long id);
+
+    List<String> findAllDimensionDescription();
 }

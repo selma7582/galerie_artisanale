@@ -20,7 +20,7 @@
     <div class="">
         <div class="container login">
             <div class="">
-                <h2 ><span>Modifier category</span></h2>
+                <h2 ><span>Modifier catégorie</span></h2>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
 
 
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="categoryName">Nom category</label>
+                        <label class="col-md-2 control-label" for="categoryName">Catégorie</label>
                         <div class="col-md-8">
                             <input type="text" class="form-control" id="categoryName" name="categoryName" th:value="${category.categoryName}"
                                    placeholder=""  required/>
@@ -51,9 +51,9 @@
 
                     <div class="col-md-8">
                         <div class="col-md-12" aria-atomic="form-group">
-                            <button type="submit" class="btn btn-success">Modifier la category</button>
+                            <button type="submit" class="btn btn-success">Modifier la catégorie</button>
 
-                            <a class="btn btn-danger" th:href="@{/}">Annuler</a>
+                            <a class="btn btn-danger" th:href="@{/product/categoryList}">Annuler</a>
                         </div>
                     </div>
 

@@ -15,15 +15,18 @@
 <div th:replace="admin/common/header :: navbar"/>
 
 <div class="container">
-
-
     <div class="alert alert-success" th:if="${deleteSuccess}">
         <strong>Fournisseur Bien Supprimer!</strong>
     </div>
 
     <div>
         <div class="table-responsive">
-            <table id="" class="table table-bordered table-hover table-striped">
+            <table id="productListTable" class="table table-bordered table-hover table-striped">
+
+                <!--
+                            <table id="productListTable" class="table table-bordered table-hover table-striped">
+                -->
+                <caption>Liste des Fournisseurs</caption>
                 <thead>
                 <tr>
                     <th>Prenom</th>
@@ -33,38 +36,36 @@
                     <th>Adresse</th>
                     <th>Editer</th>
                     <th>Supprimer</th>
-
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="result"
                     data-th-each="provider : ${providerList}">
-
                     <td th:text="${provider.firstName}"></td>
                     <td th:text="${provider.lastName}"></td>
                     <td th:text="${provider.tel}"></td>
                     <td th:text="${provider.email}"></td>
-                    <td    th:if="${provider.addressList != 0}"   th:each="address : ${provider.addressList}">
+                    <div th:if="${provider.addressList != 0}">
+                        <td  th:each="address : ${provider.addressList}">
+                            <div
+                                    th:text="${address.fullAdress()}">
+                            </div>
+                            <a th:href="@{/provider/updateProviderAddress?id=}+${address.id}">
+                                <i class="glyphicon glyphicon-pencil"></i></button></a>
+                        </td>
+                    </div>
 
-                        <div
-                             th:text="${address.fullAdress()}"  >
+                    <div th:if="${provider.addressList.size() == 0 }">
+                        <td>
+                            <span> Aucune adresse pour ce fournisseur</span>
 
-                        </div>
-
-                        <a th:href="@{/provider/updateProviderAddress?id=}+${address.id}">
-
-                        <i class="glyphicon glyphicon-pencil"></i></button></a>
-
-                    </td>
-
-                    <td>
-
-                        <a th:href="@{/provider/updateProvider?id=}+${provider.id}">
-                            <i class="glyphicon glyphicon-pencil"></i></button></a>
-                    </td>
-
+                        </td>
+                    </div>
+                        <td>
+                            <a th:href="@{/provider/updateProvider?id=}+${provider.id}">
+                                <i class="glyphicon glyphicon-pencil"></i></button></a>
+                        </td>
                     <div th:if="${provider.getProductList().size() == 0}">
-
                         <td>
                             <a class="glyphicon glyphicon-trash"
                                th:attr="data-target='#modal-delete'+${provider?.id}"
@@ -77,7 +78,6 @@
                             <span>Suppression impossible</span>
                         </td>
                     </div>
-
                     <div th:id="modal-delete+${provider?.id}" class="modal fade"
                          tabindex="-1">
                         <div class="modal-dialog">
@@ -85,7 +85,7 @@
                                 <div class="modal-header no-padding">
                                     <div class="table-header">Suppression</div>
                                 </div>
-                                <div class="modal-body no-padding">Vous étes sur de
+                                <div class="modal-body no-padding">Vous étes sûr de
                                     supprimer ce fournisseur?
                                 </div>
                                 <div class="modal-footer no-margin-top">
@@ -107,6 +107,7 @@
     </div>
 
 </div>
+
 <div class="text-center">
     <a th:href="@{/provider/addProvider}" role="button" class="btn btn-success">Nouveau fournisseur</a>
 

@@ -1,5 +1,6 @@
 package com.example.galerie_artisanale.service.impl;
 
+import com.example.galerie_artisanale.entity.Category;
 import com.example.galerie_artisanale.entity.Dimension;
 import com.example.galerie_artisanale.repository.DimensionRepository;
 import com.example.galerie_artisanale.service.DimensionService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DimensionServiceImpl implements DimensionService {
@@ -42,4 +44,8 @@ public class DimensionServiceImpl implements DimensionService {
     }
 
 
+    @Override
+    public List<String> findAllDimensionDescription() {
+        return findAll().stream().map(Dimension::getDescription).collect(Collectors.toList());
+    }
 }

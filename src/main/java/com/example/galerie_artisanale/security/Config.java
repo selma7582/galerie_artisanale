@@ -45,6 +45,7 @@ public class Config extends WebSecurityConfigurerAdapter {
             "/",
             "/newUser",
             "/forgetPassword",
+            "/resetPassword",
             "/login",
             "/fonts/**",
             "/galerie","/galerie/**",
@@ -53,7 +54,9 @@ public class Config extends WebSecurityConfigurerAdapter {
             "/shoppingCart/view",
             "/products/remove",
             "/searchProduct",
-            "/searchByCategory"
+            "/searchByCategory/**",
+            "/searchByDimension/**",
+            "/searchByShape/**"
     };
 
     @Override

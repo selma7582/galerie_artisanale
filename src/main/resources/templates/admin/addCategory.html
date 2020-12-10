@@ -19,27 +19,19 @@
 <div class="container login">
     <div class="">
         <div class="">
-            <h2 ><span>Nouvelle Categorie</span></h2>
+            <h2 ><span>Nouvelle catégorie</span></h2>
         </div>
-
-
     </div>
 
-
-
     <div class="">
-
-
         <!-- create new category -->
         <div class="panel panel-default" style="border: none;">
             <div class="panel-body"
                  style="background-color:#ededed; margin-top: 20px;">
 
                 <form th:action="@{/product/addCategory}" method="post">
-
-
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="categoryName">Nom Categorie</label>&nbsp;<span
+                        <label class="col-md-2 control-label" for="categoryName">Description</label>&nbsp;<span
                             style="color: red;" th:if="${categoryExists}">Categorie Existe Déja.</span>
                         <div class="col-md-8">
                             <input type="text" class="form-control" id="categoryName" name="categoryName"
@@ -48,21 +40,16 @@
                             <span class="help-block"></span>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-login">Ajouter une Categorie</button>
-
-
+                    <div class="container login" aria-atomic="form-group">
+                        <button type="submit" class="btn btn-success">Ajouter</button>
+                        <a class="btn btn-danger" th:href="@{/product/categoryList}">Annuler</a>
+                    </div>
                 </form>
             </div>
-
-
         </div>
     </div>
-
-
 </div>
 
-<a th:href="@{/product/categoryList}" role="button" class="btn btn-login">List des Categories</a>
 
 
 <div th:replace="admin/common/header :: body-bottom-scripts"/>

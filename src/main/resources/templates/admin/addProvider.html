@@ -16,7 +16,7 @@
 <div th:replace="admin/common/header :: navbar" />
 
 <div class="container">
-    <div class="row" style="/*margin-bottom: auto*/">
+    <div class="" style="/*margin-bottom: auto*/">
         <div class="alert alert-success" th:if="${addSuccess}">
             <strong>fournisseur Bien Ajouté!</strong>
         </div>
@@ -46,54 +46,64 @@
                             <form th:action="@{/provider/addProvider}" method="post">
 
                                 <div class="form-group">
-                                    <label for="providerFirstName">Prenom</label>
-                                    <input required  type="text" class="form-control"
-                                           id="providerFirstName" name="firstName" th:field="*{provider.firstName}" />
+                                    <div class="row">
+                                        <div class="col-xs-6">
 
-                                    <!--<p style="color: #828282">Enter Provider FirstName .</p>-->
+                                            <label for="providerFirstName">* Prénom</label>
+                                            <input required  type="text" class="form-control"
+                                                   id="providerFirstName" name="firstName" th:field="*{provider.firstName}" />
+
+                                            <!--<p style="color: #828282">Enter Provider FirstName .</p>-->
+                                        </div>
+
+                                        <div class="col-xs-6">
+                                            <label for="providerLastName">* Nom</label>
+                                            <input required  type="text" class="form-control"
+                                                   id="providerLastName" name="lastName" th:field="*{provider.lastName}"/>
+                                            <!--<p style="color: #828282">Enter Provider lastName .</p>-->
+                                        </div>
+                                    </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="providerLastName">Nom</label>
-                                    <input required  type="text" class="form-control"
-                                           id="providerLastName" name="lastName" th:field="*{provider.lastName}"/>
-                                    <!--<p style="color: #828282">Enter Provider lastName .</p>-->
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="providerEmail"> Email</label>&nbsp;<span
-                                        style="color: red;" th:if="${emailExists}">Provider Existe déja.</span>
+                                    <label for="providerEmail">* Email</label>&nbsp;<span
+                                        style="color: red;" th:if="${emailExists}">Fournisseur Existe déja.</span>
                                     <input required  type="email" class="form-control"
                                            id="providerEmail" name="email" th:field="*{provider.email}"/>
                                     <!--<p style="color: #828282">Enter Provider Email .</p>-->
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="providerTel">Téléphone</label>&nbsp;
+                                    <label for="providerTel">* Téléphone</label>&nbsp;
                                     <input required  type="tel" class="form-control"
                                            id="providerTel" name="tel" th:field="*{provider.tel}" />
                                     <!--<p style="color: #828282">Enter Provider Tel .</p>-->
                                 </div>
 
                                 <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-6">
 
-                                    <label for="street"> rue</label>&nbsp;
-                                    <input required  type="text" class="form-control"
-                                           id="street" name="street" th:field="*{address.street}"/>
-                                    <!--<p style="color: #828282">Enter number .</p>-->
+                                            <label for="street">* Rue</label>&nbsp;
+                                            <input required  type="text" class="form-control"
+                                                   id="street" name="street" th:field="*{address.street}"/>
+                                            <!--<p style="color: #828282">Enter number .</p>-->
+                                        </div>
+
+                                        <div class="col-xs-6">
+                                            <label for="Number">* Numéro</label>&nbsp;
+                                            <input required  type="text" class="form-control"
+                                                   id="Number" name="number" th:field="*{address.number}" />
+                                            <!--<p style="color: #828282">Enter number .</p>-->
+
+                                        </div>
+                                    </div>
+
                                 </div>
 
-                                <div class="form-group">
+                                    <div class="form-group">
 
-                                    <label for="Number"> number</label>&nbsp;
-                                    <input required  type="text" class="form-control"
-                                           id="Number" name="number" th:field="*{address.number}" />
-                                    <!--<p style="color: #828282">Enter number .</p>-->
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="city">* City</label>
-                                    <div class="col-md-8">
+                                    <label class="col-md-2 control-label" for="city">* Ville</label>
+                                    <div class="">
                                         <select th:field="*{address.city}" name="city" id="city" class="form-control" >
                                             <option value=""></option>
                                             <option th:each="city: ${cities}"
@@ -102,9 +112,15 @@
 
                                         </select>
                                     </div>
-                                </div>
+                                    </div>
 
-                                <button type="submit" class="btn btn-primary">Ajouter fournisseur</button>
+
+                                    <div class="container login" aria-atomic="form-group">
+                                        <button type="submit" class="btn btn-success">Ajouter</button>
+                                        <a class="btn btn-danger" th:href="@{/provider/providerList}">Annuler</a>
+
+                                    </div>
+
 
 
                             </form>

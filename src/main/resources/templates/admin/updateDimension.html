@@ -24,7 +24,7 @@
         </div>
     </div>
 
-        <hr />
+
 
 
 
@@ -41,7 +41,7 @@
 
 
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="description">Nom forme</label>
+                        <label class="col-md-2 control-label" for="description">Dimension</label>
                         <div class="col-md-8">
                             <input type="text" class="form-control" id="description" name="description" th:value="${dimension.description}"
                                    placeholder=""  required/>
@@ -53,7 +53,7 @@
                         <div class="col-md-12" aria-atomic="form-group">
                             <button type="submit" class="btn btn-success">Modifier la dimension</button>
 
-                            <a class="btn btn-danger" th:href="@{/}">Annuler</a>
+                            <a class="btn btn-danger" th:href="@{/product/dimensionList}">Annuler</a>
                         </div>
                     </div>
 

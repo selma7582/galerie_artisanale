@@ -1,14 +1,20 @@
 package com.example.galerie_artisanale.service.impl;
 
 
+import ch.qos.logback.classic.Logger;
 import com.example.galerie_artisanale.entity.Product;
 import com.example.galerie_artisanale.repository.ProductRepository;
 import com.example.galerie_artisanale.service.ProductService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService {
@@ -75,5 +81,26 @@ public class ProductServiceImp implements ProductService {
     public List<Product> findByShape(String shape) {
         return productRepository.findByShapeShapeName(shape);
     }
+
+  /*  @Override
+    public List<Product> filterProducts(int min, int max) {
+        return getMockedProducts(log).stream()
+                .filter(product -> product.getPrice() >= min && product.getPrice() <= max)
+                .collect(Collectors.toList());    }
+
+    @Override
+    public List<Product> getMockedProducts() {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(getClass().getClassLoader()
+                            .getResourceAsStream("mockedProducts.json"),
+                    new TypeReference<List<Product>>() {
+                    });
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return Collections.emptyList();    }*/
 
 }

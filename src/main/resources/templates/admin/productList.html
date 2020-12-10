@@ -17,28 +17,18 @@
 <div th:replace="admin/common/header :: navbar"/>
 
 
-
 <div class="container">
-
-
 
     <form class="form-horizontal" th:action="@{/product/removelist}" method="post" enctype="multipart/form-data"
           th:objet="${container}">
         <input hidden="hidden" name="productList" th:field="*{container.productList}"/>
-
-
-
         <div class="table-responsive">
-
-
-
-
             <table id="productListTable" class="table table-bordered table-hover table-striped">
+                <caption>Liste des produits</caption>
 
                 <thead>
                 <tr>
                     <!--<th><input th:id="selectAllProducts" type="checkbox" /></th>-->
-
                     <th>Nom</th>
                     <th>Forme</th>
                     <th>Dimensions</th>
@@ -47,13 +37,10 @@
                     <th>Stock</th>
                     <th>Editer</th>
                     <th>supprimer</th>
-
                 </tr>
                 </thead>
                 <tbody>
-
                 <tr data-th-each="product , itemStat: ${container.productList}">
-
                     <!--<td>
                         <input hidden="hidden" name="id" th:value="${product.id}" />
                         <input th:id="'selected'+${product.id}" class="checkboxProduct" type="checkbox"  th:field="*{container.productList[__${itemStat.index}__].selected}"/>
@@ -62,13 +49,11 @@
                         <span th:text="${product.productName}"></span>
 
                     </td>
-
                     <td th:text="${product.shape.shapeName}"></td>
-                    <td th:text="${product.dimension}"></td>
+                    <td th:text="${product.dimension+' '+'cm'}"></td>
                     <td th:text="${product.category.categoryName}"></td>
                     <td th:text="${product.price+' '+'DH'}"></td>
                     <td th:text="${product.inStockNumber}"></td>
-
                     <td>
                         <a th:href="@{/product/productInfo(id=${product.id})}">
                             <i class="glyphicon glyphicon-pencil"></i></button></a>
@@ -87,15 +72,10 @@
                     </td>-->
 
                     <td>
-
                         <a class="glyphicon glyphicon-trash"
                            th:attr="data-target='#modal-delete'+${product?.id}"
                            data-rel="tooltip" title="delete" data-toggle="modal"></a>
-
-
                     </td>
-
-
                     <div th:id="modal-delete+${product?.id}" class="modal fade"
                          tabindex="-1">
                         <div class="modal-dialog">
@@ -103,10 +83,9 @@
                                 <div class="modal-header no-padding">
                                     <div class="table-header">Suppression</div>
                                 </div>
-                                <div class="modal-body no-padding">Vous étes sur de
+                                <div class="modal-body no-padding">Vous étes sûr de
                                     supprimer ce produit <span th:text="${product.productName}"></span>?
                                 </div>
-
                                 <div class="modal-footer no-margin-top">
                                     <button class="btn btn-danger pull-left"
                                             data-dismiss="modal"> Annuler
@@ -118,8 +97,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </tr>
                 </tbody>
             </table>
@@ -137,8 +114,6 @@
     <a th:href="@{/product/add}" role="button" class="btn btn-success">Ajouter nouveau produit</a>
 
 </div>
-
-
 
 
 <div th:replace="admin/common/header :: body-bottom-scripts"/>

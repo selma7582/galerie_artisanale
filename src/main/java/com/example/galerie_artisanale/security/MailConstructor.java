@@ -24,15 +24,15 @@ public class MailConstructor {
     private TemplateEngine templateEngine;
 
     public  SimpleMailMessage constructResetTokenEmail(
-            String contextPath, Locale locale, String token, User user, String password
+            String contextPath, Locale locale, String token, User user
             ){
 
-        String url = contextPath + "/newUser?token="+token;
-        String message = "\n Valider votre inscription avec ce lien :\n"+password;
+        String url = contextPath + "/newUser?token="+token+"\n Mot de passe:";
+        String message = "\n Valider votre inscription avec le lien :\n Lien de validation:";
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(user.getEmail());
         email.setSubject("Galerie Artisanale- Nouvelle inscription ");
-        email.setText(url+message);
+        email.setText(message+url);
         email.setFrom(env.getProperty("support.email"));
         return email;
     }
@@ -53,7 +53,7 @@ public class MailConstructor {
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper email = new MimeMessageHelper(mimeMessage);
                 email.setTo(user.getEmail());
-                email.setSubject("Order Confirmation - "+ordered.getId());
+                email.setSubject("Confirmation de la commande - "+ordered.getId());
                 email.setText(text, true);
                 email.setFrom(new InternetAddress("faelkhadkhoudi@gmail.com"));
             }
@@ -62,17 +62,18 @@ public class MailConstructor {
         return messagePreparator;
     }
 
-     /*public  SimpleMailMessage constructResetTokenPasswordEmail(
-            String contextPath, Locale locale, String token, User user, String password
+     public  SimpleMailMessage constructResetTokenPasswordEmail(
+            String contextPath, Locale locale, String token, User user
     ){
 
-        String url = contextPath + "/newPassword?token="+token;
-        String message = "\n Changer votre mot passe avec ce lien et ce mot de passe :\n"+password;
+
+        String url = contextPath + "/resetPassword?token="+token;
+        String message = "\n Changer votre mot passe en cliquant sur  ce lien :\n";
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(user.getEmail());
         email.setSubject("Galerie Artisanale- Réenitialisez le mot de passe ");
-        email.setText(url+message);
+        email.setText(message+url);
         email.setFrom(env.getProperty("support.email"));
         return email;
-    }*/
+    }
 }

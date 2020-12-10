@@ -75,7 +75,7 @@
                         <div class="modal-header no-padding">
                             <div class="table-header">Suppression</div>
                         </div>
-                        <div class="modal-body no-padding">Vous êtes sur de
+                        <div class="modal-body no-padding">Vous êtes sûr de
                             supprimer l'image?
                         </div>
 
@@ -100,30 +100,21 @@
             <h3 th:text="${product.productName}"></h3>
             <div class="row">
                 <div class="col-xs-6">
-
                     <p><strong>Category: </strong><span th:text="${product.category}"></span></p>
-
                     <p><strong>Nom: </strong><span th:text="${product.productName}"></span></p>
+                    <p><strong>Forme: </strong><span th:text="${product.shape}"></span></p>
                 </div>
                 <div class="col-xs-6">
-
                     <p><strong>Dimensions: </strong><span th:text="${product.dimension}"></span>cm</p>
-
-
                     <p><strong>Prix: </strong><span th:text="${product.price}"></span>DH</p>
                     <p><strong>Le Stock: </strong><span th:text="${product.inStockNumber}"></span></p>
-
                 </div>
             </div>
-
             <p><Strong>Description: </Strong><span th:utext="${product.description}"></span></p>
         </div>
-
         <div class="col-xs-3">
-
             <form class="form-horizontal" th:action="${'/product/addimage/'+product.id}" method="post"
                   enctype="multipart/form-data">
-
                 <div class="form-group">
                     <table>
                         <td>
@@ -134,7 +125,7 @@
                         <td>
                             <div class="col-md-8">
                                 <input id="urlImage" type="file" name="file" multiple
-                                       th:value="${product.imagesList}"/>
+                                       th:value="${product.imagesList}" required/>
                             </div>
                         </td>
                         <td>

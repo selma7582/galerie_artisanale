@@ -6,6 +6,7 @@ import com.example.galerie_artisanale.security.PasswordResetToken;
 import com.example.galerie_artisanale.security.SecurityUtility;
 import com.example.galerie_artisanale.service.*;
 import com.example.galerie_artisanale.service.impl.UserSecurityService;
+import com.example.galerie_artisanale.util.PriceRange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -119,38 +120,6 @@ public class HomeController {
         return galerieForAll(model, principal, session, productList);
     }
 
-    /*@RequestMapping("/galerie/{dimension}")
-    public String galerieByDimension(@PathVariable String dimension, Model model, Principal principal, HttpSession session) {
-        model.addAttribute("categories", categoryService.findAllCategoryNames());
-
-        model.addAttribute("dimensions",dimensionService.findAll());
-
-        List<Product> productList = productService.findByDimension(dimension);
-        if (productList.isEmpty()) {
-            model.addAttribute("emptyList", true);
-            return "galerie";
-        }
-
-        return galerieForAll(model, principal, session, productList);
-    }*/
-
-   /* @RequestMapping("/galerie/{shape}")
-    public String galerieByShape(@PathVariable String shape, Model model, Principal principal, HttpSession session) {
-        model.addAttribute("categories", categoryService.findAllCategoryNames());
-
-        model.addAttribute("shapes",shapeService.findAll());
-
-        List<Product> productList = productService.findByShape(shape);
-        if (productList.isEmpty()) {
-            model.addAttribute("emptyList", true);
-            return "galerie";
-        }
-
-        return galerieForAll(model, principal, session, productList);
-    }*/
-
-
-
     @RequestMapping("/galerie")
     public String galerie(Model model, Principal principal, HttpSession session) {
 
@@ -228,7 +197,7 @@ public class HomeController {
     }
 
 
-    @RequestMapping("/forgetPassword")
+    /*@RequestMapping("/forgetPassword")
     public String forgetPassword(
             HttpServletRequest request,
             @ModelAttribute("email") String email,
@@ -262,6 +231,108 @@ public class HomeController {
 
         model.addAttribute("forgetPasswordEmailSent", "true");
         return "myAccount";
+
+    }*/
+
+
+    @RequestMapping("/forgetPassword")
+    public String forgetPassword(
+            HttpServletRequest request,
+            @ModelAttribute("email") String email,
+            Model model) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+        model.addAttribute("classActiveForgetPassword", true);
+        User user = userService.findByEmail(email);
+
+        if (user == null) {
+            model.addAttribute("emailNotExists", true);
+            return "myAccount";
+        }
+        /*String password = securityUtility.randomPassword();
+        String encryptedPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptedPassword);*/
+        userService.save(user);
+        String token = UUID.randomUUID().toString();
+        userService.createPasswordResetTokenForUser(user, token);
+        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        SimpleMailMessage newEmail = mailConstructor.constructResetTokenPasswordEmail(appUrl, request.getLocale(), token, user);
+        mailSender.send(newEmail);
+        model.addAttribute("forgetPasswordEmailSent", "true");
+        return "myAccount";
+
+    }
+
+    //resetForgetPassword
+    @RequestMapping(value="/resetPassword", method=RequestMethod.POST)
+    public String resetForgetPassword(
+            @ModelAttribute("user") User user,
+            @ModelAttribute("newPassword") String newPassword,
+            Model model
+    ) throws Exception {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+        User currentUser = userService.findById(user.getId_user());
+        if (currentUser == null) {
+            throw new Exception("User not found");
+        }
+
+//		update password
+
+        if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")) {
+            //BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
+            String dbPassword = currentUser.getPassword();
+          /*  if (passwordEncoder.matches(user.getPassword(), dbPassword)) {
+                currentUser.setPassword(passwordEncoder.encode(newPassword));
+            } else {
+                model.addAttribute("incorrectPassword", true);
+                model.addAttribute("classActiveEdit", true);
+                return "resetPassword";
+            }*/
+        }
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        userService.save(currentUser);
+
+        model.addAttribute("updateSuccess", true);
+        model.addAttribute("user", currentUser);
+        model.addAttribute("classActiveEdit", true);
+        model.addAttribute("listOfShippingAddresses", true);
+        UserDetails userDetails = userSecurityService.loadUserByUsername(currentUser.getUsername());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+                userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+/*
+        model.addAttribute("orderList", user.getOrderedList());
+*/
+        // return "redirect:../product/shapeList";
+        return "redirect:/";
+    }
+
+
+    @RequestMapping("/resetPassword")
+    public String resetForgetPassword(@RequestParam("token") String token, Model model) {
+        model.addAttribute("categories", categoryService.findAllCategoryNames());
+
+        PasswordResetToken passToken = userService.getPasswordResetToken(token);
+        if (passToken == null) {
+            String message = "Invalid Token.";
+            model.addAttribute("message", message);
+            return "redirect:/badrequest";
+        }
+        User user = passToken.getUser();
+        String username = user.getUsername();
+
+        UserDetails userDetails = userSecurityService.loadUserByUsername(username);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+                userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        model.addAttribute("user", user);
+        model.addAttribute("classActiveNewUser, true");
+        model.addAttribute("classActiveEdit", true);
+        return "resetPassword";
 
     }
 
@@ -335,10 +406,10 @@ public class HomeController {
         user.setUsername(userEmail);
         user.setEmail(userEmail);
 
-        String password = securityUtility.randomPassword();
+        /*String password = securityUtility.randomPassword();
 
         String encryptedPassword = passwordEncoder.encode(password);
-        user.setPassword(encryptedPassword);
+        user.setPassword(encryptedPassword);*/
 
         User persistedUser = userService.createUser(user, "ROLE_USER");
 
@@ -351,7 +422,10 @@ public class HomeController {
         String appUrl2 = MvcUriComponentsBuilder.fromMethodName(HomeController.class,
                 "newUser", token,model).build().toString();
 
-        SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
+        /*SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);*/
+
+
+        SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user);
         System.out.println("coucou");
         System.out.println(email);
         mailSender.send(email);//.send(email);//.send(email);
@@ -378,7 +452,7 @@ public class HomeController {
 
         UserDetails userDetails = userSecurityService.loadUserByUsername(username);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getUsername(),
                 userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -400,11 +474,11 @@ public class HomeController {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
 
-/*
-        User currentUser = userService.findById(user.getId_user());
-*/
 
-        User currentUser = userService.findByUsername(user.getUsername());
+        User currentUser = userService.findById(user.getId_user());
+
+
+       // User currentUser = userService.findByUsername(user.getUsername());
 
 
         if(currentUser == null) {
@@ -420,12 +494,12 @@ public class HomeController {
         }
 
         /*check username already exists*/
-        if (userService.findByUsername(user.getUsername())!=null) {
+    /*    if (userService.findByUsername(user.getUsername())!=null) {
             if(userService.findByUsername(user.getUsername()).getId_user() != currentUser.getId_user()) {
                 model.addAttribute("usernameExists", true);
                 return "myProfile";
             }
-        }
+        }*/
 
 //		update password
 
@@ -435,7 +509,7 @@ public class HomeController {
         currentUser.setEmail(user.getEmail());
         currentUser.setTel(user.getTel());
 /*
-        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
 */
 
 
@@ -500,7 +574,7 @@ public class HomeController {
 
 //		update password
 
-        if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")){
+       /* if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")){
 
 
             //BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
@@ -512,16 +586,13 @@ public class HomeController {
                 model.addAttribute("classActiveEdit", true);
                 return "myProfile";
             }
-        }
+        }*/
         currentUser.setFirstName(user.getFirstName());
         currentUser.setLastName(user.getLastName());
         currentUser.setUsername(user.getUsername());
         currentUser.setEmail(user.getEmail());
         currentUser.setTel(user.getTel());
-/*
         currentUser.setPassword(passwordEncoder.encode(newPassword));
-*/
-
 
         userService.save(currentUser);
 
@@ -560,5 +631,23 @@ public class HomeController {
                 "loadImageFromServer", path.toString().replaceAll("\\\\", ">")).build().toString();
     }
 
+
+    /*@GetMapping
+    public String main(Model model) {
+        model.addAttribute("priceRange", new PriceRange(5, 100));
+        model.addAttribute("products", productService.getMockedProducts());
+        return "index";
+    }
+
+    @PostMapping
+    public String save(PriceRange priceRange, Model model) {
+        model.addAttribute("range", priceRange);
+        return "saved";
+    }
+    @GetMapping
+    public String filterProducts(PriceRange priceRange, Model model) {
+        model.addAttribute("products", productService.filterProducts(priceRange.getMin(), priceRange.getMax()));
+        return "products";
+    }*/
 
 }

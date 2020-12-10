@@ -1,10 +1,10 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/common/header :: common-header" />
+<head th:replace="admin/common/header :: common-header"/>
 
 
 <style>
-    body{
+    body {
 
         background-image: url("../images/background/background.jpg");
         background-repeat: repeat
@@ -13,24 +13,23 @@
 </style>
 
 <body>
-<div th:replace="admin/common/header :: navbar" />
+<div th:replace="admin/common/header :: navbar"/>
 
 <div class="container">
-    <div class="row" style="/*margin-bottom: auto*/">
+    <div class="" style="/*margin-bottom: auto*/">
         <div class="alert alert-success" th:if="${addSuccess}">
-            <strong>fournisseur Bien Modifié!</strong>
+            <strong>Fournisseur bien mis à jour!</strong>
         </div>
 
-        <div class="col-xs-8">
-            <h2 class="section-headline"><span>Modifier un fournisseur</span></h2>
+        <div class="container login">
+            <h2 class=""><span>Modifier un fournisseur</span></h2>
         </div>
 
 
     </div>
 
 
-
-    <div class="row" style="">
+    <div class="container login" style="">
         <div class="">
 
             <div class="tab-content">
@@ -41,31 +40,37 @@
 
                             <form th:action="@{/provider/updateProvider}" method="post" th:objet="${provider}">
                                 <input type="hidden" th:value="${provider.id}" th:attr="name='id'"/>
-                                <input type="hidden" th:value="${provider.addressList}" th:attr="name='addressList'" >
+                                <input type="hidden" th:value="${provider.addressList}" th:attr="name='addressList'">
 
                                 <div class="form-group">
-                                    <label for="providerFirstName">Prenom</label>
-                                    <input required  type="text" class="form-control"
-                                           id="providerFirstName" name="firstName" th:field="*{provider.firstName}" />
+                                    <div class="row">
+                                        <div class="col-xs-6">
+                                            <label for="providerFirstName">Prénom</label>
+                                            <input required type="text" class="form-control"
+                                                   id="providerFirstName" name="firstName"
+                                                   th:field="*{provider.firstName}"/>
+                                        </div>
 
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="providerLastName">Nom</label>
-                                    <input required  type="text" class="form-control"
-                                           id="providerLastName" name="lastName" th:field="*{provider.lastName}"/>
+                                        <div class="col-xs-6">
+                                            <label for="providerLastName">Nom</label>
+                                            <input required type="text" class="form-control"
+                                                   id="providerLastName" name="lastName"
+                                                   th:field="*{provider.lastName}"/>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="providerEmail"> Email</label>
-                                    <input required  type="email" class="form-control"
+                                    <input required type="email" class="form-control"
                                            id="providerEmail" name="email" th:field="*{provider.email}"/>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="providerTel">Téléphone</label>&nbsp;
-                                    <input required  type="tel" class="form-control"
-                                           id="providerTel" name="tel" th:field="*{provider.tel}" />
+                                    <input required type="tel" class="form-control"
+                                           id="providerTel" name="tel" th:field="*{provider.tel}"/>
                                 </div>
 
                                 <!--<div class="form-group" th:if="${addressList != 0}"
@@ -105,21 +110,21 @@
                                         </div>
                                     </div>-->
 
-                                    <!--<label >Adresse</label>&nbsp;
-                                    <table>
-                                        <td>
-                                            <div th:if="${provider.addressList != 0}"
-                                                 th:each="address : ${provider.addressList}"
-                                                 th:text="${address.number+', '+address.street+' '+address.city}">
+                                <!--<label >Adresse</label>&nbsp;
+                                <table>
+                                    <td>
+                                        <div th:if="${provider.addressList != 0}"
+                                             th:each="address : ${provider.addressList}"
+                                             th:text="${address.number+', '+address.street+' '+address.city}">
 
 
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <a th:href="@{/provider/updateProviderAdress?id=}+${address.id}">
-                                                <i class="glyphicon glyphicon-pencil"></i>Modifier l'adresse</button></a>
-                                        </td>
-                                    </table>-->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/provider/updateProviderAdress?id=}+${address.id}">
+                                            <i class="glyphicon glyphicon-pencil"></i>Modifier l'adresse</button></a>
+                                    </td>
+                                </table>-->
 
                                 <!--</div>-->
 
@@ -127,7 +132,7 @@
 
                                     <div class="col-md-12" aria-atomic="form-group">
                                         <button type="submit" class="btn btn-primary">Modifier fournisseur</button>
-                                        <a class="btn btn-danger" th:href="@{/}">Annuler</a>
+                                        <a class="btn btn-danger" th:href="@{/provider/providerList}">Annuler</a>
 
                                     </div>
                                 </div>
@@ -136,24 +141,21 @@
                             </form>
                         </div>
                     </div>
-                <!--</div>-->
+                    <!--</div>-->
 
+
+                </div>
 
 
             </div>
-
-
-
         </div>
     </div>
-</div>
 
 
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<div th:replace="admin/common/header :: body-bottom-scripts" />
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <div th:replace="admin/common/header :: body-bottom-scripts"/>
 
 </body>
 </html>

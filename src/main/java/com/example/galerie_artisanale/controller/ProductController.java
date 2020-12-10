@@ -3,6 +3,7 @@ package com.example.galerie_artisanale.controller;
 import com.example.galerie_artisanale.entity.*;
 import com.example.galerie_artisanale.service.*;
 import com.example.galerie_artisanale.util.Container;
+import com.example.galerie_artisanale.util.PriceRange;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,7 @@ public class ProductController {
     public String addProduct(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
+
         return "/admin/addProduct";
     }
 
@@ -121,17 +123,19 @@ public class ProductController {
     public String editShapeGet(Model model, @RequestParam("id") Long id) {
         Shape shape = shapeService.findById(id);
         /*if (shape != null) {*/
-            model.addAttribute("shape", shape);
-            return "admin/updateShape";
+        model.addAttribute("shape", shape);
+        return "admin/updateShape";
       /*  } else {
             throw new IllegalArgumentException();
         }*/
     }
 
     @PostMapping("/editShape")
-    public String updateShape(@ModelAttribute  Shape shape, BindingResult result) {
-
-        shape = shapeService.save(shape);
+    public String updateShape(@ModelAttribute Shape shape, BindingResult result) {
+        String name = shape.getShapeName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        shape.setShapeName(nameMaj);
+        shapeService.save(shape);
         return "redirect:../product/shapeList";
     }
 
@@ -166,8 +170,21 @@ public class ProductController {
         model.addAttribute("productName", product.getProductName());
         if (productService.findByProductName(product.getProductName()) != null) {
             model.addAttribute("productExists", true);
+            model.addAttribute("product",product);
+            List<Category> categoryList = categoryService.findAll();
+            model.addAttribute("categoryList", categoryList);
+            List<Shape> shapeList = shapeService.findAll();
+            model.addAttribute("shapeList",shapeList);
+            List<Provider> providerList = providerService.findAll();
+            model.addAttribute("providerList",providerList);
+            List<Dimension> dimensions = dimensionService.findAll();
+            model.addAttribute("dimensions",dimensions);
             return "admin/addProduct";
         }
+
+        String name = product.getProductName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        product.setProductName(nameMaj);
         product = this.productService.save(product);
         for (MultipartFile file : files) {
             Image image = new Image();
@@ -184,14 +201,14 @@ public class ProductController {
 
         model.addAttribute("addSuccess", true);
 
-       // return "admin/addProduct";
-        return "redirect:../product/productInfo?id="+product.getId();
+        // return "admin/addProduct";
+        return "redirect:../product/productInfo?id=" + product.getId();
 
         /*return "redirect:productList";*/
     }
 
     @PostMapping(value = "/addimage/{id}")
-    public String addProductImagePost(@PathVariable Long id , Model model,
+    public String addProductImagePost(@PathVariable Long id, Model model,
                                       @RequestParam("file") MultipartFile[] files) {
         Product product = this.productService.findOne(id);
         for (MultipartFile file : files) {
@@ -206,7 +223,7 @@ public class ProductController {
 
         }
         model.addAttribute("addSuccess", true);
-        return "redirect:../productInfo?id="+id;
+        return "redirect:../productInfo?id=" + id;
     }
 
 
@@ -236,9 +253,9 @@ public class ProductController {
     }
 
     @RequestMapping("/dimensionList")
-    public String dimensionList(Model model){
+    public String dimensionList(Model model) {
         List<Dimension> dimensionList = dimensionService.findAll();
-        model.addAttribute("dimensionList",dimensionList);
+        model.addAttribute("dimensionList", dimensionList);
         return "admin/dimensionList";
     }
 
@@ -260,6 +277,10 @@ public class ProductController {
             model.addAttribute("shapeExists", true);
             return "/admin/addShape";
         }
+
+        String name = shape.getShapeName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        shape.setShapeName(nameMaj);
 
         this.shapeService.save(shape);
         return ("redirect:shapeList");
@@ -290,11 +311,15 @@ public class ProductController {
             @ModelAttribute("category") Category category,
             Model model) throws Exception {
         model.addAttribute("categoryName", category.getCategoryName());
+        //model.addAttribute("category",category.);
 
         if (categoryService.findByCategoryName(category.getCategoryName()) != null) {
             model.addAttribute("categoryExists", true);
             return "/admin/addCategory";
         }
+        String name = category.getCategoryName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        category.setCategoryName(nameMaj);
 
         this.categoryService.save(category);
         // return ("admin/addCategory");
@@ -325,11 +350,13 @@ public class ProductController {
     }
 
 
-
     @PostMapping("/editCategory")
-    public String editCategory(@ModelAttribute  Category category, BindingResult result) {
+    public String editCategory(@ModelAttribute Category category, BindingResult result) {
 
-        category = categoryService.save(category);
+        String name = category.getCategoryName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        category.setCategoryName(nameMaj);
+        categoryService.save(category);
         return "redirect:../product/categoryList";
     }
 
@@ -373,15 +400,15 @@ public class ProductController {
     public String editDimensionGet(Model model, @RequestParam("id") Long id) {
         Dimension dimension = dimensionService.findById(id);
         if (dimension != null) {
-        model.addAttribute("dimension", dimension);
-        return "admin/updateDimension";
+            model.addAttribute("dimension", dimension);
+            return "admin/updateDimension";
         } else {
             throw new IllegalArgumentException();
         }
     }
 
     @PostMapping("/editDimension")
-    public String updateDimension(@ModelAttribute  Dimension dimension, BindingResult result) {
+    public String updateDimension(@ModelAttribute Dimension dimension, BindingResult result) {
 
         dimension = dimensionService.save(dimension);
         return "redirect:../product/dimensionList";
@@ -433,7 +460,6 @@ public class ProductController {
     }
 
 
-
     @RequestMapping("/updateProduct")
     public String updateProductGet(@RequestParam("id") Long id, Model model) {
         Product product = productService.findOne(id);
@@ -443,13 +469,13 @@ public class ProductController {
 
 
     @PostMapping("/updateProduct")
-    public String updateProduct(@ModelAttribute  Product product, BindingResult result, Model model) {
+    public String updateProduct(@ModelAttribute Product product, BindingResult result, Model model) {
 
-        // Product persiseted = productService.findOne(product.getId());
-        // product.setImagesList(persiseted.getImagesList());
-        //product.setCartItemList(persiseted.getCartItemList());
+        String name = product.getProductName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        product.setProductName(nameMaj);
         product = productService.save(product);
-        return "redirect:../product/productInfo?id="+product.getId();
+        return "redirect:../product/productInfo?id=" + product.getId();
     }
 
     @GetMapping(value = "/deleteImage/{image}")
@@ -457,22 +483,49 @@ public class ProductController {
         Image image = imageService.findById(id);
         imageService.removeOne(id);
         // TODO : remove the image from the folder
-        return "redirect:../productInfo?id="+image.getProduct().getId();
+        return "redirect:../productInfo?id=" + image.getProduct().getId();
     }
 
     @RequestMapping("/orderedDetail")
     public String orderInfo(@RequestParam("id") Long id, Model model) {
         Ordered ordered = orderService.findOne(id);
+
         model.addAttribute("ordered", ordered);
+        OrderedStatus status = ordered.getStatus();
+        model.addAttribute("status", status);
 
 
         List<CartItem> cartItemList = cartItemService.findAll();
-        model.addAttribute("carItemList",cartItemList);
+        model.addAttribute("carItemList", cartItemList);
         cartItemList.stream().map(CartItem::getProduct).filter(product -> !product.getImagesList().isEmpty())
                 .map(product -> product.getImagesList().get(0))
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
 
         return "/admin/orderedDetail";
+
+    }
+
+   /* @GetMapping(value = "/updateOrderedStat")
+    public String updateOrderedStat(Model model, @RequestParam("id") Long id,@RequestParam OrderedStatus status) {
+
+        Ordered ordered = orderService.findById(id);
+
+        List<CartItem> cartItemList = ordered.getCartItemList();
+        ordered.setStatus(status);
+        model.addAttribute("cartItemList",cartItemList);
+        model.addAttribute("ordered",ordered );
+        return "admin/orderedDetail";
+
+    }*/
+
+    @PostMapping("/updateOrderedStat")
+    public String updateOrderedStat(Ordered ordered, BindingResult result) {
+        if (result.hasErrors()) {
+            return "admin/orderedDetail";
+        }
+        orderService.save(ordered);
+        return "redirect:/product/orderedDetail?id=" + ordered.getId();
+
 
     }
 

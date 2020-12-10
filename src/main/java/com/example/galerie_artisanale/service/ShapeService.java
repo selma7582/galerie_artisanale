@@ -20,6 +20,8 @@ public interface ShapeService {
 
     void removeOne(Long id);
 
+    List<String> findAllShapeName();
+
 
 
 

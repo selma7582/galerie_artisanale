@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.service.impl;
 
 
+import com.example.galerie_artisanale.entity.Dimension;
 import com.example.galerie_artisanale.entity.Shape;
 import com.example.galerie_artisanale.repository.ShapeRepository;
 import com.example.galerie_artisanale.service.ShapeService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShapeServiceImp implements ShapeService {
@@ -43,4 +45,9 @@ public class ShapeServiceImp implements ShapeService {
         shapeRepository.deleteById(id);
     }
 
+
+    @Override
+    public List<String> findAllShapeName() {
+        return findAll().stream().map(Shape::getShapeName).collect(Collectors.toList());
+    }
 }

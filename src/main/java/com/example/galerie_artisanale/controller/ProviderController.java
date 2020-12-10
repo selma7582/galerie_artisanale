@@ -42,6 +42,12 @@ public class ProviderController {
             model.addAttribute("emailExists",true);
             return "admin/addProvider";
         }
+        String name = provider.getFirstName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        provider.setFirstName(nameMaj);
+        String lastName = provider.getLastName();
+        String lastNameMaj = lastName.replaceFirst(".",(lastName.charAt(0)+"").toUpperCase());
+        provider.setLastName(lastNameMaj);
 
         provider = providerService.save(provider);
         address.setProvider(provider);
@@ -49,15 +55,9 @@ public class ProviderController {
 
 
         addressService.save(address);
-
         model.addAttribute("addSuccess", true);
-
-
-        return "admin/addProvider";
-
-/*
-        return "redirect:providerList";
-*/
+        //return "admin/addProvider";
+        return "redirect:../provider/providerList";
 
     }
 
@@ -87,12 +87,8 @@ public class ProviderController {
         model.addAttribute("providerList",providerList);
         List<Address> addressList = addressService.findAll();
         model.addAttribute("addressList",addressList);
-
-
         return "admin/providerList";
     }
-
-
 
     @GetMapping(value = "/delete/{provider}")
     public String deleteProvider(@PathVariable("provider") Long id, Model model) {
@@ -104,19 +100,8 @@ public class ProviderController {
             model.addAttribute("providerList", providerService.findAll());
             model.addAttribute("deleteSuccess", true);
         }
-
         return "redirect:/provider/providerList";
-
     }
-
-    /*@RequestMapping("/updateProvider")
-    public String updateProvider(@RequestParam("id") Long id, Model model) {
-        Provider provider = providerService.findOne(id);
-        model.addAttribute("provider", provider);
-
-        return "admin/updateProvider";
-    }*/
-
 
     @GetMapping(value = "/updateProvider")
     public String updateProviderGet(Model model, @RequestParam("id") Long id) {
@@ -128,31 +113,49 @@ public class ProviderController {
         return "admin/updateProvider";
     }
 
-
-
     @PostMapping("/updateProvider")
-    public String updateProvider(@ModelAttribute  Provider provider, BindingResult result) {
-
-        provider = providerService.save(provider);
+    public String updateProvider( Provider provider, BindingResult result) {
+        String name = provider.getFirstName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        provider.setFirstName(nameMaj);
+        String lastName = provider.getLastName();
+        String lastNameMaj = lastName.replaceFirst(".",(lastName.charAt(0)+"").toUpperCase());
+        provider.setLastName(lastNameMaj);
+         providerService.save(provider);
         return "redirect:../provider/providerList";
 
     }
+/* Address address1 = addressService.findOne(address.getId());
 
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User connectedUser = (User) authentication.getPrincipal();
+        Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
+        address1.setUser(connectedUser);
+        address1.setStreet(address.getStreet());
+        address1.setNumber(address.getNumber());
+        address1.setCity(cityService.findById(address.getCity().getId()));
+        Address persestideAddress = addressService.save(address1);
+        ordered.setShippingAddress(persestideAddress);
+        ordered.setBillingAddress(persestideAddress);
+        return "redirect:/confirm?id=" + ordered.getId();*/
     @GetMapping(value = "/updateProviderAddress")
-    public String updateProviderAddress(Model model, @RequestParam("id") Long id) {
-
+    public String updateProvidAddress(Model model, @RequestParam("id") Long id) {
         Address address = addressService.findOne(id);
-
         model.addAttribute("address", address);
+        model.addAttribute("provider",address.getProvider());
         return "admin/updateProviderAddress";
     }
 
     @PostMapping("/updateProviderAddress")
-    public String updateProviderAddress(@ModelAttribute  Address address,City city, BindingResult result) {
+    public String updateProviderAddress(Address address,Provider provider,City city) {
         Address add = addressService.findOne(address.getId());
-        address.setProvider(add.getProvider());
-        address.setCity(cityService.findById(address.getCity().getId()));
-        addressService.save(address);
+
+        add.setProvider(address.getProvider());
+        add.setProvider(provider);
+        add.setCity(cityService.findById(address.getCity().getId()));
+        add.setStreet(address.getStreet());
+        add.setNumber(address.getNumber());
+        addressService.save(add);
         return "redirect:../provider/providerList";
 
     }
@@ -176,9 +179,6 @@ public class ProviderController {
         Collection<Address> addresses = addressService.findAll();
         return addresses;
     }
-
-
-
 
 
 

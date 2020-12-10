@@ -43,7 +43,7 @@
 
 
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="shapeName">Nom forme</label>
+                        <label class="col-md-2 control-label" for="shapeName">description</label>
                         <div class="col-md-8">
                             <input type="text" class="form-control" id="shapeName" name="shapeName" th:value="${shape.shapeName}"
                                    placeholder=""  required/>
@@ -55,7 +55,7 @@
                         <div class="col-md-12" aria-atomic="form-group">
                             <button type="submit" class="btn btn-success">Modifier la forme</button>
 
-                            <a class="btn btn-danger" th:href="@{/}">Annuler</a>
+                            <a class="btn btn-danger" th:href="@{/product/shapeList}">Annuler</a>
                         </div>
                     </div>
 

@@ -12,61 +12,72 @@
 
 <div th:replace="common/header :: navbar"/>
 
-<div class="container login">
+<div class="container ">
     <div class="container login">
         <div class="">
             <h2><span>Modifier l'adresse</span></h2>
         </div>
     </div>
+    <div class="container login">
+        <div class="tab-content">
 
-    <div class="panel panel-default" style="border: none;">
+            <div class="panel-group">
 
-        <form th:action="@{/updateUserAddress}" method="post" th:objet="${address}">
-            <input type="hidden" th:value="${address.id}" th:attr="name='id'"/>
-
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="street"> rue</label>&nbsp;
-                <input required type="text" class="form-control"
-                       id="street" name="street" th:field="*{address.street}"/>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="Number"> numéro</label>&nbsp;
-                <input required type="text" class="form-control"
-                       id="Number" name="number" th:field="*{address.number}"/>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-2 control-label" for="city">* City</label>
-                <div class="">
-
-                    <select name="city" id="city" class="form-control">
-                        <option value=""></option>
-                        <!--<th:block th:if="!${#lists.isEmpty(cities)}">-->
-                        <option th:each="city: ${cities}"
-                                th:value="${city.id}"
-                                th:text="${city.cityName+','+city.zipCode}"
-                                th:selected="${address?.city?.id} == ${city.id}">
+                <div class="panel panel-default" style="border: none;">
+                    <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
 
 
-                        </option>
-                        <!--</th:block>-->
+                        <form th:action="@{/updateUserAddress}" method="post" th:objet="${address}">
+                            <input type="hidden" th:value="${address.id}" th:attr="name='id'"/>
+
+                            <div class="form-group">
+                                <label class="" for="street">* Rue</label>&nbsp;
+                                <input required type="text" class="form-control"
+                                       id="street" name="street" th:field="*{address.street}"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="" for="Number">* Numéro</label>&nbsp;
+                                <input required type="text" class="form-control"
+                                       id="Number" name="number" th:field="*{address.number}"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="" for="city">* Ville</label>
+                                <div class="">
+
+                                    <select name="city" id="city" class="form-control" required>
+                                        <option value=""></option>
+                                        <!--<th:block th:if="!${#lists.isEmpty(cities)}">-->
+                                        <option th:each="city: ${cities}"
+                                                th:value="${city.id}"
+                                                th:text="${city.cityName+','+city.zipCode}"
+                                                th:selected="${address?.city?.id} == ${city.id}">
 
 
+                                        </option>
+                                        <!--</th:block>-->
 
-                    </select>
+
+                                    </select>
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-8">
+                                <div class="col-md-12" aria-atomic="form-group">
+                                    <button type="submit" class="btn btn-success">Modifier l'adresse</button>
+
+                                    <a class="btn btn-danger" th:href="@{/confirm(id=${ordered.id})}">Annuler</a>
+                                                 <!--<a th:href="@{/product/productInfo(id=${product.id})}">-->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-
             </div>
-            <div class="col-md-8">
-                <div class="col-md-12" aria-atomic="form-group">
-                    <button type="submit" class="btn btn-success">Modifier l'adresse</button>
-
-                    <a class="btn btn-danger" th:href="@{/}">Annuler</a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
+
 </div>
 
 

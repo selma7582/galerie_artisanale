@@ -28,4 +28,8 @@ public interface ProductService {
     List<Product> blurrySearch(String productName);
 
     List<Product> findByShape(String shape);
+
+  /*  List<Product> filterProducts(int min, int max);
+
+    List<Product> getMockedProducts();*/
 }

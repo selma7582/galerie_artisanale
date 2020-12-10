@@ -19,23 +19,41 @@
 <div class="container">
 
     <div class="row" style="margin-top: 10px;">
+<!--
         <form th:action="@{/}" method="post" >
+-->
 
             <div class="col-xs-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <button type="submit" class="btn btn-warning btn-block">Modifier le statut</button>
 
                         <hr/>
                         <h3>Status</h3>
                         <div class="row">
 
-                            <div class="col-xs-5 text-right">
-                                <select id="ordered.status" name="ordered.status" class="form-control" th:value="${ordered.status}">
+                            <form th:action="@{/product/updateOrderedStat}" method="post" th:object="${ordered}">
+
+                                <div class="col-xs-5 text-right">
+                                    <!--name="statId"-->
+                                    <input type="hidden" th:value="${ordered.id}"  th:attr="name='id'"  />
+<!--                                    <input type="hidden" th:value="${ordered.status}"  th:attr="name='status'"  />-->
+
+
+                                    <select id="ordered.status" name="status" class="form-control">
                                     <option th:each="status : ${T(com.example.galerie_artisanale.entity.OrderedStatus).values()}"
-                                            th:value="${status}" th:text="${status}"></option>
+                                            th:value="${status}" th:text="${status}"
+                                    th:selected="${ordered.status} == ${status}"></option>
+
                                 </select>
-                            </div>
+
+
+                                </div>
+
+                                <button
+                                        th:id="'update-stat-'+${ordered.getId()}"
+                                        type="submit" class="btn btn-warning btn-block">Modifier le statut
+                                </button>
+                            </form>
                         </div>
 
 
@@ -138,7 +156,9 @@
 
                 </div>
             </div>
+<!--
         </form>
+-->
     </div>
 </div>
 <!-- end of container -->

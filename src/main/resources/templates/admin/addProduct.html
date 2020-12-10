@@ -16,222 +16,183 @@
 <body>
 <div th:replace="admin/common/header :: navbar"/>
 
+
 <div class="container">
-    <div class="row">
-
-
-
-        <div class="alert alert-success" th:if="${addSuccess}">
-            <strong>Produit Bien Ajouté!</strong>
+    <div class="container login">
+        <div class="">
+            <h2><span>Nouveau produit</span></h2>
         </div>
+    </div>
 
 
-        <form class="form-horizontal" th:action="@{/product/add}" method="post" enctype="multipart/form-data">
-            <fieldset>
-                <!-- -->
-
-                <legend class="center-block">Nouveau Produit
-                    <span style="font-size: small">* Champ obligatoire</span>
-                </legend>
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="productName"> *Nom</label>&nbsp;<span
-                        style="color: red;" th:if="${productExists}">Produit Existe Déja.</span>
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" id="productName" name="productName"
-                               th:value="${product.productName}"
-                               placeholder="productName" required/>
+    <div class="alert alert-success" th:if="${addSuccess}">
+        <strong>Produit Bien Ajouté!</strong>
+    </div>
 
 
-                    </div>
-                </div>
+    <div class="container login">
+        <div class="panel-group">
+            <div class="panel panel-default" style="border: none;">
+                <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
+                    <form th:action="@{/product/add}" method="post"
+                          enctype="multipart/form-data">
 
-                <!--Shape -->
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="shape">* Forme</label>
-                    <div class="col-md-8">
-                        <select th:value="${shape}" name="shape" id="shape" class="form-control" required>
-                            <option value=""></option>
-                            <option th:each="shape: ${shapes}"
-                                    th:value="${shape.id}"
-                                    th:text="${shape.shapeName}"></option>
-                            <!--
-                                                        <span class="help-block">Forme du produit</span>
-                            -->
-                        </select>
-                    </div>
-                </div>
 
-                <!--Shape -->
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="shape">* Dimension</label>
-                    <div class="col-md-8">
-                        <select th:value="${dimension}" name="dimension" id="dimension" class="form-control" required>
-                            <option value=""></option>
-                            <option th:each="dimension: ${dimensions}"
-                                    th:value="${dimension.id}"
-                                    th:text="${dimension.description}"></option>
-                            <!--
-                                                        <span class="help-block">Forme du produit</span>
-                            -->
-                        </select>
-                    </div>
-                </div>
-              <!--  &lt;!&ndash; Width&ndash;&gt;
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="width"> *Largeur</label>
-                    <div class="col-md-8">
-                        <div class="input-group">
-
-                            <span class="input-group-addon">m</span>
-
-                            <input type="number" class="form-control" name="width" id="width"
-                                   th:value="${product.width}" required
-                                   placeholder="width" step="0.01"/>
+                        <div class="form-group">
+                            <label for="productName"> *Nom</label>&nbsp;<span
+                                style="color: red;" th:if="${productExists}">Produit Existe Déja.</span>
+                            <div>
+                                <input type="text" class="form-control" id="productName" name="productName"
+                                       th:value="${product.productName}" required/>
+                            </div>
                         </div>
-                        &lt;!&ndash;
-                                                <span class="help-block">Largeur du produit</span>
-                        &ndash;&gt;
-                    </div>
-                </div>
-                &lt;!&ndash; Height &ndash;&gt;
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="height">*Hauteur</label>
-                    <div class="col-md-8">
-                        <div class="input-group">
-                            <span class="input-group-addon">m</span>
-                            <input type="number" class="form-control" name="height" id="height"
-                                   th:value="${product.height}" required
-                                   placeholder="height" step="0.01"/>
+
+                        <!--Shape -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label for="shape">* Forme</label>
+                                    <div class="">
+                                        <select th:value="${shape}" name="shape" id="shape" class="form-control"
+                                                required>
+                                            <option value=""></option>
+
+                                            <option th:each="shape: ${shapes}"
+                                                    th:value="${shape.id}"
+                                                    th:text="${shape.shapeName}"></option>
+                                            <!--
+                                                                        <span class="help-block">Forme du produit</span>
+                                            -->
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!--Shape -->
+                                <div class="col-xs-6">
+                                    <label for="shape">* Dimension</label>
+                                    <div class="">
+                                        <select  name="dimension" id="dimension"
+                                                class="form-control" th:value="${dimension}" required>
+                                            <option value=""></option>
+
+                                            <option th:each="dimension: ${dimensions}"
+                                                    th:value="${dimension.id}"
+                                                    th:text="${dimension.description}"></option>
+                                            <!--
+                                                                        <span class="help-block">Forme du produit</span>
+                                            -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        &lt;!&ndash;
-                                                <span class="help-block">*Largeur du produit</span>
-                        &ndash;&gt;
-                    </div>
-                </div>-->
-                <!-- Categorie -->
+                        <!-- Categorie -->
 
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="category">*Categorie</label>
-                    <div class="col-md-8">
-                        <select id="category" name="category" class="form-control" required>
-                            <option value=""></option>
-                            <option th:each="category: ${categories}"
-                                    th:value="${category.id}"
-                                    th:text="${category.categoryName}"></option>
-                        </select>
-                        <!--
-                                                <span class="help-block">Categorie</span>
-                        -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label for="category">*Categorie</label>
+                                    <div class="">
+                                        <select id="category" name="category" class="form-control" th:value="${category}" required>
+                                            <option value=""></option>
+                                            <option th:each="category: ${categories}"
+                                                    th:value="${category.id}"
+                                                    th:text="${category.categoryName}">[[${product.category}]]</option>
+                                        </select>
+                                        <!--
+                                                                <span class="help-block">Categorie</span>
+                                        -->
 
-                    </div>
+                                    </div>
 
-                </div>
+                                </div>
 
-                <!--Provider -->
+                                <!--Provider -->
 
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="provider">*Fournisseur</label>
-                                    <div class="col-md-8">
+                                <div class="col-xs-6">
+                                    <label for="provider">*Fournisseur</label>
+                                    <div class="">
 
-                                        <select id="provider" name="provider" class="form-control">
+                                        <select id="provider" name="provider" class="form-control" th:value="${provider}" required>
                                             <option value=""></option>
                                             <option th:each="provider: ${providers}"
                                                     th:value="${provider.id}"
                                                     th:text="${provider.firstName + ' ' + provider.lastName}"></option>
                                         </select>
-                <!--
-                                        <span class="help-block">Fournisseur</span>
-                -->
+                                        <!--
+                                                                <span class="help-block">Fournisseur</span>
+                                        -->
                                     </div>
                                 </div>
-
-                <!-- list price -->
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="price"> *Prix</label>
-                    <div class="col-md-8">
-                        <div class="input-group">
-                            <span class="input-group-addon">DH</span>
-                            <input th:value="${product.price}" type="number" name="price"
-                                   class="form-control" id="price" placeholder="the Price" step="0.01" required/>
+                            </div>
                         </div>
-                        <!--
-                                                <span class="help-block"> Prix</span>
-                        -->
+                        <!-- list price -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label for="price"> *Prix</label>
+                                    <div class="">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">DH</span>
+                                            <input th:value="${product.price}" type="number" name="price"
+                                                   class="form-control" id="price" placeholder="the Price" step="0.01"
+                                                   min="0" required/>
+                                        </div>
 
+                                    </div>
+                                </div>
+                                <!-- in stock number -->
 
-                    </div>
-                </div>
-                <!-- in stock number -->
+                                <div class="col-xs-6">
+                                    <label for="inStockNumber"> *Stock</label>
+                                    <div class="">
+                                        <input th:value="${product.inStockNumber}" type="number" name="inStockNumber"
+                                               class="form-control" id="inStockNumber" placeholder="Number of in-stock"
+                                               min="0" required/>
 
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="inStockNumber"> *Stock</label>
-                    <div class="col-md-8">
-                        <input th:value="${product.inStockNumber}" type="number" name="inStockNumber"
-                               class="form-control" id="inStockNumber" placeholder="Number of in-stock" required/>
-
-                        <!--
-                                                <span class="help-block">Quantité stock</span>
-                        -->
-                    </div>
-                </div>
-                <!-- status of product -->
-
-                <!--    <div class="form-group">
-                        <label class="col-md-2 control-label " for="active" >*Statut</label>
-                        <div class="col-md-8">
-                            <label><input id="active" value="true" type="radio" name="active" checked="checked"  />Active</label>
-                            <label><input  value="false" type="radio" name="active" >InActive</label>
-
-
-    &lt;!&ndash;
-                            <span class="help-block">active</span>
-    &ndash;&gt;
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>-->
+                        <!--Description -->
 
-                <!--Description -->
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="description">*Description</label>
-                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="description">*Description</label>
+                            <div class="">
 
                             <textarea name="description" rows="5" class="form-control" id="description"
-                                      th:value="${product.description}" required
-                                      placeholder="description"></textarea>
-                        <!--
-                                                <span class="help-block">description du produit</span>
-                        -->
-                    </div>
+                                      th:value="${product.description}" required>[[${product.description}]]</textarea>
+                                <!--
+                                                        <span class="help-block">description du produit</span>
+                                -->
+                            </div>
+                        </div>
+
+
+                        <!--upload image -->
+
+                        <div class="form-group">
+                            <div>
+                                <label for="urlImage">Téléchargé Image</label>
+                            </div>
+
+                            <div class="">
+                                <input id="urlImage" type="file" name="file" multiple required/>
+                            </div>
+                        </div>
+
+
+                        <div class="container login" aria-atomic="form-group">
+
+                            <button type="submit" class="btn btn-success">Ajouter</button>
+                            <a class="btn btn-danger" th:href="@{/product/productList}">Annuler</a>
+
+                        </div>
+
+                    </form>
                 </div>
-
-
-                <!--upload image -->
-
-                <div class="form-group">
-                    <div class="col-md-2 control-label">
-                        <label for="urlImage">Téléchargé Image</label>
-                    </div>
-
-                    <div class="col-md-8">
-                        <input id="urlImage" type="file" name="file" multiple required/>
-                    </div>
-                </div>
-
-
-                <div class="col-md-8">
-
-                    <div class="col-md-12" aria-atomic="form-group">
-                        <button type="submit" class="btn btn-success">Ajouter</button>
-                        <a class="btn btn-danger" th:href="@{/}">Annuler</a>
-
-                    </div>
-                </div>
-
-            </fieldset>
-        </form>
-
+            </div>
+        </div>
         <!-- </div>-->
     </div>
 </div>
