@@ -103,6 +103,8 @@
                     <p><strong>Category: </strong><span th:text="${product.category}"></span></p>
                     <p><strong>Nom: </strong><span th:text="${product.productName}"></span></p>
                     <p><strong>Forme: </strong><span th:text="${product.shape}"></span></p>
+                    <p><strong>Fournisseur: </strong><span th:text="${product.provider.firstName+' '+product.provider.lastName}"></span></p>
+
                 </div>
                 <div class="col-xs-6">
                     <p><strong>Dimensions: </strong><span th:text="${product.dimension}"></span>cm</p>

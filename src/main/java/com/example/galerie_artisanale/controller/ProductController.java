@@ -519,12 +519,16 @@ public class ProductController {
     }*/
 
     @PostMapping("/updateOrderedStat")
-    public String updateOrderedStat(Ordered ordered, BindingResult result) {
+    public String updateOrderedStat(Ordered ordered,Model model, BindingResult result) {
         if (result.hasErrors()) {
             return "admin/orderedDetail";
         }
-        orderService.save(ordered);
-        return "redirect:/product/orderedDetail?id=" + ordered.getId();
+        Ordered ordered1 = orderService.findById(ordered.getId());
+        ordered1.setStatus(ordered.getStatus());
+        orderService.save(ordered1);
+        model.addAttribute("updateSuccess",true);
+       //return "redirect:/product/orderedDetail?id=" + ordered1.getId();
+         return "redirect:/orderedList";
 
 
     }

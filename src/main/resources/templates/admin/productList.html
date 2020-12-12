@@ -50,9 +50,10 @@
 
                     </td>
                     <td th:text="${product.shape.shapeName}"></td>
-                    <td th:text="${product.dimension+' '+'cm'}"></td>
+                    <td th:text="${product.dimension}"></td>
                     <td th:text="${product.category.categoryName}"></td>
-                    <td th:text="${product.price+' '+'DH'}"></td>
+                    <td th:text="${#numbers.formatDecimal(product.price, 0 ,2)+' '+'DH'}"></td>
+
                     <td th:text="${product.inStockNumber}"></td>
                     <td>
                         <a th:href="@{/product/productInfo(id=${product.id})}">
