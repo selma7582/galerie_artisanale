@@ -1,0 +1,110 @@
+<!--<div th:fragment="list" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:if="${emptyList}">
+        <h3 style="font-style: italic;">Aucun resulta pour votre recherche.</h3>
+    </div>
+
+    <div th:unless="${emptyList}">
+        <table back id="productListTable">
+            <thead>
+            <th>prix</th>
+            </thead>
+            <tbody>
+            <div class="row">
+                <tr class="col-lg-3" th:each="product : ${productList}" th:if="${product != null }">
+                    <form method="post" th:object="${cartItemList}">
+                        <td class="">
+                            <h3 th:text="${product.productName}"></h3>
+                            <input type="hidden" name="product" th:value="productList">
+
+                            <div th:if="${product.haveImages()}"
+                                 th:each="image : ${product.imagesList}">
+                                <a th:href="@{/productDetail?id=}+${product.id}">
+                                    <div>
+                                        <img th:if="${image.fullURL != null}" th:src="@{${image.fullURL}}" width="200"
+                                             height="250"/></div>
+                                </a>
+                                <br/>
+                            </div>
+
+                            <span>Dimensions:  <span th:text="${product.dimension}"></span></span> cm<br/>
+
+
+                            &lt;!&ndash;<span >   <span th:text="${product.inStockNumber}"></span> pièce disponible</span><br/>&ndash;&gt;
+                            <span style="font-size:x-large;">Prix: <span
+                                    th:text="${#numbers.formatDecimal(product.price, 0 , 2)}"></span> DH</span><br/>
+
+                        </td>
+                    </form>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+    </div>
+</div>-->
+
+<div th:fragment="list" xmlns:th="http://www.thymeleaf.org">
+<div class="container">
+    <div class="row">
+
+
+    <div class="" style="">
+
+
+        <div class="">
+            <div th:if="${emptyList}">
+                <h3 class="text-center" style="font-style: italic;">Aucun resulta pour votre recherche.</h3>
+            </div>
+            <div class="row" >
+                <div th:each="product : ${productList}" class="col-lg-3">
+                    <form method="post" th:object="${cartItemList}">
+                        <h4  th:text="${product.productName}"></h4>
+                        <input type="hidden" name="product" th:value="productList">
+
+                        <div th:if="${product.haveImages()}">
+                            <a th:href="@{/productDetail?id=}+${product.id}"><div>
+                                <img th:if="${product.imagesList.get(0).fullURL != null}"  th:src="@{${product.imagesList.get(0).fullURL}}" width="200" height="250"/></div>  </a>
+                            <br />
+
+                        </div>
+
+                        <span >Dimension:  <span th:text="${product.dimension}"></span></span> cm<br/>
+
+                        <h4>Prix: <span
+                                th:text="${#numbers.formatDecimal(product.price, 0 , 2)}"></span> DH</h4><br/>
+                    </form>
+                </div>
+
+
+            </div>
+
+
+            <div th:if = "${totalPages >0}">
+                <div class="row col-sm-10">
+                    <div class="col-sm-2">
+                        Total Rows:[[${totalItems}]]
+                    </div>
+                    <div class="col-sm-1">
+            <span th:each="i:${#numbers.sequence(1,totalPages)}">
+                <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                <span th:unless="${currentPage != i}">[[${i}]]</span>&nbsp;&nbsp;
+            </span>
+                    </div>
+                    <div class="col-sm-1">
+                        <a th:if="${currentPage < totalPages}" th:href="@{'/page/'+${currentPage + 1}}">Suivant</a>
+                        <span th:unless="${currentPage < totalPages}">Suivant</span>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <a th:if="${currentPage < totalPages}" th:href="@{'/page/'+${totalPages}}">fin</a>
+                        <span th:unless="${currentPage < totalPages}">fin</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+</div>
+</div>
+</div>
+
+</div>

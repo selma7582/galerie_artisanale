@@ -21,10 +21,10 @@
 </div>
 
 <div class="container">
-    <div class="container login">
-        <div class="">
+    <div class="text-center">
+
             <h2><span>Modifier le produit</span></h2>
-        </div>
+
     </div>
 
 
@@ -49,7 +49,7 @@
 
 
                             <div class="form-group">
-                                <label  for="productName"> *Nom</label>
+                                <label  for="productName"> * Désignation</label>
                                 <div >
                                     <input type="text" class="form-control" id="productName" name="productName"
                                            th:value="${product.productName}" required />
@@ -66,7 +66,7 @@
                                 <label  for="shape">* Forme</label>
                                 <div class="">
                                     <select th:value="${product.shape.shapeName}" name="shape" id="shape"
-                                            class="form-control" required>
+                                            class="form-control selectDimension" required>
                                         <!--option value=""></option>-->
                                         <option th:each="shape: ${shapes}"
                                                 th:value="${shape.id}"
@@ -81,11 +81,16 @@
                             <div class="col-xs-6">
                                 <label  for="shape">* Dimension</label>
                                 <div class="">
+                                    <div id="allDimension" th:each="d , row : ${dimensionList}"
+                                         class="js-row-link-alt">
+                                        <input type="hidden" th:id="${'dim' + row.index}" th:value="${d.shape.id}"/>
+                                    </div>
                                     <select th:value="${product.dimension.description}" name="dimension" id="dimension"
                                             class="form-control" required>
                                         <<!--option value=""></option>-->
-                                        <option th:each="dimension: ${dimensions}"
+                                        <option th:each="dimension,row: ${dimensions}" class="hidden allDimension" th:id="${'dimension' + row.index}"
                                                 th:value="${dimension.id}"
+                                                th:name="${dimension.shape.id}"
                                                 th:text="${dimension.description}"></option>
 
                                     </select>
@@ -99,13 +104,15 @@
                         <div class="form-group">
                             <div class="row">
                             <div class="col-xs-6">
-                                <label  for="category">*Categorie</label>
+                                <label  for="category">* Categorie</label>
                                 <div class="">
-                                    <select id="category" name="category" class="form-control"
+                                    <select id="category" name="category"  class="form-control"
                                             th:value="${product.category.categoryName}" required>
                                         <option th:each="category: ${categories}"
                                                 th:value="${category.id}"
-                                                th:text="${category.categoryName}"></option>
+                                                th:text="${category.categoryName}"
+                                                th:selected="${product?.category?.id} == ${category.id}"
+                                        ></option>
                                     </select>
 
                                 </div>
@@ -115,14 +122,18 @@
                             <!-- Provider-->
 
                             <div class="col-xs-6">
-                                <label  for="provider">*Fournisseur</label>
+                                <label  for="provider">* Fournisseur</label>
                                 <div >
 
                                     <select id="provider" name="provider" class="form-control"
                                             th:value="${product.provider.firstName + ' ' + product.provider.lastName}">
                                         <option th:each="provider: ${providers}"
                                                 th:value="${provider.id}"
-                                                th:text="${provider.firstName + ' ' + provider.lastName}"></option>
+                                                th:text="${provider.firstName + ' ' + provider.lastName}"
+                                                th:selected="${product?.provider?.id} == ${provider.id}">
+
+
+                                        </option>
                                     </select>
                                     <!--
                                                             <span class="help-block">Fournisseur</span>
@@ -136,7 +147,7 @@
                         <div class="form-group">
                             <div class="row">
                             <div class="col-xs-6">
-                                <label for="price"> *Prix</label>
+                                <label for="price"> * Prix</label>
                                 <div>
                                     <div class="input-group" >
                                         <span class="input-group-addon">DH</span>
@@ -155,7 +166,7 @@
                             <!-- in stock number -->
 
                             <div class="col-xs-6">
-                                <label  for="inStockNumber"> *Stock</label>
+                                <label  for="inStockNumber"> * Stock</label>
                                 <div >
                                     <input th:value="${product.inStockNumber}" type="number" name="inStockNumber"
                                            class="form-control" id="inStockNumber" placeholder="Le stock" required/>
@@ -169,7 +180,7 @@
                         </div>
 
                             <div class="form-group">
-                                <label  for="description">*Description</label>
+                                <label  for="description">* Description</label>
                                 <div class="">
 
                             <textarea name="description" rows="5" class="form-control" id="description"
@@ -184,7 +195,7 @@
 
                         <div class="container login" aria-atomic="form-group">
 
-                            <button type="submit" class="btn btn-success">Ajouter</button>
+                            <button type="submit" class="btn btn-success">Modifier</button>
                             <a class="btn btn-danger" th:href="@{/product/productList}">Annuler</a>
 
                         </div>

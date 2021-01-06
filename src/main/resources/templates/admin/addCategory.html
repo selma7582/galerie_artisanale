@@ -17,11 +17,11 @@
 
 
 <div class="container login">
-    <div class="">
-        <div class="">
+
+        <div class="text-center">
             <h2 ><span>Nouvelle catégorie</span></h2>
         </div>
-    </div>
+
 
     <div class="">
         <!-- create new category -->
@@ -31,7 +31,7 @@
 
                 <form th:action="@{/product/addCategory}" method="post">
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="categoryName">Description</label>&nbsp;<span
+                        <label class="col-md-2 control-label" for="categoryName">*Désignation</label>&nbsp;<span
                             style="color: red;" th:if="${categoryExists}">Categorie Existe Déja.</span>
                         <div class="col-md-8">
                             <input type="text" class="form-control" id="categoryName" name="categoryName"

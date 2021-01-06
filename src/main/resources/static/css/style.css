@@ -222,3 +222,7 @@ margin-left: 40px;}
 .active{
     opacity: 1;
 }
+.bak{
+    background-image: url("../images/background/background.jpg");
+    background-repeat: repeat
+}

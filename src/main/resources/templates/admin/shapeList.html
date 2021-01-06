@@ -1,166 +1,3 @@
-<!--<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/common/header :: common-header"/>
-
-<style>
-    body {
-
-        background-image: url("../images/background/background.jpg");
-        background-repeat: repeat
-
-    }
-</style>
-<body>
-<div th:replace="admin/common/header :: navbar"/>
-
-
-<div class="container ">
-    <form id="shapeForm" method="post">
-        <th:block th:with="hasShape=${!#lists.isEmpty(shapeList)}">
-            <div class="row" style="margin-bottom: auto">
-                <div class="col-xs-8">
-                    <h2 class="section-headline"><span>liste des formes</span></h2>
-                </div>
-            </div>
-            <hr style="position:absolute; width:75%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
-
-
-            <div class="row" style="margin-top:120px">
-                <div class="col-xs-9 col-xs-offset-3">
-
-                    &lt;!&ndash; list shape &ndash;&gt;
-
-
-                    <div>
-                        <div class="table-responsive">
-                            <table id="productListTable" class="table table-bordered table-hover table-striped">
-                                <thead>
-                                <tr>
-                                    &lt;!&ndash;                            <th><input th:id="selectAllShape" type="checkbox" /></th>&ndash;&gt;
-
-                                    <th class="cell&#45;&#45;five">
-                                        <input id="checkboxAll" type="checkbox"
-                                               class="js-select-all checkboxAll with-font"
-                                               name="check" data-substitute="deleteShape"/>
-                                        <label for="checkboxAll"></label>
-                                    </th>
-
-                                    <th>Forme</th>
-                                    <th>Editer</th>
-                                    <th>Supprimer</th>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                &lt;!&ndash;                        <tr data-th-each="shape : ${shapeList}">&ndash;&gt;
-
-                                <th:block th:if="${hasShape}">
-                                    <tr th:each="shape, row : ${shapeList}" class="js-row-link-alt">
-                                        <th:block th:with="shapeRef=${shape.id}">
-                                            <td class="js-no-link">
-                                                <input type="checkbox" th:id="${'checkbox' + row.index}"
-                                                       name="shapes[]" th:value="${shapeRef}"
-                                                       class="checkboxGroup with-font"/>
-                                                <label th:for="${'checkbox' + row.index}"></label>
-                                            </td>
-
-                                            &lt;!&ndash;                                        <td>&ndash;&gt;
-                                            &lt;!&ndash;                                            <input hidden="hidden" name="id" th:value="${shape.id}"/>&ndash;&gt;
-                                            &lt;!&ndash;                                            <input th:id="'selected'+${shape.id}" class="checkboxShape"&ndash;&gt;
-                                            &lt;!&ndash;                                                   type="checkbox"/>&ndash;&gt;
-
-                                            &lt;!&ndash;                                        </td>&ndash;&gt;
-
-                                            <td th:text="${shape.shapeName}"></td>
-
-                                            <td>
-                                                <a th:href="@{/product/updateShape(id=${shape.id})}">
-                                                    <i class="glyphicon glyphicon-pencil"></i></a>
-                                            </td>
-
-                                            <td>
-                                                &lt;!&ndash;
-                                                                                <form class="form-horizontal" th:action="@{/product/removeS}" method="post"  enctype="multipart/form-data" th:objet="${shape}">
-                                                &ndash;&gt;
-                                                <input hidden="hidden" name="id" th:value="${shape.id}"/>
-
-                                                &lt;!&ndash;                                            <button th:id="'oneShap-'+&ndash;&gt;
-
-                                                &lt;!&ndash;                                    ${shape.id}" class="btn btn-danger btn-xs delete-shape" type="submit"&ndash;&gt;
-                                                &lt;!&ndash;                                                    value="delete">&ndash;&gt;
-                                                &lt;!&ndash;                                                <i class="glyphicon glyphicon-trash"></i></button>&ndash;&gt;
-                                                &lt;!&ndash;
-                                                                                </form>
-                                                &ndash;&gt;
-                                            </td>
-                                        </th:block>
-                                    </tr>
-                                </th:block>
-                                </tbody>
-                            </table>
-                            <button th:id="deleteSelected" class="btn btn-danger btn-xs "></button>
-                            <button id="deleteShape" class="btn btn-warning fa fa-trash"
-                                    data-target="#shapeForm"> Supprimer
-                            </button>
-                        </div>
-                        <th:block th:with="isOneShape=${false}">
-                            <th:block>
-                                <div id="deleteShapeConfirmationModal" class="modal" role="dialog">
-                                    <div>
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <form id="deleteShapeForm"  th:action="${'/product/deleteOne/'+ shape?.id}"
-                                                      method="post">
-                                                    <input type="hidden" id="messageToDelete"
-                                                           name="messageToDelete"></input>
-                                                </form>
-
-                                                <div class="modal-header">
-                                                    <h4 th:if="${isOneShape}"> mlksdhjmkhgsb</h4>
-                                                    <h4 th:unless="${isOneShape}"> plusieur</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <label th:if="${isOneShape}">hdfghhh</label>
-                                                    <label th:unless="${isOneShape}">plusieur</label>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <div class="container-fluid">
-                                                        <div class="row pull-right">
-                                                            <div class="col-sm-12">
-                                                                <button id="yesButton"
-                                                                        class="btn btn-primary btn-modal"> Oui
-                                                                </button>
-                                                                <button id="noButton" class="btn btn-primary btn-modal">
-                                                                    Non
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th:block>
-                        </th:block>
-
-                    </div>
-                </div>
-            </div>
-
-        </th:block>
-    </form>
-
-</div>
-
-
-<a th:href="@{/product/addShape}" role="button" class="btn btn-login">Ajouter une forme</a>
-
-<div th:replace="admin/common/header :: body-bottom-scripts"/>
-<span id="js-template-global" th:attr="data-delete-shape-url=@{/product/delete}"></span>
-</body>
-</html>-->
 
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -180,12 +17,14 @@
 <div class="container">
     <div class="table-responsive">
         <table id="productListTable" class="table table-bordered table-hover table-striped">
-            <caption>Liste des formes</caption>
+            <div class="text-center">
+                <h3>Liste des formes</h3>
+            </div>
             <thead>
             <tr>
                 <th>Forme</th>
                 <th>Editer</th>
-                <th>supprimer</th>
+                <th>Supprimer</th>
             </tr>
             </thead>
             <tbody>
@@ -236,7 +75,7 @@
     </div>
 </div>
 <div class="text-center">
-    <a th:href="@{/product/addShape}" role="button" class="btn btn-success">Ajouter une Forme</a>
+    <a th:href="@{/product/addShape}" role="button" class="btn btn-success">Ajouter une forme</a>
 </div>
 
 <div th:replace="admin/common/header :: body-bottom-scripts"/>

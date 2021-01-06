@@ -1,0 +1,232 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header"/>
+
+
+<style>
+    body {
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+
+<div th:replace="common/header :: navbar"/>
+
+
+<div class="container login">
+    <div class="">
+
+
+        <div class="text-center">
+
+            <h2 class=""><span> Mes commandes</span></h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="">
+        <div class="">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+
+            </ul>
+
+            <!-- Tab panels -->
+            <div class="tab-content">
+
+                <!-- Edit user information -->
+
+                <div> <!--class="tab-pane fade" id="tab-2" th:classappend="${classActiveOrders}? 'in active'">-->
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none;">
+                            <div class="panel-body"
+                                 style="background-color: #ededed; margin-top: 20px;">
+
+                                <table class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th>Date de commande</th>
+                                        <th>Numéro</th>
+                                        <th>Total</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ordered : ${myOrderedList}" th:if="${ordered.status != ordered.status.INVALID}">
+                                        <td><a th:href="@{/myOrderedDetail(id=${ordered.id})}">
+                                            <span
+                                                th:text="${#dates.format(ordered.orderDate, 'dd-MM-yyyy')}">
+
+                                             </span></a></td>
+
+                                        <td th:text="${ordered.id}"></td>
+                                        <td class="text-center" data-th-text="${#numbers.formatDecimal(ordered.total, 0 ,2)+' '+'DH'}"></td>
+
+
+                                        <td th:text="${ordered.status}"></td>
+                                        <td th:if="${ordered.status.name() == ordered.status.EN_COURS.name() or ordered.status.name() == ordered.status.EN_ATTENTE.name()}">
+                                            <!--<a th:href="@{/myOrderedDetail(id=${ordered.id})}"><span
+                                            >Annuler</span></a>-->
+                                            <a
+                                               th:attr="data-target='#modal-delete'+${ordered?.id}"
+                                               data-rel="tooltip" title="delete" data-toggle="modal">
+                                                <span>
+                                                    <h5 style="color: #db3208;">
+                                                        Annuler</h5>
+                                                </span>
+                                            </a>
+                                        </td>
+
+                                        <!--<td th:if="${ordered.status == ordered.status.INVALID}">
+                                            <a th:href="@{/confirm(id=${ordered.id})}">
+                                                <span>Confirmer</span></a>
+                                        </td>-->
+                                        <div th:id="modal-delete+${ordered?.id}" class="modal fade"
+                                             tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header no-padding">
+                                                        <div class="table-header">Suppression</div>
+                                                    </div>
+                                                    <div class="modal-body no-padding">Vous étes sûr d'annuler?
+                                                    </div>
+                                                    <div class="modal-footer no-margin-top">
+                                                        <button class="btn btn-danger pull-left"
+                                                                data-dismiss="modal"> non
+                                                        </button>
+                                                        <a class="btn btn-danger pull-right" type="button"
+                                                           th:href="${'annulerCommande/'+ ordered?.id}"> oui
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div th:if="${displayOrderDetail}">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                          <!--  <div class="text-center">
+                                                <h5>
+                                                    Adresse de livraison &lt;!&ndash;<span th:text="${ordered.id}"></span>&ndash;&gt;
+                                                </h5>
+                                            </div>
+                                            <hr />-->
+
+
+                                                <!--<div class="col-xs-4">
+                                                    <div class="panel panel-default height">
+                                                        <div class="panel-heading">
+                                                            <strong>Billing Details</strong>
+                                                        </div>
+                                                        <div class="panel-body">
+																<span
+                                                                        th:text="${ordered.shippingAddress.fullAdress()}"></span><br />
+                                                        </div>
+                                                    </div>
+                                                </div>-->
+                                            <table class="table" >
+                                                <h5>
+                                                    <strong>Adresse de livraison: </strong><!--<span th:text="${ordered.id}"></span>-->
+                                                </h5>
+                                                <thead>
+                                                <tr>
+                                                    <th><!--Adresse de livraison--></th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <div >
+                                                        <td
+                                                                th:text="${ordered.shippingAddress.fullAdress()}">
+                                                        </td>
+
+                                                        <!--<td>
+                                                            <a th:href="@{/updateAddressUser?id=}+${ordered.id}">
+                                                                <i class="glyphicon glyphicon-pencil btn btn-primary btn-xs"></i></a>
+
+                                                        </td>-->
+                                                    </div>
+
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            </div>
+                                        </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="">
+                                                <h5 class="">
+                                                    <strong>Les détails de la commande:</strong>
+                                                </h5>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-condensed">
+                                                        <thead>
+                                                        <tr>
+                                                            <td><strong>Produits</strong></td>
+                                                            <td class="text-center"><strong>Prix</strong></td>
+                                                            <td class="text-center"><strong>Quantité</strong></td>
+                                                            <td class="text-right"><strong>Total</strong></td>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="cartItem : ${cartItemList}">
+                                                            <td data-th-text="${cartItem.product.productName}"></td>
+                                                            <td class="text-center"
+                                                                data-th-text="${#numbers.formatDecimal(cartItem.getBuyinPrice(), 0 ,2)+' '+'DH'}"><p> DH</p></td>
+                                                            <td class="text-center" data-th-text="${cartItem.qty}"></td>
+                                                            <td class="text-center"
+                                                                data-th-text="${#numbers.formatDecimal(((cartItem.qty)*(cartItem.getBuyinPrice())), 0 ,2)+' '+'DH'}"></td>
+
+                                                        </tr>
+                                                        <tr>
+
+                                                            <td class="text-center"><strong>Total</strong></td>
+                                                            <td class="text-right"
+                                                                data-th-text="${#numbers.formatDecimal(ordered.total, 0 ,2)+' '+'DH'}"><span> DH</span></td>
+                                                        </tr>
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="common/header :: footer"/>
+
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+</body>
+</html>

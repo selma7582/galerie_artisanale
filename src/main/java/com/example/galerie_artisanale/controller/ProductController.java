@@ -52,10 +52,25 @@ public class ProductController {
     @Autowired
     private CartItemService cartItemService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AddressService addressService;
+    
+
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addProduct(Model model) {
         Product product = new Product();
+        List<Shape> shapeList = shapeService.findAll();
+        List<Dimension> dimensionList = dimensionService.findAll();
+        List<Category> categoryList = categoryService.findAll();
+        List<Provider> providerList = providerService.findAll();
+        model.addAttribute("providerList",providerList);
+        model.addAttribute("categoryList",categoryList);
+        model.addAttribute("dimensionList",dimensionList);
+        model.addAttribute("shapeList",shapeList);
         model.addAttribute("product", product);
 
         return "/admin/addProduct";
@@ -114,8 +129,6 @@ public class ProductController {
             model.addAttribute("notSuccess", true);
         }
         return "redirect:/product/shapeList";
-
-        //return "admin/shapeList";
 
     }
 
@@ -234,6 +247,10 @@ public class ProductController {
         container.setProductList(productList);
         model.addAttribute("productList", productList);
         model.addAttribute("container", container);
+
+        productList.stream()
+                .flatMap(products -> products.getImagesList().stream())
+                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
         return "admin/productList";
     }
 
@@ -397,20 +414,26 @@ public class ProductController {
     }
 
     @GetMapping(value = "/editDimension")
-    public String editDimensionGet(Model model, @RequestParam("id") Long id) {
+    public String editDimensionGet(@RequestParam("id") Long id,Model model) {
         Dimension dimension = dimensionService.findById(id);
-        if (dimension != null) {
+
+        /*if (dimension != null) {*/
             model.addAttribute("dimension", dimension);
+
+         List<Shape> shapes = shapeService.findAll();
+        model.addAttribute("shapes",shapes);
+
             return "admin/updateDimension";
-        } else {
+        /*} else {
             throw new IllegalArgumentException();
-        }
+        }*/
     }
 
     @PostMapping("/editDimension")
     public String updateDimension(@ModelAttribute Dimension dimension, BindingResult result) {
+        dimension.setShape(dimension.getShape());
 
-        dimension = dimensionService.save(dimension);
+         dimensionService.save(dimension);
         return "redirect:../product/dimensionList";
     }
 
@@ -464,6 +487,8 @@ public class ProductController {
     public String updateProductGet(@RequestParam("id") Long id, Model model) {
         Product product = productService.findOne(id);
         model.addAttribute("product", product);
+        List<Dimension> dimensionList = dimensionService.findAll();
+        model.addAttribute("dimensionList",dimensionList);
         return "admin/updateProduct";
     }
 
@@ -505,19 +530,6 @@ public class ProductController {
 
     }
 
-   /* @GetMapping(value = "/updateOrderedStat")
-    public String updateOrderedStat(Model model, @RequestParam("id") Long id,@RequestParam OrderedStatus status) {
-
-        Ordered ordered = orderService.findById(id);
-
-        List<CartItem> cartItemList = ordered.getCartItemList();
-        ordered.setStatus(status);
-        model.addAttribute("cartItemList",cartItemList);
-        model.addAttribute("ordered",ordered );
-        return "admin/orderedDetail";
-
-    }*/
-
     @PostMapping("/updateOrderedStat")
     public String updateOrderedStat(Ordered ordered,Model model, BindingResult result) {
         if (result.hasErrors()) {
@@ -526,11 +538,68 @@ public class ProductController {
         Ordered ordered1 = orderService.findById(ordered.getId());
         ordered1.setStatus(ordered.getStatus());
         orderService.save(ordered1);
+        if(ordered1.getStatus() == OrderedStatus.LIVRER){
+            List<CartItem> cartItemList = cartItemService.findByOrdered(ordered1) ;
+            cartItemList.clear();
+            cartItemList.size();
+            model.addAttribute("cartItemList",cartItemList);
+        }
         model.addAttribute("updateSuccess",true);
        //return "redirect:/product/orderedDetail?id=" + ordered1.getId();
-         return "redirect:/orderedList";
+         return "redirect:/product/orderedList";
+
+    }
+
+    @RequestMapping("/userList")
+    public String userList(Model model){
+       // List<User> userList = userService.findByRole((long)2);
+       // List<User> userList = userService.findByRole("ROLE_USER");
+        List<User> userList = userService.findAll();
+        model.addAttribute("userList",userList);
+
+        userList.stream().forEach(user -> user.getAddressList().stream());
+
+        /*List<Product> productList = productService.findAll();
+        productList.stream()
+                .flatMap(products -> products.getImagesList().stream())
+                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+*/
+        return "admin/userList";
+    }
+
+    @GetMapping("/orderedList")
+    public String viewAll(Model model) {
+        Collection<Ordered> orderedList = orderService.findAll();
+        model.addAttribute("orderedList", orderedList);
+
+        return "/admin/orderedList";
+    }
 
 
+    @GetMapping(value = "/desactivate/{id_user}")
+    public String desactivate(Model model, @PathVariable long id_user) {
+        User user = userService.findById(id_user);
+
+        user.setEnabled(0);
+        userService.save(user);
+        return "redirect:../userList";
+     /*   if () {
+
+        } else {
+            throw new IllegalArgumentException();
+        }*/
+    }
+    @GetMapping(value = "/activate/{id_user}")
+    public String ativate(Model model, @PathVariable long id_user) {
+        User user = userService.findById(id_user);
+        user.setEnabled(1);
+        userService.save(user);
+        return "redirect:../userList";
+       /* if () {
+
+        } else {
+            throw new IllegalArgumentException();
+        }*/
     }
 
 

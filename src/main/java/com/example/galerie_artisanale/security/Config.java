@@ -47,6 +47,7 @@ public class Config extends WebSecurityConfigurerAdapter {
             "/forgetPassword",
             "/resetPassword",
             "/login",
+            "/products",
             "/fonts/**",
             "/galerie","/galerie/**",
             "/productDetail",
@@ -66,6 +67,7 @@ public class Config extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .antMatchers("/product/**").hasAnyRole("ADMIN")
+                //.antMatchers("/provider/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().failureUrl("/login?error").defaultSuccessUrl("/")

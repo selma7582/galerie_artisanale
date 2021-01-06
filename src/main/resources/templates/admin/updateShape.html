@@ -16,13 +16,13 @@
 <div th:replace="admin/common/header :: navbar" />
 
 <div class="container login">
-    <div class="">
-        <div class="container login">
-            <div class="">
+
+        <div class="text-center">
+
                 <h2 ><span>Modifier forme</span></h2>
-            </div>
+
         </div>
-    </div>
+
 
 <!--
     <hr style="position:absolute; width:48%; height:3px; background-color: #333; z-index:-1; margin-top: -10px;  "/>
@@ -43,7 +43,7 @@
 
 
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="shapeName">description</label>
+                        <label class="col-md-2 control-label" for="shapeName">*Désignation</label>
                         <div class="col-md-8">
                             <input type="text" class="form-control" id="shapeName" name="shapeName" th:value="${shape.shapeName}"
                                    placeholder=""  required/>
@@ -51,13 +51,13 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
-                        <div class="col-md-12" aria-atomic="form-group">
-                            <button type="submit" class="btn btn-success">Modifier la forme</button>
+
+                        <div class="container login" aria-atomic="form-group">
+                            <button type="submit" class="btn btn-success">Modifier</button>
 
                             <a class="btn btn-danger" th:href="@{/product/shapeList}">Annuler</a>
                         </div>
-                    </div>
+
 
                 </form>
             </div>

@@ -22,7 +22,6 @@ public class Provider implements Serializable {
     @Column(name = "firstname")
     private String firstName;
 
-
     @Column(name = "lastname")
     private String lastName;
 
@@ -32,17 +31,13 @@ public class Provider implements Serializable {
     @Column(name = "tel")
     private String tel;
 
-
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "provider")
     private List<Product> productList;
 
     @Transient
     private boolean removed ;
 
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "provider")
-    private List<Address> addressList;
-
+    @OneToOne(targetEntity = Address.class, fetch = FetchType.EAGER)
+    private Address address;
 
 }

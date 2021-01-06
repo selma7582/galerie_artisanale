@@ -7,4 +7,6 @@ public interface DimensionRepository extends JpaRepository<Dimension,Long> {
 
 
     Dimension findByDescription(String description);
+
+    //findByShapeShapeName(String shape);
 }

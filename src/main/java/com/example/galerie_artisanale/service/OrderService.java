@@ -22,7 +22,7 @@ public interface OrderService {
     List<Ordered> findByUser(User user);
 
     /**
-     * The user must have at most one Ordered with status equals to {@link com.example.galerie_artisanale.entity.OrderedStatus#NOT_VALID} which is the Shopping cart
+     * The user must have at most one Ordered with status equals to {@link com.example.galerie_artisanale.entity.OrderedStatus#INVALID} which is the Shopping cart
      *
      * it throws IllegalStateException if there are more than one invalid ordered
      * @param user

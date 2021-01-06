@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.repository;
 
 
+import com.example.galerie_artisanale.entity.Address;
 import com.example.galerie_artisanale.entity.Ordered;
 import com.example.galerie_artisanale.entity.User;
 //import com.example.galerie_artisanale.entity.User;
@@ -17,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	List<User> findAll();
 
+    List<User>  findByRole(String role);
 
+   // List<User> findByRole_Users(String role);
 
 }

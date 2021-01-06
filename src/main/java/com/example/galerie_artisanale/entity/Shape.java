@@ -27,6 +27,9 @@ public class Shape implements Serializable{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "shape")
     private List<Product> productList;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shape")
+    private List<Dimension> dimensionList;
+
     @Override
     public String toString() {
         return  shapeName ;

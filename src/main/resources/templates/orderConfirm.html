@@ -19,7 +19,7 @@
             <div class="alert alert-success">
                 <h3>
                     <i class="fa fa-check" aria-hidden="true"
-                       style="color: limegreen;"></i> Votre commande est bien validée
+                       style="color: limegreen;"></i> Votre commande est validée. Vérifiez vos emails pour les détails.
                 </h3>
             </div>
 
@@ -27,7 +27,6 @@
 
             <div class="row" th:each="cartItem : ${shoppingCart.getCartItemList()}">
                 <hr />
-                <div class="col-xs-2"></div>
                 <div class="col-xs-2">
 
                     <a th:href="@{/productDetail(id=${cartItem.product.id})}">
@@ -46,16 +45,32 @@
                                 th:text="${cartItem.product.productName}"></h4></a>
                     </div>
                 </div>
+                <div class="col-xs-2">
+                    <h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
+                    <!--<p th:if="${cartItem.qty&gt;cartItem.product.inStockNumber}"
+                       style="color: red;">Stock indisponible </p>-->
+                </div>
 
                 <div class="col-xs-2">
                     <!--style="color: #db3208; font-size: large;"-->
-                    <h5 >
+                    <h5>
 
                         <span th:text="${#numbers.formatDecimal(cartItem.product.price, 0 ,2)}">
                                 <!--th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''"--> </span><span>DH</span>
                     </h5>
                 </div>
+
+
+
+
+                <br/>
             </div>
+
+            <h4 class="col-xs-12 text-right">
+                <strong style="font-size: large;">Total de la commande:
+                </strong> <span style=" font-szie: large;"><span
+                    th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span> DH</span>
+            </h4>
         </div>
     </div>
 </div>

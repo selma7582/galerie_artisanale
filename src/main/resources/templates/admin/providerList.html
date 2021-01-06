@@ -26,12 +26,15 @@
                 <!--
                             <table id="productListTable" class="table table-bordered table-hover table-striped">
                 -->
-                <caption>Liste des Fournisseurs</caption>
+                <!--<caption>Liste des Fournisseurs</caption>-->
+                <div class="text-center">
+                    <h3>Liste des Fournisseurs</h3>
+                </div>
                 <thead>
                 <tr>
-                    <th>Prenom</th>
+                    <th>Prénom</th>
                     <th>Nom</th>
-                    <th>Telephone</th>
+                    <th>Télephone</th>
                     <th>Email</th>
                     <th>Adresse</th>
                     <th>Editer</th>
@@ -45,7 +48,8 @@
                     <td th:text="${provider.lastName}"></td>
                     <td th:text="${provider.tel}"></td>
                     <td th:text="${provider.email}"></td>
-                    <div th:if="${provider.addressList != 0}">
+
+                    <!--<div th:if="${provider.addressList != 0}">
                         <td  th:each="address : ${provider.addressList}">
                             <div
                                     th:text="${address.fullAdress()}">
@@ -53,18 +57,20 @@
                             <a th:href="@{/provider/updateProviderAddress?id=}+${address.id}">
                                 <i class="glyphicon glyphicon-pencil"></i></button></a>
                         </td>
-                    </div>
+                    </div>-->
+                    <td th:text="${provider.address.fullAdress()}"></td>
 
-                    <div th:if="${provider.addressList.size() == 0 }">
+                    <!--<div th:if="${provider.address == 0 }">
                         <td>
                             <span> Aucune adresse pour ce fournisseur</span>
 
                         </td>
-                    </div>
+                    </div>-->
                         <td>
                             <a th:href="@{/provider/updateProvider?id=}+${provider.id}">
                                 <i class="glyphicon glyphicon-pencil"></i></button></a>
                         </td>
+
                     <div th:if="${provider.getProductList().size() == 0}">
                         <td>
                             <a class="glyphicon glyphicon-trash"

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" >
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:fragment="common-header">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,6 +16,7 @@
     <!-- data table -->
     <link th:href="@{/css/jquery.dataTables.min.css}" rel="stylesheet" />
     <link th:href="@{/css/dataTables.bootstrap.min.css}" rel="stylesheet" />
+
 
     <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
 
@@ -40,7 +41,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" th:href="@{/orderedList}">Admin</a>
+                    <a class="navbar-brand" th:href="@{/product/orderedList}">Admin</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -50,7 +51,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle"
                                data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Produit <span class="caret"></span></a>
+                               aria-expanded="false">Produits <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/product/add}">Ajouter un produit</a></li>
                                 <li><a th:href="@{/product/productList}">Liste des produits</a></li>
@@ -70,7 +71,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle"
                                data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Forme <span class="caret"></span></a>
+                               aria-expanded="false">Formes <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/product/addShape}">Ajouter une forme</a></li>
                                 <li><a th:href="@{/product/shapeList}">Liste des formes</a></li>
@@ -82,10 +83,10 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle"
                                data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Categorie <span class="caret"></span></a>
+                               aria-expanded="false">Catégories <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a th:href="@{/product/addCategory}">Ajouter une Categorie</a></li>
-                                <li><a th:href="@{/product/categoryList}">Liste des categories</a></li>
+                                <li><a th:href="@{/product/addCategory}">Ajouter une Catégorie</a></li>
+                                <li><a th:href="@{/product/categoryList}">Liste des catégories</a></li>
 
                             </ul>
                         </li>
@@ -96,7 +97,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle"
                                data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">Dimension <span class="caret"></span></a>
+                               aria-expanded="false">Dimensions <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/product/addDimension}">Ajouter une Dimension</a></li>
                                 <li><a th:href="@{/product/dimensionList}">Liste des Dimensions</a></li>
@@ -108,12 +109,36 @@
                     <ul class="nav navbar-nav">
 
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle"
+                            <a th:href="@{/provider/providerList}" class="dropdown-toggle"
                                data-toggle="dropdown" role="button" aria-haspopup="true"
-                               aria-expanded="false">fournisseur <span class="caret"></span></a>
+                               aria-expanded="false">Fournisseurs <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a th:href="@{/provider/addProvider}">Ajouter un fournisseur</a></li>
                                 <li><a th:href="@{/provider/providerList}">Liste des fournisseures</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle"
+                               data-toggle="dropdown" role="button" aria-haspopup="true"
+                               aria-expanded="false">Utilisateurs <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/product/userList}">Liste des utilisateurs</a></li>
+
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle"
+                               data-toggle="dropdown" role="button" aria-haspopup="true"
+                               aria-expanded="false">Commandes <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a th:href="@{/product/orderedList}" >Liste des commandes</a></li>
 
                             </ul>
                         </li>
@@ -136,7 +161,7 @@
         <script th:src="@{/js/bootbox.min.js}"></script>
         <script th:src="@{/js/script1.js}"></script>
         <script th:src="@{/js/scripts.js}"></script>
-        <!--<script th:src="@{/js/scriptSh.js}"></script>-->
+        <script th:src="@{/js/shapeDimension.js}"></script>
         <script th:src="@{/js/order.js}"></script>
         <script th:src="@{/js/scriptGalerie.js}"></script>
 

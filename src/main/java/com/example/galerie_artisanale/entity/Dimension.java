@@ -23,6 +23,10 @@ public class Dimension implements Serializable {
     transient
     private boolean removed ;
 
+    @ManyToOne
+    @JoinColumn(name = "id_shape")
+    private Shape shape;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dimension")
     private List<Product> productList;
 

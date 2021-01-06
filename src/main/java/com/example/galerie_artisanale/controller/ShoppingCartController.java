@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 import static com.example.galerie_artisanale.controller.HomeController.fileToPath;
@@ -95,6 +97,7 @@ public class ShoppingCartController {
         } else {
 
             Object shoppingCart = session.getAttribute(SHOPPING_CART_SESSION);
+            //TODO : check if there is a merge to do
             if (shoppingCart == null) {
 
                 Ordered cart = new Ordered();
@@ -192,7 +195,7 @@ public class ShoppingCartController {
     }
 
 
-    @GetMapping("/confirm")
+   /* @GetMapping("/confirm")
     public String confirmShoppingCart(Model model, HttpSession session) {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
@@ -203,15 +206,13 @@ public class ShoppingCartController {
                 throw new IllegalStateException("Shopping cart should be persisted at this level: id shouldn't be null");
             }
 
-            // TODO: update the stock
 
-            /*ordered.getCartItemList()
-                    .forEach(item -> item.getProduct().setInStockNumber());*/
-
-            // model.addAttribute("notEnoughStock",true);
 
             ordered.setStatus(OrderedStatus.VALID);
-            ordered.setOrderDate(new Date());
+            LocalDateTime localDateTime = LocalDateTime.now();
+            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            ordered.setOrderDate(date);
+           // ordered.setOrderDate(new Date());
             ordered.getCartItemList()
                     .forEach(item -> item.setBuyinPrice(item.getProduct().getPrice()));
 
@@ -235,7 +236,7 @@ public class ShoppingCartController {
             throw new IllegalStateException("You should be authenticated to be able to confirm your Shopping cart");
         }
         return "orderConfirm";
-    }
+    }*/
 
 
     @RequestMapping("/updateCartItem")
@@ -252,7 +253,7 @@ public class ShoppingCartController {
     public String removeItem(@PathVariable("itemId")long itemId, Model model){
         CartItem persistedCartItem = cartItemService.findById(itemId);
         cartItemService.remove(persistedCartItem);
-        model.addAttribute("shoppingCart", cartItemService.findAll());
+        //model.addAttribute("shoppingCart", cartItemService.findAll());
         return "redirect:/shoppingCart/view";
     }
 

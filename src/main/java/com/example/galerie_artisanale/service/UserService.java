@@ -25,6 +25,9 @@ public interface UserService {
 	List<User> findAll();
 
 	void createPasswordResetTokenForUser(final User user, final String token);
+	List<User> findByRole(String role);
+
+
 
 
 }

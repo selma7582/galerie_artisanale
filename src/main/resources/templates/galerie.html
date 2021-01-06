@@ -1,13 +1,13 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header :: common-header"/>
-<!--<style>
+<style>
     body {
 
         background-image: url("../images/background/background.jpg");
         background-repeat: repeat
     }
-</style>-->
+</style>
 <body>
 <div th:replace="common/header :: navbar"/>
 
@@ -19,22 +19,107 @@
             <!--
                         <form method="post" th:object="${priceRange}">
             -->
-            <div class="form-group mt-5">
-                <label for="priceRange">Recherche par prix</label>
-                <div class="form-control">
-                    <b class="mr-2">€ 10</b> <input id="priceRange" type="text" class="span2" value=""
-                                                    data-slider-min="1"
-                                                    data-slider-max="100" data-slider-step="2"
-                                                    data-slider-value="[5,100]" data-slider-tooltip="show"/> <b
-                        class="ml-2">€ 100</b>
-                    <!--        <input type="hidden" id="rangeMin" th:field="*{min}"/>
-                            <input type="hidden" id="rangeMax" th:field="*{max}"/>-->
-                </div>
+            <div>
+                <ol class="breadcrumb text-center">
+                    <li>
+                        <ul class="nav navbar-nav navbar-left">
+                            <li class="dropdown ">
+                                <a th:href="@{/galerie}" class="dropdown-toggle"
+                                   data-toggle="dropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">Recherche par catégories<span class="caret"></span>
+                                </a>
+                                <ul th:if="${categories != null}" class="dropdown-menu">
+                                    <li th:each="cat : ${categories}">
+                                        <a th:href="${'/galerie/'+cat}">[[${cat}]]</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <!--<li class="dropdown">
+                                <a th:href="@{/galerie}" class="dropdown-toggle"
+                                   data-toggle="dropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">Recherche par catégorie<span class="caret"></span>
+                                </a>
+                                <ul th:if="${categories != null}" class="dropdown-menu">
+                                    <li th:each="cat : ${categories}">
+                                        <a th:href="${'/searchByCategory/'+cat}" >[[${cat}]]</a>
+                                    </li>
+                                </ul>
+                            </li>-->
+                            <li class="dropdown">
+                                <a th:href="@{/galerie}" class="dropdown-toggle"
+                                   data-toggle="dropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">Recherche par formes<span class="caret"></span>
+                                </a>
+                                <ul th:if="${shapes != null}" class="dropdown-menu">
+
+                                    <li th:each="shape : ${shapes}">
+                                        <a th:href="${'/searchByShape/'+shape}">[[${shape}]]</a>
+
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a th:href="@{/galerie}" class="dropdown-toggle"
+                                   data-toggle="dropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">Recherche par dimensions<span class="caret"></span>
+                                </a>
+                                <ul th:if="${dimensions != null}" class="dropdown-menu">
+
+                                    <li th:each="dim : ${dimensions}">
+                                        <a th:href="${'/searchByDimension/'+dim}">[[${dim}]]</a>
+
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="dropdown">
+                                <a th:href="@{/galerie}" class="dropdown-toggle"
+                                   data-toggle="dropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">Recherche par prix<span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="form-group mt-5">
+                                        <!--<label for="priceRange">Recherche par prix</label>-->
+                                        <div class="form-control">
+                                            <b class="mr-2">DH 100</b>
+                                            <input id="priceRange" class="span2" data-slider-id='ex2Slider' value=""
+                                                   type="text" data-slider-min="10" data-slider-max="50000"
+                                                   data-slider-step="1" data-slider-value="[250,450]"/>
+                                            <b class="ml-2">DH 50000</b>
+                                            <!--        <input type="hidden" id="rangeMin" th:field="*{min}"/>
+                                                    <input type="hidden" id="rangeMax" th:field="*{max}"/>-->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </li>
+
+
+                        </ul>
+                    </li>
+                </ol>
+
+                <!-- <div class="form-group mt-5">
+                     <label for="priceRange">Recherche par prix</label>
+                     <div class="form-control">
+                         <b class="mr-2">DH 10</b>
+                         <input id="priceRange" class="span2" data-slider-id='ex2Slider' value="" type="text" data-slider-min="10" data-slider-max="50000" data-slider-step="1" data-slider-value="[250,450]" />
+                         <b class="ml-2">DH 50000</b>
+                         &lt;!&ndash;        <input type="hidden" id="rangeMin" th:field="*{min}"/>
+                                 <input type="hidden" id="rangeMax" th:field="*{max}"/>&ndash;&gt;
+                     </div>
+
+                 </div>-->
+
             </div>
+
             <!-- </form>-->
         </div>
     </div>
-    <ul class="nav navbar-nav navbar-left">
+    <!--<ul class="nav navbar-nav navbar-left">
         <li class="dropdown">
             <a th:href="@{/galerie}" class="dropdown-toggle"
                data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -48,7 +133,7 @@
             </ul>
         </li>
 
-        <!--<li class="dropdown">
+        &lt;!&ndash;<li class="dropdown">
             <a th:href="@{/galerie}" class="dropdown-toggle"
                data-toggle="dropdown" role="button" aria-haspopup="true"
                aria-expanded="false">Recherche par catégorie<span class="caret"></span>
@@ -58,7 +143,7 @@
                     <a th:href="${'/searchByCategory/'+cat}" >[[${cat}]]</a>
                 </li>
             </ul>
-        </li>-->
+        </li>&ndash;&gt;
 
         <li class="dropdown">
             <a th:href="@{/galerie}" class="dropdown-toggle"
@@ -74,66 +159,69 @@
             </ul>
         </li>
 
-        <li class="dropdown">
-            <a th:href="@{/galerie}" class="dropdown-toggle"
-               data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false">Recherche par formes<span class="caret"></span>
-            </a>
-            <ul th:if="${shapes != null}" class="dropdown-menu">
+        &lt;!&ndash; <li class="dropdown">
+             <a th:href="@{/galerie}" class="dropdown-toggle"
+                data-toggle="dropdown" role="button" aria-haspopup="true"
+                aria-expanded="false">Recherche par formes<span class="caret"></span>
+             </a>
+             <ul th:if="${shapes != null}" class="dropdown-menu">
 
-                <li th:each="shape : ${shapes}">
-                    <a th:href="${'/searchByShape/'+shape}">[[${shape}]]</a>
+                 <li th:each="shape : ${shapes}">
+                     <a th:href="${'/searchByShape/'+shape}">[[${shape}]]</a>
 
-                </li>
-            </ul>
-        </li>
+                 </li>
+             </ul>
+         </li>
+ &ndash;&gt;
 
-
-    </ul>
-
-
-    <div th:if="${emptyList}">
-        <h3 style="font-style: italic;">Aucun resulta pour votre recherche.</h3>
-    </div>
-
-    <div th:unless="${emptyList}">
-        <table id="productListTable">
-            <thead>
-            <th>prix</th>
-            </thead>
-            <tbody>
-            <div class="row">
-                <tr class="col-lg-3" th:each="product : ${productList}" th:if="${product != null }">
-                    <form method="post" th:object="${cartItemList}">
-                        <td class="">
-                            <h3 th:text="${product.productName}"></h3>
-                            <input type="hidden" name="product" th:value="productList">
-
-                            <div th:if="${product.haveImages()}"
-                                 th:each="image : ${product.imagesList}">
-                                <a th:href="@{/productDetail?id=}+${product.id}">
-                                    <div>
-                                        <img th:if="${image.fullURL != null}" th:src="@{${image.fullURL}}" width="200"
-                                             height="250"/></div>
-                                </a>
-                                <br/>
-                            </div>
-
-                            <span>Dimensions:  <span th:text="${product.dimension}"></span></span> cm<br/>
+    </ul>-->
 
 
-                            <!--<span >   <span th:text="${product.inStockNumber}"></span> pièce disponible</span><br/>-->
-                            <span style="font-size:x-large;">Prix: <span
-                                    th:text="${#numbers.formatDecimal(product.price, 0 , 2)}"></span> DH</span><br/>
+</div>
 
-                        </td>
-                    </form>
-                </tr>
-            </div>
-            </tbody>
-        </table>
+<div id="products">
+    <div th:replace="products :: list"></div>
+
+</div>
+
+<div th:if = "${totalPages >0}">
+    <div class="row col-sm-10">
+        <div class="col-sm-2">
+            Total Rows:[[${totalItems}]]
+        </div>
+        <div class="col-sm-1">
+            <span th:each="i:${#numbers.sequence(1,totalPages)}">
+                <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                <span th:unless="${currentPage != i}">[[${i}]]</span>&nbsp;&nbsp;
+            </span>
+        </div>
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/page/'+${currentPage + 1}}">Suivant</a>
+            <span th:unless="${currentPage < totalPages}">Suivant</span>
+        </div>
+
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/page/'+${totalPages}}">fin</a>
+            <span th:unless="${currentPage < totalPages}">fin</span>
+        </div>
     </div>
 </div>
+
+<script type='text/javascript'>
+    $('#priceRange').slider({
+        formatter: function (value) {
+
+            return 'Current value: ' + value;
+        }
+    });
+    $("#priceRange").on("slideStop", function (stopEvent) {
+        var range = stopEvent.value;
+
+        $.get("/products?min=" + range[0] + "&max=" + range[1], function (data) {
+            $("#products").html(data);
+        });
+    });
+</script>
 
 <div th:replace="common/header :: footer"/>
 
@@ -145,9 +233,8 @@
 </body>
 </html>
 
-<!--
 
-<!doctype html>
+<!--<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header :: common-header" />
 
@@ -436,5 +523,4 @@
 ================================================== &ndash;&gt;
 &lt;!&ndash; Placed at the end of the document so the pages load faster &ndash;&gt;
 </body>
-</html>
--->
+</html>-->

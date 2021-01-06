@@ -3,9 +3,9 @@
 <head th:fragment="common-header">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <!-- <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1">-->
 
-    <title> Galerie Artisanal</title>
+    <title> Galerie Artisanale</title>
 
     <!-- Bootstrap core CSS -->
 
@@ -25,22 +25,26 @@
     <!-- Custom styles for this template -->
     <link href="/css/style.css" rel="stylesheet" />
 
-<!--
-    <link th:rel="stylesheet" th:href="@{assets/bootstrap-slider/css/bootstrap-slider.css}"/>
--->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.7.2/css/bootstrap-slider.min.css">
+    <!--
+        <link th:rel="stylesheet" th:href="@{assets/bootstrap-slider/css/bootstrap-slider.css}"/>
+    -->
 
-   <!-- <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-    <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>-->
+    <!-- <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+     <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.css">
 
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/bootstrap-slider.js"></script>
 
 
 </head>
 
 <body>
-    <div th:fragment="navbar">
-        <div class="page-top"
-             style="width: 100%; height: 20px; background-color: grey;"></div>
+<div th:fragment="navbar">
+    <div class="page-top"
+         style="width: 100%; height: 20px; background-color: grey;"></div>
 
 
 
@@ -57,7 +61,8 @@
                                             aria-expanded="false">Galerie<span class="caret"></span></a>
                         <ul th:if="${categories != null}"  class="dropdown-menu" >
                             <li th:each="cat : ${categories}"><a th:href="${'/galerie/'+cat}">[[${cat}]]</a></li>
-                        </ul></li>
+                        </ul>
+                    </li>
 
                     <form class="navbar-form" th:action="@{/searchProduct}" method="post">
                         <div class="form-group">
@@ -68,8 +73,6 @@
                     </form>
 
                 </ul>
-
-
                 <ul class="nav navbar-nav navbar-right" >
 
                     <li><a th:href="@{/shoppingCart/view}"> <i class="fa fa-shopping-cart"><p th:if="${shoppingCart != null}"> [[${shoppingCart.getCartItemCount()}]]</p></i></a></li>
@@ -77,20 +80,30 @@
                     <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}"><i class="glyphicon glyphicon-user"></i></a></li>
 
 
-                    <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}"><i class="glyphicon glyphicon-user"></i></a></li>
-
+                    <li sec:authorize="isAuthenticated()" class="dropdown"><a th:href="@{/galerie}" class="dropdown-toggle"
+                                            data-toggle="dropdown" role="button" aria-haspopup="true"
+                                            aria-expanded="false"><i class="glyphicon glyphicon-user"></i><span class="caret"></span></a>
+                        <ul   class="dropdown-menu" >
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/profile}">Mon profil</a></li>
+                            <li sec:authorize="isAuthenticated()"><a th:href="@{/myOrderedList}">Mes commandes</a></li>
+                        </ul>
+                    </li>
+                    <!--<li sec:authorize="isAuthenticated()"><a th:href="@{/profile}"><i class="glyphicon glyphicon-user"></i></a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/myOrderedList}"><i class="glyphicon glyphicon-user"></i></a></li>-->
 
                     <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Deconnexion</a></li>
-                <!--    <li class="nav-item dropdown">
 
-                        <span th:text="#{lang.change}"></span>:
-                        <select id="locales">
-                            <option value=""></option>
-                            <option value="en" th:text="#{lang.eng}"></option>
-                            <option value="fr" th:text="#{lang.fr}"></option>
-                        </select>
 
-                    </li>-->
+                    <!--    <li class="nav-item dropdown">
+
+                            <span th:text="#{lang.change}"></span>:
+                            <select id="locales">
+                                <option value=""></option>
+                                <option value="en" th:text="#{lang.eng}"></option>
+                                <option value="fr" th:text="#{lang.fr}"></option>
+                            </select>
+
+                        </li>-->
 
 
 
@@ -103,84 +116,84 @@
 
 </div>
 
-    <div th:fragment="footer">
-        <br />
-        <br />
-        <footer>
-            <div class="row">
+<div th:fragment="footer">
+    <br />
+    <br />
+    <footer>
+        <div class="row">
 
-                <div class="col-xs-3 ">
-                    <h6 class="heading7 contact">CONTACT</h6>
-                    <ul class="post">
+            <div class="col-xs-3 ">
+                <h6 class="heading7 contact">CONTACT</h6>
+                <ul class="post">
 
-                            <p>
-                                <i class="fa fa-map-pin"></i> 123 XXX Avenue<br /> Maroc, Tanger
+                    <p>
+                        <i class="fa fa-map-pin"></i> 123 XXX Avenue<br /> Maroc, Tanger
 
-                            </p>
+                    </p>
 
 
-                        <p>
-                            <i class="fa fa-phone"></i> Tel (MA) : +212 07586912
-                        </p>
-                        <p>
-                            <i class="fa fa-envelope"></i> E-mail : info@galerieArtisanal.com
-                        </p>
-                    </ul>
-                </div>
-                <div class="col-xs-3 ">
-                    <h6 class="heading7">LIENS</h6>
-                    <ul class="footer-ul">
-                        <li><a href="#"> Vie privé</a></li>
-                        <li><a href="#"> Conditions</a></li>
-                        <li><a href="#"> Question frequentes</a></li>
-                    </ul>
-                </div>
-                <div class="col-xs-3 ">
-                    <h6 class="heading7">Heures d'ouvertures</h6>
-                    <div class="post">
-                        <p>Lundi - Samedi: 9h - 23h</p>
-                        <p>Dimanche: 10h - 22h</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-        <div class="copyright">
-            <div class="col-md-6">
-                <p>© Copyright
-                    2020 - Tous les droits sont réservés </p>
-            </div>
-            <div class="col-md-6">
-                <ul class="bottom_ul">
-                    <li><a href="#">A propos</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Faq's</a></li>
-                    <li><a href="#">Contacter nous</a></li>
-                    <li><a href="#">Site Map</a></li>
+                    <p>
+                        <i class="fa fa-phone"></i> Tel (MA) : +212 07586912
+                    </p>
+                    <p>
+                        <i class="fa fa-envelope"></i> E-mail : info@galerieArtisanal.com
+                    </p>
                 </ul>
             </div>
+            <div class="col-xs-3 ">
+                <h6 class="heading7">LIENS</h6>
+                <ul class="footer-ul">
+                    <li><a href="#"> Vie privée</a></li>
+                    <li><a href="#"> Conditions</a></li>
+                    <li><a href="#"> Question fréquentes</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-3 ">
+                <h6 class="heading7">Heures d'ouvertures</h6>
+                <div class="post">
+                    <p>Lundi - Samedi: 9h - 23h</p>
+                    <p>Dimanche: 10h - 22h</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="copyright">
+        <div class="col-md-6">
+            <p>© Copyright
+                2020 - Tous les droits sont réservés </p>
+        </div>
+        <div class="col-md-6">
+            <ul class="bottom_ul">
+                <li><a href="#">A propos</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Faq's</a></li>
+                <li><a href="#">Contacter nous</a></li>
+                <li><a href="#">Site Map</a></li>
+            </ul>
         </div>
     </div>
+</div>
 
-    <div th:fragment="body-bottom-scripts">
-        <script th:src="@{/js/jquery.min.js}"></script>
-        <script th:src="@{/js/bootstrap.min.js}"></script>
-        <script th:src="@{/js/bootbox.min.js}"></script>
-        <script th:src="@{/js/script1.js}"></script>
-        <script th:src="@{/js/scripts.js}"></script>
-        <script th:src="@{/js/scriptGalerie.js}"></script>
-        <script th:src="@{/js/scriptCart.js}"></script>
-
-
-        <!-- data table -->
-        <script th:src="@{/js/jquery.dataTables.min.js}"></script>
-        <script th:src="@{/js/dataTables.bootstrap.min.js}"></script>
-        <script th:src="@{/js/scriptLang.js}"></script>
+<div th:fragment="body-bottom-scripts">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/script1.js}"></script>
+    <script th:src="@{/js/scripts.js}"></script>
+    <script th:src="@{/js/scriptGalerie.js}"></script>
+    <script th:src="@{/js/scriptCart.js}"></script>
 
 
+    <!-- data table -->
+    <script th:src="@{/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/js/scriptLang.js}"></script>
 
 
-    </div>
+
+
+</div>
 
 
 </body>

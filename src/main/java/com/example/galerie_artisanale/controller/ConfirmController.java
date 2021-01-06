@@ -23,13 +23,13 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.example.galerie_artisanale.controller.HomeController.fileToPath;
+import static com.example.galerie_artisanale.controller.ShoppingCartController.SHOPPING_CART_MODEL;
 
 @Controller
 public class ConfirmController {
 
     public static final String SHOPPING_CART_SESSION = "SHOPPING_CART";
     public static final String CART_ITEM_LIST = "cartItemList";
-    public static final String SHOPPING_CART_MODEL = "shoppingCart";
 
     @Autowired
     private UserService userService;
@@ -80,6 +80,7 @@ public class ConfirmController {
             if (ordered == null) {
                 // cad que le panier est dans la session et l'utilisateur n'a pas encore un panier en cours qui n'est pas encore validé
                 ordered = (Ordered) session.getAttribute(ShoppingCartController.SHOPPING_CART_SESSION);
+                //ordered.setUser();
                 ordered = orderService.save(ordered);
             }
 
@@ -158,8 +159,10 @@ public class ConfirmController {
             ordered.getCartItemList()
                     .forEach(cartItem -> cartItem.getProduct().setInStockNumber(cartItem.getProduct().getInStockNumber() - cartItem.getQty()));
 
-            ordered.setStatus(OrderedStatus.VALID);
+            ordered.setStatus(OrderedStatus.EN_ATTENTE);
             ordered.setOrderDate(new Date());
+            ordered.getCartItemList()
+                    .forEach((item->item.setQty(item.getQty())));
             ordered.getCartItemList()
                     .forEach(item -> item.setBuyinPrice(item.getProduct().getPrice()));
             User connectedUser = (User) authentication.getPrincipal();
@@ -176,7 +179,9 @@ public class ConfirmController {
 
             }
             if (addresses != null && !addresses.isEmpty()) {
-                Address address1 = addressService.findOne(addresses.get(0).getId());
+               // ordered.setShippingAddress(addresses.get(addresses.size() - 1));
+
+                Address address1 = addressService.findOne(addresses.get(addresses.size() - 1).getId());
                 Address persestideAddress = addressService.save(address1);
                 ordered.setShippingAddress(persestideAddress);
                 ordered.setBillingAddress(persestideAddress);
@@ -213,25 +218,12 @@ public class ConfirmController {
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
     }
 
-    @GetMapping("/myOrderedList")
-    public String view(Model model) {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof User) {
-
-
-            List<Ordered> myOrderedList = orderService.findByUserAndStatus((User) authentication.getPrincipal(), OrderedStatus.VALID);
-
-            model.addAttribute("myOrderedList", myOrderedList);
-        } else {
-            throw new IllegalArgumentException("This service requires identification");
-        }
-        return "redirect:/myOrderedList";
-    }
 
     @GetMapping("/orderedList")
     public String viewAll(Model model) {
         Collection<Ordered> orderedList = orderService.findAll();
         model.addAttribute("orderedList", orderedList);
+
         return "/admin/orderedList";
     }
 
@@ -286,50 +278,56 @@ public class ConfirmController {
     }
 
     @GetMapping(value = "/updateUserAddress")
-    public String updatePUserAddress(Model model, @RequestParam("id") Long id) {
+    public String updateUserAddress(Model model, @RequestParam("id") Long id) {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof User) {
             User connectedUser = (User) authentication.getPrincipal();
+            List<Address> addresses = addressService.findByUser(connectedUser);
+
             Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
             model.addAttribute("ordered", ordered);
             List<Address> addressList = addressService.findByUser(connectedUser); //.findOne(ordered.getShippingAddress().getId());
-            Address address = addressService.findOne((addressList.get(0)).getId());
+            Address address = addressService.findOne((addressList.get(addresses.size() - 1)).getId());//addresses.size() - 1
 
             model.addAttribute("address", address);
             return "updateUserAddress";
+
         } else {
             throw new IllegalStateException("You should be authenticated to be able to confirm your Shopping cart");
         }
     }
 
     @PostMapping("/updateUserAddress")
-    public String updateUserAddress(Address address, City city, BindingResult result) {
-        Address address1 = addressService.findOne(address.getId());
+    public String updateUserAddress(@ModelAttribute("address")Address address, City city, Model model) {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User connectedUser = (User) authentication.getPrincipal();
-        Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
-        address1.setUser(connectedUser);
-        address1.setStreet(address.getStreet());
-        address1.setNumber(address.getNumber());
-        address1.setCity(cityService.findById(address.getCity().getId()));
-        Address persestideAddress = addressService.save(address1);
-        ordered.setShippingAddress(persestideAddress);
-        ordered.setBillingAddress(persestideAddress);
+        List<Address> addresses = addressService.findByUser(connectedUser);
+        Ordered ordered = orderService.findShoppingCart(connectedUser);
+
+        if (addresses.size() == 0) {
+
+            address.setUser(connectedUser);
+            Address persestideAddress1 = addressService.save(address);
+
+        }
+        if (addresses != null && !addresses.isEmpty()) {
+            Address address1 = newAddress();
+            address1.setUser(connectedUser);
+            address1.setCity(address.getCity());
+            address1.setStreet(address.getStreet());
+            address1.setNumber(address.getNumber());
+            City city1 = address.getCity();
+            address1.setCity(city1);
+            Address persestideAddress1 =addressService.save(address1);
+            ordered.setShippingAddress(persestideAddress1);
+            addresses.add(persestideAddress1);
+        }
+       // model.addAttribute("address", new Address());
         return "redirect:/confirm?id=" + ordered.getId();
     }
 
-  /*  @GetMapping(value = "/updateOrderedStat")
-    public String updateOrderedStat(Model model, @ModelAttribute("statut") Enum statut,@ModelAttribute("statId") long statId) {
-
-        Ordered ordered = orderService.findById(statId);
-        ordered.setStatus((OrderedStatus) statut);
-        orderService.save(ordered);
-        model.addAttribute("ordered",ordered );
-        return "redirect:/product/orderedDetail?="+ordered.getId();
-
-    }*/
 
     @RequestMapping("/updateCartItem")
     public String updateShoppingCart(@ModelAttribute("qty") int qty, @ModelAttribute("itemID") long itemID) {
@@ -340,6 +338,57 @@ public class ConfirmController {
         // return "forward:/shoppingCart/cart";
 
     }
+
+/*
+    @GetMapping(value = "/updateAddressUser")
+    public String updateAddressUser(Model model, @RequestParam("id") Long id) {
+
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof User) {
+            User connectedUser = (User) authentication.getPrincipal();
+            List<Address> addresses = addressService.findByUser(connectedUser);
+
+            Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
+            model.addAttribute("ordered", ordered);
+            List<Address> addressList = addressService.findByUser(connectedUser); //.findOne(ordered.getShippingAddress().getId());
+            Address address = addressService.findOne((addressList.get(addresses.size() - 1)).getId());//addresses.size() - 1
+
+            model.addAttribute("address", address);
+            return "updateAddressUser";
+        } else {
+            throw new IllegalStateException("You should be authenticated to be able to confirm your Shopping cart");
+        }
+    }
+
+    @PostMapping("/updateAddressUser")
+    public String updateAddressUser(@ModelAttribute("address")Address address, City city, Model model) {
+
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User connectedUser = (User) authentication.getPrincipal();
+        List<Address> addresses = addressService.findByUser(connectedUser);
+        Ordered ordered = orderService.findShoppingCart(connectedUser);
+
+        if (addresses.size() == 0) {
+
+            address.setUser(connectedUser);
+            Address persestideAddress1 = addressService.save(address);
+
+        }
+        if (addresses != null && !addresses.isEmpty()) {
+            Address address1 = new Address();
+            address1.setUser(connectedUser);
+            address1.setCity(address.getCity());
+            address1.setStreet(address.getStreet());
+            address1.setNumber(address.getNumber());
+            address1.setCity(address.getCity());
+            Address persestideAddress1 =addressService.save(address1);
+            ordered.setShippingAddress(persestideAddress1);
+            addresses.add(persestideAddress1);
+        }
+        return "myOrderedList"; //+ ordered.getId();
+    }*/
+
+
 
 
 }

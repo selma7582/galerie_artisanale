@@ -16,7 +16,7 @@
     <div th:replace="admin/common/header :: navbar"/>
 
     <div class="container login">
-        <div class="container login">
+        <div class="text-center">
             <div class="">
                 <h2><span>Nouvelle dimension</span></h2>
             </div>
@@ -35,14 +35,41 @@
 
                         <!--input type="hidden" th:field="*{id}">-->
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="description">Description</label>&nbsp;<span
-                                style="color: red;" th:if="${dimensionExists}">Dimension Existe Déja.</span>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="description" name="description"
-                                       th:value="${dimension.description}"
-                                       placeholder="" required/>
-                                <span class="help-block"></span>
+
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-md-2 control-label" for="shape">*Forme</label>
+                                    <div class="col-xs-7">
+
+                                        <div class="">
+                                            <select th:value="${shape}" name="shape" id="shape" class="form-control"
+                                                    required>
+                                                <option value=""></option>
+
+                                                <option th:each="shape: ${shapes}"
+                                                        th:value="${shape.id}"
+                                                        th:text="${shape.shapeName}"></option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!--Shape -->
+
+                                </div>
                             </div>
+                            <div class="row">
+                                <label class="col-md-2 control-label" for="description">*Désignation</label>&nbsp;<span
+                                    style="color: red;" th:if="${dimensionExists}">Dimension Existe Déja.</span>
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" id="description" name="description"
+                                           th:value="${dimension.description}"
+                                           placeholder="" required/>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+
                         </div>
 
 

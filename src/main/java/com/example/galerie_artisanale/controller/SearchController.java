@@ -116,6 +116,7 @@ public class SearchController {
     ){
         model.addAttribute("categories", categoryService.findAllCategoryNames());
         model.addAttribute("dimensions",dimensionService.findAllDimensionDescription());
+        model.addAttribute("shapes",shapeService.findAllShapeName());
 
         if(principal!=null) {
             String username = principal.getName();
@@ -147,6 +148,7 @@ public class SearchController {
     ){
         model.addAttribute("categories", categoryService.findAllCategoryNames());
         model.addAttribute("shapes",shapeService.findAllShapeName());
+        model.addAttribute("dimensions",dimensionService.findAllDimensionDescription());
         if(principal!=null) {
             String username = principal.getName();
             User user = userService.findByUsername(username);

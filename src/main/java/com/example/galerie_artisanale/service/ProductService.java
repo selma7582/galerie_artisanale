@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.service;
 
 import com.example.galerie_artisanale.entity.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface ProductService {
 
     Product findById(Long id);
 
-     Product findOne(Long id);
+    Product findOne(Long id);
 
     void removeOne(Long id);
 
@@ -29,7 +30,8 @@ public interface ProductService {
 
     List<Product> findByShape(String shape);
 
-  /*  List<Product> filterProducts(int min, int max);
+    List<Product> filterProducts(int min, int max);
 
-    List<Product> getMockedProducts();*/
+    Page<Product> findPagination(int pageNo, int pageSize);
+
 }

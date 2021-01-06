@@ -69,10 +69,10 @@ public class User implements UserDetails, Serializable {
     }
 
   /*  @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")
-    private List<Ordered> orderedList;
+    private List<Ordered> orderedList;*/
 
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")
-    private List<Address>  addressList;*/
+    private List<Address>  addressList;
 
     @Override
     public boolean isAccountNonExpired() {
@@ -101,9 +101,6 @@ public class User implements UserDetails, Serializable {
         authorities.add(new Authority(getRole().getRole()));
         return authorities;
     }
-
-//    @OneToMany(mappedBy = "user", cascade= {CascadeType.PERSIST,CascadeType.MERGE} )
-//    private List<Address> addresses = new ArrayList<>();
 
 
 

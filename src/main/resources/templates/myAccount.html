@@ -58,31 +58,19 @@
                                     <div class="form-group">
                                         <label for="email">* Email</label> <span
                                             style="color: red;" th:if="${emailExists}">Email existe déja</span>
-                                        <input required="required" type="email" class="form-control"
-                                               id="email" name="email" />
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                            <input required="required" type="email" class="form-control"
+                                                   id="email" name="email" />
+                                        </div>
                                     </div>
-
-                                    <!--              <div class="form-group">
-                                                      <label for="password">* Mot de passe</label> &lt;!&ndash;<span
-                                                      style="color: red;" th:if="${emailExists}">Email already exists</span> &ndash;&gt;
-                                                      <input  type="password" class="form-control"
-                                                             id="password" name="password" />
-                                                      <p style="color: #828282">Entrer le Mot de passe</p>
-                                                      <div class="alert-danger" th:if="${param.error ne null}">Nom d'utilisateur et Mot de passe invalides</div>
-                                                      <div class="alert-normal" th:if="${param.logout ne null}">Vous avez été déconnecté.</div>
-                                                  </div>
-          -->
                                     <button type="submit" class="btn btn-login">S'inscrire</button>
-
-
 
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
                 <!-- log in -->
                 <div class="tab-pane fade" id="tab-2"
                      th:classappend="${classActiveLogin}? 'in active'">
@@ -91,19 +79,23 @@
                             <div class="panel-body"
                                  style="background-color:#ededed; margin-top: 20px;">
                                 <div th:if="${param.error != null}" style="color: red">Email ou Mot de passe incorrecte</div>
-
                                 <form th:action="@{/login}" method = "post">
-
                                     <div class="form-group">
                                         <label for="username">* Adresse mail</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                                         <input type="text" class="form-control"
                                                id="username" name="username" required autofocus>
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="passwordL">* Mot de passe</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                                         <input required="required" type="password" class="form-control"
                                                id="passwordL" name="password" />
+                                        </div>
                                     </div>
 
                                     <button type="submit" class="btn btn-login">Se connecter</button>
@@ -127,13 +119,15 @@
                                 <form th:action="@{/forgetPassword}" method="post">
 
                                     <div class="form-group">
+
                                         <label for="recoverEmail"> Adresse mail </label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                                         <input required autofocus type="email" class="form-control"
                                                id="recoverEmail" name="email" />
+                                        </div>
                                     </div>
-
                                     <button type="submit" class="btn btn-login">Envoyer</button>
-
                                 </form>
                             </div>
                         </div>

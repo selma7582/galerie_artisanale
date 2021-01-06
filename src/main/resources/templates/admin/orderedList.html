@@ -26,9 +26,12 @@
         <div class="alert alert-success" th:if="${deleteSuccess}">
             <strong>Commande Bien Supprimer!</strong>
         </div>
+
         <!--< class="table-responsive">-->
         <table id="productListTable" class="table table-bordered table-hover table-striped">
-            <caption>Liste des Commandes</caption>
+            <div class="text-center">
+                <h3>Liste des commandes</h3>
+            </div>
             <thead>
             <tr>
                 <th>Numéro</th>
@@ -36,7 +39,7 @@
                 <th>Date commande</th>
                 <th>Adresse</th>
                 <th>Total</th>
-                <th>Nbre des produits</th>
+                <th>Quantité</th>
                 <th>Status</th>
                 <th>Editer</th>
 
@@ -45,7 +48,7 @@
             <tbody>
             <tr class=""
                 data-th-each="ordered : ${orderedList}"
-                th:if="${ordered.shippingAddress != null and ordered.user != null and ordered.shippingAddress.city != null }">
+                th:if="${ordered.shippingAddress != null and ordered.user != null and ordered.shippingAddress.city != null and ordered.status.name() != ordered.status.INVALID.name()}" >
 
                 <td th:text="${ordered.id}"></td>
 
@@ -54,7 +57,9 @@
                 <td th:text="${ordered.user.lastName+' '+ordered.user.firstName}"></td>
 
                 <!--</div>-->
-                <td th:text="${ordered.orderDate}"></td>
+                <td th:text="${#dates.format(ordered.orderDate, 'dd-MM-yyyy')}"></td>
+
+
                 <div th:if="${ordered.shippingAddress != null}">
                     <td th:text="${ordered.shippingAddress.street+' '+ordered.shippingAddress.number+', '+ordered.shippingAddress.city.zipCode+' '+ordered.shippingAddress.city.cityName}"></td>
 
@@ -64,59 +69,18 @@
                     <td th:text="${'Aucune Adresse'}"></td>
                 </div>
 
-                <td th:text="${ordered.total}"></td>
-                <td th:text="${ordered.cartItemCount}"></td>
+                <td th:text="${#numbers.formatDecimal(ordered.total, 0 , 2)+' '+'DH'}"></td>
+                <td th:text="${ordered.cartItemList.size()}"></td>
                 <td th:text="${ordered.status}"></td>
+
+
                 <td>
-                    <a th:href="@{product/orderedDetail(id=${ordered.id})}">
+                    <a th:href="@{/product/orderedDetail(id=${ordered.id})}">
                         <i class="glyphicon glyphicon-pencil"></i>
                     </a>
                 </td>
 
-                <!--<td>
-                    <input hidden="hidden" name="orderID" th:value="${ordered.getId()}"/>
 
-
-                    <select id="ordered.status" name="ordered.status" class="form-control " th:value="${ordered.status}">
-
-                        <option th:each="status : ${T(com.example.galerie_artisanale.entity.OrderedStatus).values()}"
-                                th:value="${status}" th:text="${status}"
-                                th:selected="${ordered.status} == ${status}"></option>
-
-                    </select>
-
-                    <button style="display: none;"
-                            th:id="'update-stat-'+${ordered.id}" type="submit"
-                            class="btn btn-warning btn-xs">Editer
-                    </button>
-
-
-                </td>-->
-
-
-
-                <!--<div class="col-xs-2">
-                    <input hidden="hidden" name="itemID" th:value="${cartItem.getId()}"/>
-                    <input
-                            th:id="${cartItem.product.getId()}" th:name="qty"
-                            th:disabled="${cartItem.product.inStockNumber==0}"
-                            class="form-control cartItemQty"
-                            th:value="${cartItem.qty}"
-                            type="number"
-                            min="1"
-                            th:max="${cartItem.product.inStockNumber}"/>
-
-                    <button style="display: none;"
-                            th:id="'update-item-'+${cartItem.product.getId()}" type="submit"
-                            class="btn btn-warning btn-xs">Editer
-                    </button>
-
-                    &lt;!&ndash; <select th:field="*{cartItem.qty}">
-                         <option th:each="qty : ${qtyList}" th:value="${cartItem.id}" th:text="${cartItem.qty}" th:disabled="${cartItem.product.inStockNumber==0}" class="form-control cartItemQty">
-                         </option>
-                     </select>&ndash;&gt;
-
-                </div>-->
 
 
             </tr>

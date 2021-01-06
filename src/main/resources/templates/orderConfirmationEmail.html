@@ -24,15 +24,15 @@
 <body>
 <p>Bonjour <span th:text="${user.firstName}"></span>,</p>
 <br/>
-<p>Merci pour votre confiance</p>
-<p>Votre numéro de commande: <strong>#<span th:text="${ordered.id}"></span></strong>.  </p>
+<p>Merci pour votre confiance.</p>
+<p>Votre numéro de commande: <strong> <span th:text="${ordered.id}"></span></strong>.  </p>
 <h2>Détails de la commande<span th:text="${' '+ordered.id}"></span></h2>
 <hr/>
 
 <table>
     <tr>
         <th>Adresse de livraison</th>
-        <th>Adresse de facturation</th>
+
     </tr>
     <tr>
         <td>
@@ -40,18 +40,17 @@
 
         </td>
 
-        <td>
-            <span th:text="${ordered.billingAddress.fullAdress()}"></span><br/>
-
-        </td>
     </tr>
 </table>
+<br>
+
 
 <h3><strong>Détails des produits</strong></h3>
 <table>
     <thead>
     <tr>
-        <td><strong>Nom du produit</strong></td>
+        <td>Produit</td>
+        <!--<td></td>-->
         <td class="text-center"><strong>Prix</strong></td>
         <td class="text-center"><strong>Quantité</strong></td>
         <td class="text-right"><strong>Total</strong></td>
@@ -60,15 +59,23 @@
     <tbody>
     <tr th:each="cartItem : ${cartItemList}">
         <td><span data-th-text="${cartItem.product.productName}"></span></td>
-        <td class="text-center" data-th-text="${cartItem.product.price}"></td>
+        <!--<td>
+
+                <img th:if="${cartItem.product.getImagesList().get(0).getFullURL()  != null}"
+                     class=""
+                     th:src="@{${cartItem.product.getImagesList().get(0).getFullURL()}}"
+                     style="width: 70px;" />
+
+
+        </td>-->
+        <td class="text-center" data-th-text="${#numbers.formatDecimal(cartItem.product.price, 0 ,2)+' '+'DH'}"><span>DH</span></td>
         <td class="text-center" data-th-text="${cartItem.qty}"></td>
-        <td class="text-right" data-th-text="${(cartItem.product.price)*(cartItem.qty)}"></td>
+        <td class="text-right" data-th-text="${#numbers.formatDecimal((cartItem.product.price)*(cartItem.qty), 0 ,2)+' '+'DH'}"><span>DH</span></td>
     </tr>
     <tr>
-        <td class="highrow"></td>
-        <td class="highrow"></td>
-        <td class="highrow text-center"><strong>Total</strong></td>
-        <td class="highrow text-right" data-th-text="${ordered.total}"></td>
+
+        <td class="text-center"><strong>Total</strong></td>
+        <td class="text-right" data-th-text="${#numbers.formatDecimal(ordered.total, 0 ,2)+' '+'DH'}"><span>DH</span></td>
     </tr>
 
     </tbody>

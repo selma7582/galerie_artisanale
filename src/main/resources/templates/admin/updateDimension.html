@@ -1,10 +1,10 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="admin/common/header :: common-header" />
+<head th:replace="admin/common/header :: common-header"/>
 
 
 <style>
-    body{
+    body {
 
         background-image: url("../images/background/background.jpg");
         background-repeat: repeat
@@ -13,18 +13,15 @@
 </style>
 
 <body>
-<div th:replace="admin/common/header :: navbar" />
+<div th:replace="admin/common/header :: navbar"/>
 
 <div class="container login">
-    <div class="">
-        <div class="container login">
-            <div class="">
-                <h2 ><span>Modifier Dimension</span></h2>
-            </div>
+
+        <div class="text-center">
+
+                <h2><span>Modifier Dimension</span></h2>
+
         </div>
-    </div>
-
-
 
 
 
@@ -39,23 +36,51 @@
                 <form th:action="@{/product/editDimension}" method="post" th:object="${dimension}">
                     <input type="hidden" th:value="${dimension.id}" th:attr="name='id'"/>
 
-
                     <div class="form-group">
-                        <label class="col-md-2 control-label" for="description">Dimension</label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" id="description" name="description" th:value="${dimension.description}"
-                                   placeholder=""  required/>
-                            <span class="help-block"></span>
+                    <div class="form-group">
+
+
+                        <div class="row">
+                            <label class="col-md-2 control-label" for="shape">*Forme</label>
+
+                            <div class="col-xs-7">
+                                <div class="">
+
+                                    <select th:value="${dimension.shape.shapeName}" name="shape" id="shape"
+                                            class="form-control"
+                                            required>
+
+                                        <option th:each="shape: ${shapes}"
+                                                th:value="${shape.id}"
+                                                th:text="${shape.shapeName}"
+                                                th:selected="${dimension?.shape?.id} == ${shape.id}"
+                                                ></option>
+
+                                    </select>
+
+
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+                        <div class="row">
+                            <label class="col-md-2 control-label" for="description">*Dimension</label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" id="description" name="description"
+                                       th:value="${dimension.description}"
+                                       placeholder="" required/>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
 
-                    <div class="col-md-8">
-                        <div class="col-md-12" aria-atomic="form-group">
-                            <button type="submit" class="btn btn-success">Modifier la dimension</button>
+                    </div>
+
+                        <div class="container login" aria-atomic="form-group">
+                            <button type="submit" class="btn btn-success">Modifier</button>
 
                             <a class="btn btn-danger" th:href="@{/product/dimensionList}">Annuler</a>
                         </div>
-                    </div>
 
                 </form>
             </div>
@@ -64,9 +89,7 @@
 </div>
 
 
-
-
-<div th:replace="admin/common/header :: body-bottom-scripts" />
+<div th:replace="admin/common/header :: body-bottom-scripts"/>
 
 </body>
 </html>

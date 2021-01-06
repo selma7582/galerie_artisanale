@@ -71,6 +71,13 @@ public class UserServiceImpl implements UserService {
 		passwordResetTokenRepository.save(myToken);
 	}
 
+	@Override
+	public List<User> findByRole(String role) {
+		return userRepository.findByRole(role) ;
+	}
+
+
+
 
 	@Override
 	public User save(User user)  {

@@ -18,7 +18,7 @@
 
 
 <div class="container">
-    <div class="container login">
+    <div class="text-center">
         <div class="">
             <h2><span>Nouveau produit</span></h2>
         </div>
@@ -39,7 +39,7 @@
 
 
                         <div class="form-group">
-                            <label for="productName"> *Nom</label>&nbsp;<span
+                            <label for="productName"> * Désignation</label>&nbsp;<span
                                 style="color: red;" th:if="${productExists}">Produit Existe Déja.</span>
                             <div>
                                 <input type="text" class="form-control" id="productName" name="productName"
@@ -53,69 +53,74 @@
                                 <div class="col-xs-6">
                                     <label for="shape">* Forme</label>
                                     <div class="">
-                                        <select th:value="${shape}" name="shape" id="shape" class="form-control"
-                                                required>
+
+                                        <!--<div class="input-group">
+                                            <span class="input-group-addon">
+                                                <a class="glyphicon glyphicon-plus  btn-xs"></a>
+                                            </span>-->
+
+                                        <select  th:value="${shape}" name="shape" id="shape" class="form-control selectDimension" required>
                                             <option value=""></option>
 
                                             <option th:each="shape: ${shapes}"
                                                     th:value="${shape.id}"
-                                                    th:text="${shape.shapeName}"></option>
-                                            <!--
-                                                                        <span class="help-block">Forme du produit</span>
-                                            -->
+                                                    th:text="${shape.shapeName}">
+                                            </option>
                                         </select>
+
+                                        <!--</div>-->
+
                                     </div>
                                 </div>
 
                                 <!--Shape -->
                                 <div class="col-xs-6">
-                                    <label for="shape">* Dimension</label>
-                                    <div class="">
-                                        <select  name="dimension" id="dimension"
-                                                class="form-control" th:value="${dimension}" required>
-                                            <option value=""></option>
+                                    <label for="dimension">* Dimension</label>
 
-                                            <option th:each="dimension: ${dimensions}"
-                                                    th:value="${dimension.id}"
-                                                    th:text="${dimension.description}"></option>
-                                            <!--
-                                                                        <span class="help-block">Forme du produit</span>
-                                            -->
-                                        </select>
+                                    <div >
+                                        <div class="">
+                                            <div id="allDimension" th:each="d , row : ${dimensionList}"
+                                                 class="js-row-link-alt">
+                                                <input type="hidden" th:id="${'dim' + row.index}" th:value="${d.shape.id}"/>
+                                            </div>
+                                            <select  name="dimension" id="dimension"
+                                                     class="form-control" th:value="${shape}" required>
+                                                <option value=""></option>
+
+                                                <option th:each="dimension, row: ${dimensions}" class="hidden allDimension" th:id="${'dimension' + row.index}"
+                                                        th:value="${dimension.id}"
+                                                        th:name="${dimension.shape.id}"
+                                                        th:text="${dimension.description}">
+                                                </option>
+                                            </select>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Categorie -->
-
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <label for="category">*Categorie</label>
+                                    <label for="category">* Categorie</label>
                                     <div class="">
                                         <select id="category" name="category" class="form-control" th:value="${category}" required>
                                             <option value=""></option>
                                             <option th:each="category: ${categories}"
                                                     th:value="${category.id}"
-                                                    th:text="${category.categoryName}">[[${product.category}]]</option>
+                                                    th:text="${category.categoryName}"></option>
                                         </select>
-                                        <!--
-                                                                <span class="help-block">Categorie</span>
-                                        -->
-
                                     </div>
-
                                 </div>
-
                                 <!--Provider -->
-
                                 <div class="col-xs-6">
-                                    <label for="provider">*Fournisseur</label>
+                                    <label for="provider">* Fournisseur</label>
                                     <div class="">
 
-                                        <select id="provider" name="provider" class="form-control" th:value="${provider}" required>
+                                        <select id="provider" name="provider" class="form-control" th:value="${product.provider}" required>
                                             <option value=""></option>
-                                            <option th:each="provider: ${providers}"
+                                            <option th:each="provider: ${providerList}"
                                                     th:value="${provider.id}"
                                                     th:text="${provider.firstName + ' ' + provider.lastName}"></option>
                                         </select>
@@ -130,13 +135,13 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <label for="price"> *Prix</label>
+                                    <label for="price"> * Prix</label>
                                     <div class="">
                                         <div class="input-group">
                                             <span class="input-group-addon">DH</span>
                                             <input th:value="${product.price}" type="number" name="price"
                                                    class="form-control" id="price" placeholder="the Price" step="0.01"
-                                                   min="0" required/>
+                                                   min="1" required/>
                                         </div>
 
                                     </div>
@@ -144,11 +149,11 @@
                                 <!-- in stock number -->
 
                                 <div class="col-xs-6">
-                                    <label for="inStockNumber"> *Stock</label>
+                                    <label for="inStockNumber"> * Stock</label>
                                     <div class="">
                                         <input th:value="${product.inStockNumber}" type="number" name="inStockNumber"
                                                class="form-control" id="inStockNumber" placeholder="Number of in-stock"
-                                               min="0" required/>
+                                               min="1" required/>
 
                                     </div>
                                 </div>
@@ -157,7 +162,7 @@
                         <!--Description -->
 
                         <div class="form-group">
-                            <label for="description">*Description</label>
+                            <label for="description">* Description</label>
                             <div class="">
 
                             <textarea name="description" rows="5" class="form-control" id="description"

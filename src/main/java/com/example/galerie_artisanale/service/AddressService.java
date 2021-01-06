@@ -17,7 +17,7 @@ public interface AddressService {
 
     List<Address> findByUser(User user);
 
-    List<Address> findByProvider(Provider provider);
+    /*List<Address> findByProvider(Provider provider);*/
 
 /*
     List<Address> findByOrdered(Ordered ordered);

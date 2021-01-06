@@ -8,6 +8,9 @@ import com.example.galerie_artisanale.service.ProductService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -82,12 +85,21 @@ public class ProductServiceImp implements ProductService {
         return productRepository.findByShapeShapeName(shape);
     }
 
-  /*  @Override
+    @Override
     public List<Product> filterProducts(int min, int max) {
-        return getMockedProducts(log).stream()
+        return productRepository.findAll()
+                .stream()
                 .filter(product -> product.getPrice() >= min && product.getPrice() <= max)
-                .collect(Collectors.toList());    }
+                .collect(Collectors.toList());
+    }
 
+    @Override
+    public Page<Product> findPagination(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo-1,pageSize);
+        return this.productRepository.findAll(pageable);
+    }
+
+    /*
     @Override
     public List<Product> getMockedProducts() {
         ObjectMapper objectMapper = new ObjectMapper();

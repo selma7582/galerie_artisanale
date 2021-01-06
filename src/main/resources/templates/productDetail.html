@@ -1,7 +1,14 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="common/header :: common-header"/>
+<!--<style>
+    body {
 
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>-->
 <body>
 <div th:replace="common/header :: navbar"/>
 
@@ -51,14 +58,13 @@
                 <h3><span th:if="${notEnoughStock}" style="color: red">Oups, Que <span
                         th:text="${product.inStockNumber}"></span>En Stock.</span></h3>
                 <h1 th:text="${product.productName}"></h1>
-                <p th:utext="${product.description}"></p>
 
                 <div class="row">
                     <div class="col-xs-5">
                         <span>Dimensions:  <span th:text="${product.dimension}"></span></span> cm<br/>
                         <br/>
 
-                        <h4>prix: <span style="color:#db3208;"><span th:text="${#numbers.formatDecimal(product.price, 0 ,2)}"></span></span>
+                        <h4>prix: <span style=""><span th:text="${#numbers.formatDecimal(product.price, 0 ,2)}"></span></span>
                             DH</h4>
                     </div>
 
@@ -69,7 +75,7 @@
                                 <div class="row">
                                     <div class="col-xs-6">
 
-                                        <h4>prix: <span style="color:#db3208;"><span th:text="${#numbers.formatDecimal(product.price, 0 ,2)}"></span></span>
+                                        <h4>prix: <span style=""><span th:text="${#numbers.formatDecimal(product.price, 0 ,2)}"></span></span>
                                             DH</h4>
                                         <!--    <p>You save: $<span th:text="${#numbers.formatDecimal((product.listPrice - product.price), 0, 'COMMA', 2, 'POINT' )}"></span></p> -->
                                         <span>Quantité: </span>
@@ -103,7 +109,8 @@
                         </div>
                     </div>
                 </div>
-
+                <hr/>
+                <p th:utext="${product.description}"></p>
             </div>
         </div>
     </form>

@@ -39,10 +39,10 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findByUser(user);
     }
 
-    @Override
+   /* @Override
     public List<Address> findByProvider(Provider provider) {
         return addressRepository.findByProvider(provider);
-    }
+    }*/
 
     /*@Override
     public List<Address> findByOrdered(Ordered ordered ) {

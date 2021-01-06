@@ -47,13 +47,14 @@ public class Ordered {
         }else {
             return 0d ;
         }
-
-
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCartItemCount(){
-
-        if (cartItemList != null && !cartItemList.isEmpty()){
+        if (status == OrderedStatus.INVALID && cartItemList != null && !cartItemList.isEmpty()){
             return  cartItemList.stream()
                     .mapToInt(item -> item.getQty())
                     .sum();

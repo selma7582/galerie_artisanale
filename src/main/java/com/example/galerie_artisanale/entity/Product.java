@@ -27,11 +27,6 @@ public class Product implements Serializable {
     @Column(name = "price")
     private float price;
 
-    @Column(name = "height")
-    private float height;
-
-    @Column(name = "width")
-    private float width;
 
     @Column(name = "inStockNumber")
     private int inStockNumber;
@@ -84,5 +79,7 @@ public class Product implements Serializable {
     public String toString(){
         return productName;
     }
+
+
 
 }

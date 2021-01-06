@@ -24,12 +24,16 @@
     <div class="table-responsive">
 
         <table id="productListTable" class="table table-bordered table-hover table-striped">
-            <caption>Liste des dimensions</caption>
+            <!--<caption>Liste des dimensions</caption>-->
+            <div class="text-center">
+                <h3>Liste des dimensions</h3>
+            </div>
             <thead>
             <tr>
                 <th>Dimension</th>
+                <th>Forme</th>
                 <th>Editer</th>
-                <th>supprimer</th>
+                <th>Supprimer</th>
             </tr>
             </thead>
             <tbody>
@@ -37,12 +41,19 @@
             <tr data-th-each="dimension : ${dimensionList}" >
 
                 <td>
-                    <span th:text="${dimension.description}"></span>
+                    <span th:text="${dimension.description+' '+'cm'}"></span>
+
+                </td>
+
+                <td>
+                    <span th:text="${dimension.shape.shapeName}"></span>
 
                 </td>
 
                 <td>
                     <a  th:href="@{/product/editDimension?id=}+${dimension.id}"> <i class="glyphicon glyphicon-pencil"></i></a>
+
+
                 </td>
 
 
@@ -99,7 +110,7 @@
 
 <div class="text-center">
 
-    <a th:href="@{/product/addDimension}" role="button" class="btn btn-success">Ajouter une Dimension</a>
+    <a th:href="@{/product/addDimension}" role="button" class="btn btn-success">Ajouter une dimension</a>
 
 </div>
 

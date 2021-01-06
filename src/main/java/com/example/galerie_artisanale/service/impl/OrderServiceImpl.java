@@ -48,8 +48,6 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-
-
     @Override
     public List<Ordered> findByUser(User user) {
         return orderRepository.findByUser(user);
@@ -70,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Ordered> findByUserAndStatus(User user, OrderedStatus status){
-        List<Ordered> orderedList = orderRepository.findByUserAndStatus(user,OrderedStatus.VALID);
+        List<Ordered> orderedList = orderRepository.findByUserAndStatus(user,status);
         return orderedList;
     }
 
@@ -78,5 +76,7 @@ public class OrderServiceImpl implements OrderService {
     public void remove(Ordered persistedShoppingCart) {
         orderRepository.delete(persistedShoppingCart);
     }
+
+
 
 }

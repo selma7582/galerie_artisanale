@@ -27,8 +27,8 @@ public class MailConstructor {
             String contextPath, Locale locale, String token, User user
             ){
 
-        String url = contextPath + "/newUser?token="+token+"\n Mot de passe:";
-        String message = "\n Valider votre inscription avec le lien :\n Lien de validation:";
+        String url = contextPath + "/newUser?token="+token+"\n ";
+        String message = "\n Valider votre inscription avec ce lien :\n Lien de validation: ";
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(user.getEmail());
         email.setSubject("Galerie Artisanale- Nouvelle inscription ");

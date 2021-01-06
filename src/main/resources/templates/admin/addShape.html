@@ -16,7 +16,7 @@
     <div th:replace="admin/common/header :: navbar"/>
 
     <div class="container login">
-        <div class="container login">
+        <div class="text-center">
             <div class="">
                 <h2><span>Nouvelle forme</span></h2>
             </div>
@@ -35,7 +35,7 @@
 
                         <!--input type="hidden" th:field="*{id}">-->
                         <div class="form-group">
-                            <label class="col-md-2 control-label" for="shapeName">Description</label>&nbsp;<span
+                            <label class="col-md-2 control-label" for="shapeName">* Désignation</label>&nbsp;<span
                                 style="color: red;" th:if="${shapeExists}">Forme Existe Déja.</span>
                             <div class="col-md-8">
                                 <input type="text" class="form-control" id="shapeName" name="shapeName"
