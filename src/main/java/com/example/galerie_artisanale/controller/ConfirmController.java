@@ -339,54 +339,7 @@ public class ConfirmController {
 
     }
 
-/*
-    @GetMapping(value = "/updateAddressUser")
-    public String updateAddressUser(Model model, @RequestParam("id") Long id) {
 
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof User) {
-            User connectedUser = (User) authentication.getPrincipal();
-            List<Address> addresses = addressService.findByUser(connectedUser);
-
-            Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
-            model.addAttribute("ordered", ordered);
-            List<Address> addressList = addressService.findByUser(connectedUser); //.findOne(ordered.getShippingAddress().getId());
-            Address address = addressService.findOne((addressList.get(addresses.size() - 1)).getId());//addresses.size() - 1
-
-            model.addAttribute("address", address);
-            return "updateAddressUser";
-        } else {
-            throw new IllegalStateException("You should be authenticated to be able to confirm your Shopping cart");
-        }
-    }
-
-    @PostMapping("/updateAddressUser")
-    public String updateAddressUser(@ModelAttribute("address")Address address, City city, Model model) {
-
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User connectedUser = (User) authentication.getPrincipal();
-        List<Address> addresses = addressService.findByUser(connectedUser);
-        Ordered ordered = orderService.findShoppingCart(connectedUser);
-
-        if (addresses.size() == 0) {
-
-            address.setUser(connectedUser);
-            Address persestideAddress1 = addressService.save(address);
-
-        }
-        if (addresses != null && !addresses.isEmpty()) {
-            Address address1 = new Address();
-            address1.setUser(connectedUser);
-            address1.setCity(address.getCity());
-            address1.setStreet(address.getStreet());
-            address1.setNumber(address.getNumber());
-            address1.setCity(address.getCity());
-            Address persestideAddress1 =addressService.save(address1);
-            ordered.setShippingAddress(persestideAddress1);
-            addresses.add(persestideAddress1);
-        }
-        return "myOrderedList"; //+ ordered.getId();
-    }*/
 
 
 

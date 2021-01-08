@@ -99,20 +99,5 @@ public class ProductServiceImp implements ProductService {
         return this.productRepository.findAll(pageable);
     }
 
-    /*
-    @Override
-    public List<Product> getMockedProducts() {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            return objectMapper.readValue(getClass().getClassLoader()
-                            .getResourceAsStream("mockedProducts.json"),
-                    new TypeReference<List<Product>>() {
-                    });
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        return Collections.emptyList();    }*/
 
 }

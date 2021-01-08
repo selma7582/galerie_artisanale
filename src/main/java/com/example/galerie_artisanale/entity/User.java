@@ -25,10 +25,10 @@ public class User implements UserDetails, Serializable {
     @Column(name = "userid")
     private Long id_user;
 
-    @Column(name = "username")
+   // @Column(name = "username")
     // @NotNull
     //@Size(min = 1, message = "Username  obligatoire")
-    private String username;
+   // private String username;
 
     @Column(name = "password")
     @NotNull
@@ -65,7 +65,7 @@ public class User implements UserDetails, Serializable {
     }
 
     public void setUsername(String email) {
-        this.username = email;
+        this.email = email;
     }
 
   /*  @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public User createUser(User user, String userRole){
-		User localUser = userRepository.findByUsername(user.getUsername());
+		User localUser = userRepository.findByEmail(user.getEmail());//.findByUsername(user.getUsername());
 		
 		if(localUser != null) {
 			LOG.info("User with username {} already exist. Nothing will be done. ",user.getUsername());
@@ -97,8 +97,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+	public User findByUsername(String email) {
+		return userRepository.findByEmail(email);//.findByUsername(username);
 	}
 	
 	@Override

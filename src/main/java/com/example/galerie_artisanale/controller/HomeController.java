@@ -122,11 +122,13 @@ public class HomeController {
         List<Product> productList = productService.findByCategory(category);
         if (productList.isEmpty()) {
             model.addAttribute("emptyList", true);
+
             return "galerie";
         }
 
         return galerieForAll(model, principal, session, productList);
     }
+
 
     @RequestMapping("/galerie")
     public String galerie(Model model, Principal principal, HttpSession session) {
@@ -136,6 +138,7 @@ public class HomeController {
             model.addAttribute("emptyList", true);
             return "galerie";
         }
+
 
         return galerieForAll(model, principal, session, productList);
     }
@@ -170,10 +173,11 @@ public class HomeController {
         model.addAttribute("productList", productList);
         model.addAttribute("activeAll", true);
         model.addAttribute("shoppingCart", shoppingCart);
-        //findPaginated(1,model,principal,session);
 
 
-        return "galerie";
+       return findPaginated(1,model,principal,session);
+
+        //return "galerie";
     }
 
     @RequestMapping("/productDetail")
@@ -737,8 +741,7 @@ public class HomeController {
         model.addAttribute("currentPage",pageNo);
         model.addAttribute("totalPages",page.getTotalPages());
         model.addAttribute("productList",productList);
-       // return galerieForAll(model, principal, session, productList);
-
+        //return galerieForAll(model, principal, session, productList);
        return "galerie";
     }
 
