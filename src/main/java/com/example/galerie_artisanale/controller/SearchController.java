@@ -5,6 +5,7 @@ import com.example.galerie_artisanale.entity.User;
 import com.example.galerie_artisanale.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import javax.servlet.http.HttpSession;
 import java.nio.file.Path;
 import java.security.Principal;
 import java.util.List;
@@ -78,7 +80,7 @@ public class SearchController {
 
     @RequestMapping("/searchByCategory/{category}")
     public String searchByCategory(@PathVariable String category,
-            Model model, Principal principal
+                                   Model model, Principal principal
     ){
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
@@ -88,10 +90,6 @@ public class SearchController {
             model.addAttribute("user", user);
         }
 
-       /* String classActiveCategory = "active"+category;
-        classActiveCategory = classActiveCategory.replaceAll("\\s+", "");
-        classActiveCategory = classActiveCategory.replaceAll("&", "");
-        model.addAttribute(classActiveCategory, true);*/
 
         List<Product> productList = productService.findByCategory(category);
 
@@ -110,10 +108,9 @@ public class SearchController {
         return "/galerie";
     }
 
-    @RequestMapping("/searchByDimension/{dimension}")
+    /*@RequestMapping("/searchByDimension/{dimension}")
     public String searchByDimension(@PathVariable String dimension,
-                                   Model model, Principal principal
-    ){
+                                    Model model, Principal principal){
         model.addAttribute("categories", categoryService.findAllCategoryNames());
         model.addAttribute("dimensions",dimensionService.findAllDimensionDescription());
         model.addAttribute("shapes",shapeService.findAllShapeName());
@@ -140,12 +137,15 @@ public class SearchController {
         model.addAttribute("productList", productList);
 
         return "galerie";
-    }
+    }*/
+
+/*
 
     @RequestMapping("/searchByShape/{shape}")
     public String searchByshape(@PathVariable String shape,
-                                   Model model, Principal principal
-    ){
+                                Model model, Principal principal, HttpSession session,
+                                @RequestParam(required = false) Integer page){
+
         model.addAttribute("categories", categoryService.findAllCategoryNames());
         model.addAttribute("shapes",shapeService.findAllShapeName());
         model.addAttribute("dimensions",dimensionService.findAllDimensionDescription());
@@ -161,6 +161,11 @@ public class SearchController {
             model.addAttribute("emptyList", true);
             return "galerie";
         }
+        int pageSize = 4;
+        if (page == null){
+            page = 1 ;
+        }
+        Page<Product> pages = productService.findByShape(shape,page,pageSize);
 
         productList.stream()
                 .filter(product -> !product.getImagesList().isEmpty())
@@ -171,6 +176,7 @@ public class SearchController {
 
         return "galerie";
     }
+*/
 
 
 }

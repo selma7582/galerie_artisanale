@@ -19,159 +19,159 @@
 <div class="container">
 
     <div class="" style="margin-top: 10px;">
-<!--
-        <form th:action="@{/}" method="post" >
--->
+        <!--
+                <form th:action="@{/}" method="post" >
+        -->
         <div class="alert alert-success" th:if="${updateSuccess}">
             <strong>Statut bien mis à jour!</strong>
         </div>
 
-            <div class="col-xs-4">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h2 class="text-center">Gérer le statut</h2>
+        <div class="col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 class="text-center">Gérer le statut</h2>
 
-                        <hr/>
-                        <div class="row">
+                    <hr/>
+                    <div class="row">
 
-                            <form th:action="@{/product/updateOrderedStat}" method="post" th:object="${ordered}">
+                        <form th:action="@{/product/updateOrderedStat}" method="post" th:object="${ordered}">
+                            <input type="hidden" th:value="${ordered.id}"  th:attr="name='id'"  />
+
+                            <div class="col-xs-12">
+                                <!--name="statId"-->
                                 <input type="hidden" th:value="${ordered.id}"  th:attr="name='id'"  />
+                                <!--                                    <input type="hidden" th:value="${ordered.status}"  th:attr="name='status'"  />-->
 
-                                <div class="col-xs-12">
-                                    <!--name="statId"-->
-                                    <input type="hidden" th:value="${ordered.id}"  th:attr="name='id'"  />
-<!--                                    <input type="hidden" th:value="${ordered.status}"  th:attr="name='status'"  />-->
-
-                                    <div class="col-xs-12 ">
-                                        <!--<label for="s">* Forme</label>-->
+                                <div class="col-xs-12 ">
+                                    <!--<label for="s">* Forme</label>-->
                                     <select id="ordered.status" name="status" class="col-md-12">
                                         <div class="col-md-12 text-center">
-                                            <option th:each="status : ${T(com.example.galerie_artisanale.entity.OrderedStatus).values()}"
+                                            <option th:each="status : ${ordered.getStatus().getNextStatus() }"
                                                     th:value="${status.name()}" th:text="${status.name()}"
                                                     th:selected="${ordered.status.name()} == ${status.name()}"></option>
                                         </div>
 
 
-                                </select>
-                                    </div>
-
+                                    </select>
                                 </div>
-                                <br>
-                                <br>
-                                <button
-                                        th:id="'update-stat-'+${ordered.getId()}"
-                                        type="submit" class="btn btn-warning btn-block">Modifier le statut
-                                </button>
-                            </form>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-xs-8">
-
-
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                 Détail de la commande: <span th:text="${ordered.id}" ></span>
-                            </h4>
-                        </div>
-                        <div >
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-xs-7">
-                                        <h4>Produits</h4>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <h4>Prix</h4>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <h4>Quantité</h4>
-                                    </div>
-                                </div>
-
-                                <!-- display products in cart -->
-                                <div class="row" th:each="cartItem : ${ordered.getCartItemList()}">
-                                    <hr/>
-                                    <div class="col-xs-2">
-
-                                        <a th:href="@{/product/productInfo(id=${cartItem.product.id})}">
-                                            <div class="col-xs-3">
-                                                <img  width="100" height="80"
-                                                      th:src="@{${cartItem.product.imagesList.get(0).fullURL}}"/>
-
-                                            </div>
-                                        </a>
-
-                                    </div>
-                                    <div class="col-xs-5">
-                                        <div style="margin-left: 50px;">
-
-                                            <!--<a th:href="@{/product/productInfo?id=}+${cartItem.product.id}"><h4
-                                                    th:text="${cartItem.product.productName}"></h4></a>-->
-
-                                            <p th:if="${cartItem.product.inStockNumber&gt;10}"
-                                               style="color: green;">En Stock</p>
-                                            <p
-                                                    th:if="${cartItem.product.inStockNumber&lt;10 and cartItem.product.inStockNumber&gt;0}"
-                                                    style="color: green;">
-                                                Que <span th:text="${cartItem.product.inStockNumber}"></span>
-                                                en Stock
-                                            </p>
-                                            <p th:if="${cartItem.product.inStockNumber==0}"
-                                               style="color: darkred;">Dernier article</p>
-                                            <!--<a  class="glyphicon glyphicon-trash"
-                                                th:attr="data-target='#modal-delete'+${cartItem?.getId()}"
-                                                data-rel="tooltip" title="delete" data-toggle="modal"></a>-->
-
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="col-xs-3 text-left">
-                                        <h5 style=" font-size: large;">
-                                            <span th:text="${#numbers.formatDecimal(cartItem.getBuyinPrice(), 0 ,2)}"
-                                                  > DH</span> DH<span></span>
-                                            <!--th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''"-->
-                                        </h5>
-                                    </div>
-
-                                    <div class="col-xs-2 ">
-                                        <h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
-                                        <p th:if="${cartItem.qty&gt;cartItem.product.inStockNumber}"
-                                           style="color: red;">Dernier article </p>
-                                    </div>
-
-                                </div>
-
-                                <hr/>
-                                <h4 class="col-xs-12 text-right">
-                                    <strong style="font-size: large;">Total de la commande:</strong>
-                                    <!--<strong style="font-size: large;">Total de la commande (<span
-                                            th:text="${#lists.size(cartItemList)}"></span> article):
-                                    </strong> <span style="color: #db3208; font-szie: large;">-->
-                                    <span th:text="${#numbers.formatDecimal(ordered.total, 0 ,2)}"> DH</span><span> DH</span>
-                                </h4>
-                                <br/>
-                                <br/>
-                                <!--<button type="submit" class="btn btn-warning btn-block">Confirmer</button>-->
 
                             </div>
-                        </div>
+                            <br>
+                            <br>
+                            <button
+                                    th:id="'update-stat-'+${ordered.getId()}"
+                                    type="submit" class="btn btn-warning btn-block">Modifier le statut
+                            </button>
+                        </form>
                     </div>
+
 
                 </div>
             </div>
-<!--
-        </form>
--->
+        </div>
+
+
+        <div class="col-xs-8">
+
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        Détail de la commande: <span th:text="${ordered.id}" ></span>
+                    </h4>
+                </div>
+                <div >
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-7">
+                                <h4>Produits</h4>
+                            </div>
+                            <div class="col-xs-3">
+                                <h4>Prix</h4>
+                            </div>
+                            <div class="col-xs-2">
+                                <h4>Quantité</h4>
+                            </div>
+                        </div>
+
+                        <!-- display products in cart -->
+                        <div class="row" th:each="cartItem : ${ordered.getCartItemList()}">
+                            <hr/>
+                            <div class="col-xs-2">
+
+                                <a th:href="@{/product/productInfo(id=${cartItem.product.id})}">
+                                    <div class="col-xs-3">
+                                        <img  width="100" height="80"
+                                              th:src="@{${cartItem.product.imagesList.get(0).fullURL}}"/>
+
+                                    </div>
+                                </a>
+
+                            </div>
+                            <div class="col-xs-5">
+                                <div style="margin-left: 50px;">
+
+                                    <!--<a th:href="@{/product/productInfo?id=}+${cartItem.product.id}"><h4
+                                            th:text="${cartItem.product.productName}"></h4></a>-->
+
+                                    <p th:if="${cartItem.product.inStockNumber&gt;10}"
+                                       style="color: green;">En Stock</p>
+                                    <p
+                                            th:if="${cartItem.product.inStockNumber&lt;10 and cartItem.product.inStockNumber&gt;0}"
+                                            style="color: green;">
+                                        Que <span th:text="${cartItem.product.inStockNumber}"></span>
+                                        en Stock
+                                    </p>
+                                    <p th:if="${cartItem.product.inStockNumber==0}"
+                                       style="color: darkred;">Dernier article</p>
+                                    <!--<a  class="glyphicon glyphicon-trash"
+                                        th:attr="data-target='#modal-delete'+${cartItem?.getId()}"
+                                        data-rel="tooltip" title="delete" data-toggle="modal"></a>-->
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-xs-3 text-left">
+                                <h5 style=" font-size: large;">
+                                            <span th:text="${#numbers.formatDecimal(cartItem.getBuyinPrice(), 0 ,2)}"
+                                            > DH</span> DH<span></span>
+                                    <!--th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''"-->
+                                </h5>
+                            </div>
+
+                            <div class="col-xs-2 ">
+                                <h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
+                                <p th:if="${cartItem.qty&gt;cartItem.product.inStockNumber}"
+                                   style="color: red;">Dernier article </p>
+                            </div>
+
+                        </div>
+
+                        <hr/>
+                        <h4 class="col-xs-12 text-right">
+                            <strong style="font-size: large;">Total de la commande:</strong>
+                            <!--<strong style="font-size: large;">Total de la commande (<span
+                                    th:text="${#lists.size(cartItemList)}"></span> article):
+                            </strong> <span style="color: #db3208; font-szie: large;">-->
+                            <span th:text="${#numbers.formatDecimal(ordered.total, 0 ,2)}"> DH</span><span> DH</span>
+                        </h4>
+                        <br/>
+                        <br/>
+                        <!--<button type="submit" class="btn btn-warning btn-block">Confirmer</button>-->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+    <!--
+            </form>
+    -->
+</div>
 </div>
 <!-- end of container -->
 

@@ -27,24 +27,23 @@
                                         notice and <a href="#"></a>-->.
                         </p>
                         <hr/>
-
-                        <h4>Détails de la commande</h4>
+                        <strong style="font-size: medium;"> <h4>Total de la commande</h4></strong>
                         <div class="row">
-                            <div class="col-xs-7 text-left">Total HTVA:</div>
+                            <div class="col-xs-7 text-left"><strong style="font-size: medium;">Total TTC:</strong></div>
                             <div class="col-xs-5 text-right">
-                                <span th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span><span> DH</span>
+                                <strong style="font-size: medium;"> <span th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span><span> DH</span></strong>
                             </div>
                         </div>
-                        <div class="row">
+                        <!--<div class="row">
                             <div class="col-xs-7 text-left">TVA:</div>
                             <div class="col-xs-5 text-right">
                                 <span th:with="tax=${((shoppingCart.total)*0.06)}"
                                        th:text="${#numbers.formatDecimal(tax, 0 ,2)}"></span><span> DH</span>
                             </div>
-                        </div>
+                        </div>-->
 
                         <!--<h3>Commande</h3>-->
-                        <div class="row">
+                        <!--<div class="row">
                             <div class="col-xs-7 text-left">Total TVAC:
                             </div>
                             <div class="col-xs-5 text-right">
@@ -52,7 +51,7 @@
                                 <span th:with="total=${(shoppingCart.total)+((shoppingCart.total)*0.06)}"
                                       th:text="${#numbers.formatDecimal(total, 0 ,2)}"></span> DH</strong>
                             </div>
-                        </div>
+                        </div>-->
 
 
                         <!--<div class="panel-footer">Shipping and handling haven't
@@ -194,12 +193,10 @@
                                     </div>
                                     <div class="col-xs-5">
                                         <div style="margin-left: 50px;">
-                                            <!--<a th:href="@{/productDetail?id=}+${cartItem.product.id}"><h4
-                                                    th:text="${cartItem.product.productName}"></h4></a>-->
+                                            <h4 th:text="${cartItem.product.productName}"></h4>
                                             <p th:if="${cartItem.product.inStockNumber&gt;10}"
                                                style="color: green;">En Stock</p>
-                                            <p
-                                                    th:if="${cartItem.product.inStockNumber&lt;10 and cartItem.product.inStockNumber&gt;0}"
+                                            <p th:if="${cartItem.product.inStockNumber&lt;10 and cartItem.product.inStockNumber&gt;0}"
                                                     style="color: green;">
                                                 Que <span th:text="${cartItem.product.inStockNumber}"></span>
                                                 en Stock
@@ -265,10 +262,21 @@
                                 </div>
                                 <hr/>
                                 <h4 class="col-xs-12 text-right">
-                                    <strong style="font-size: large;">Total de la commande HTVA (<span
-                                            th:text="${#lists.size(cartItemList)}"></span> articles):
-                                    </strong> <span style=" font-szie: large;"><span
-                                        th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span> DH</span>
+                                    <div th:if="${#lists.size(cartItemList)>1}">
+                                        <strong style="font-size: medium;">Total de la commande TTC (<span
+                                                th:text="${#lists.size(cartItemList)}"></span> articles):
+                                            <span style=" font-szie: large;">
+                                        <span th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span> DH</span>
+                                        </strong>
+                                    </div>
+                                    <div th:if="${#lists.size(cartItemList)==1}">
+                                        <strong style="font-size: medium;">Total de la commande TTC (<span
+                                                th:text="${#lists.size(cartItemList)}"></span> article):
+                                            <span style=" font-szie: large;">
+                                        <span th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span> DH</span>
+                                        </strong>
+                                    </div>
+
                                 </h4>
                                 <br/>
                                 <br/>

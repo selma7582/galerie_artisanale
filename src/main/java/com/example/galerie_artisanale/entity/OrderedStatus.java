@@ -2,54 +2,73 @@ package com.example.galerie_artisanale.entity;
 
 public enum OrderedStatus {
 
-    INVALID{
-    },
-    EN_ATTENTE{
-        public String toString(){
-            return "En attente";
+    INVALID("Invalid") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[0];
         }
-
-    },
-    EN_COURS{
-        public String toString(){
-            return "En cours";
-        }
-
-    },
-    ANNULER{
-        public String toString(){
-            return "Annulée";
+    }, // Only User can update it
+    EN_ATTENTE("En attente") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[]{
+                    OrderedStatus.EN_COURS,
+                    OrderedStatus.ANNULER};
         }
     },
-    EXPEDIER{
-        public String toString(){
-            return "Expédiée";
+    EN_COURS("En cours") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[]{OrderedStatus.ANNULER,
+                    OrderedStatus.EXPEDIER};
         }
-
     },
-    LIVRER{
-        public String toString(){
-            return "Livrée";
+    ANNULER("Annulée") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[]{OrderedStatus.CLOTURER};
         }
-
     },
-    CLOTURER{
-        public String toString(){
-            return "Cloturée";
+    EXPEDIER("Expédiée") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[]{OrderedStatus.LIVRER};
         }
-
     },
-    RETOURNER{
-        public String toString(){
-            return "Retournée";
+    LIVRER("Livrée") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[]{ OrderedStatus.CLOTURER /** apres 14 jours*/};
+        } // arrivé chez le client
+    },
+    CLOTURER("Cloturée") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[0];
         }
-
     },
-    REMBOURSSE{
-        public String toString(){
-            return "Remboursée";
+    RETOURNER("Retournée") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[]{OrderedStatus.REMBOURSSE};
+        } // par le client
+    },
+    REMBOURSSE("Remboursée") {
+        @Override
+        public OrderedStatus[] getNextStatus() {
+            return new OrderedStatus[]{ OrderedStatus.CLOTURER};
         }
     };
 
+    private final String label ;
 
+    OrderedStatus(String label ) {
+        this.label = label;
+    }
+
+    public String toString(){
+        return label;
+    }
+
+    public abstract OrderedStatus[] getNextStatus() ;
 }

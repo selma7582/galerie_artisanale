@@ -263,13 +263,17 @@ public class ConfirmController {
     public String removeItem(@PathVariable("cartItem") Long id, Model model) {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
+
         CartItem persistedCartItem = cartItemService.findById(id);
 
         cartItemService.remove(persistedCartItem);
 
         model.addAttribute("shoppingCart", cartItemService.findAll());
+
         if (cartItemService.findAll() == null)
+
             return "redirect:/shoppingCart/view";
 
         // return "/confirm";

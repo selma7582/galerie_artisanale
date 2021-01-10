@@ -537,6 +537,9 @@ public class ProductController {
         }
         Ordered ordered1 = orderService.findById(ordered.getId());
         ordered1.setStatus(ordered.getStatus());
+        if(ordered.getStatus()== OrderedStatus.ANNULER){
+            ordered1.getCartItemList().stream().forEach(product->product.getProduct().setInStockNumber(product.getQty()+product.getProduct().getInStockNumber()));
+        }
         orderService.save(ordered1);
         if(ordered1.getStatus() == OrderedStatus.LIVRER){
             List<CartItem> cartItemList = cartItemService.findByOrdered(ordered1) ;
@@ -544,26 +547,17 @@ public class ProductController {
             cartItemList.size();
             model.addAttribute("cartItemList",cartItemList);
         }
-        model.addAttribute("updateSuccess",true);
-       //return "redirect:/product/orderedDetail?id=" + ordered1.getId();
          return "redirect:/product/orderedList";
 
     }
 
     @RequestMapping("/userList")
     public String userList(Model model){
-       // List<User> userList = userService.findByRole((long)2);
-       // List<User> userList = userService.findByRole("ROLE_USER");
         List<User> userList = userService.findAll();
         model.addAttribute("userList",userList);
 
         userList.stream().forEach(user -> user.getAddressList().stream());
 
-        /*List<Product> productList = productService.findAll();
-        productList.stream()
-                .flatMap(products -> products.getImagesList().stream())
-                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
-*/
         return "admin/userList";
     }
 
@@ -583,11 +577,7 @@ public class ProductController {
         user.setEnabled(0);
         userService.save(user);
         return "redirect:../userList";
-     /*   if () {
 
-        } else {
-            throw new IllegalArgumentException();
-        }*/
     }
     @GetMapping(value = "/activate/{id_user}")
     public String ativate(Model model, @PathVariable long id_user) {
@@ -595,11 +585,7 @@ public class ProductController {
         user.setEnabled(1);
         userService.save(user);
         return "redirect:../userList";
-       /* if () {
 
-        } else {
-            throw new IllegalArgumentException();
-        }*/
     }
 
 

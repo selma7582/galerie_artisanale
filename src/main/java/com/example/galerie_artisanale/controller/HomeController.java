@@ -111,44 +111,61 @@ public class HomeController {
         return "myAccount";
     }
 
-
     @RequestMapping("/galerie/{category}")
-    public String galerieByCategory(@PathVariable String category, Model model, Principal principal, HttpSession session) {
-        model.addAttribute("categories", categoryService.findAllCategoryNames());
-        model.addAttribute("shapes", shapeService.findAllShapeName());
-
-        model.addAttribute("dimensions", dimensionService.findAllDimensionDescription());
-
-        List<Product> productList = productService.findByCategory(category);
-        if (productList.isEmpty()) {
-            model.addAttribute("emptyList", true);
-
-            return "galerie";
+    public String galerieByCategory(@PathVariable String category, Model model, Principal principal, HttpSession session,
+                                    @RequestParam(required = false) Integer page) {
+        int pageSize = 4;
+        if (page == null){
+            page = 1 ;
         }
-
-        return galerieForAll(model, principal, session, productList);
+        Page<Product> pages = productService.findByCategory(category,page,pageSize);
+        return galerieForAll(model, principal, session, pages,page);
     }
+    @RequestMapping("/searchByDimension/{dimension}")
+    public String searchByDimension(@PathVariable String dimension, Model model, Principal principal, HttpSession session,
+                                    @RequestParam(required = false) Integer page){
+        int pageSize = 4;
+        if (page == null){
+            page = 1 ;
+        }
+        Page<Product> pages = productService.findByDimension(dimension,page,pageSize);
+        return galerieForAll(model, principal, session, pages,page);
+    }
+
+    @RequestMapping("/searchByShape/{shape}")
+    public String searchByshape(@PathVariable String shape,
+                                Model model, Principal principal, HttpSession session,
+                                @RequestParam(required = false) Integer page){
+
+        int pageSize = 4;
+        if (page == null){
+            page = 1 ;
+        }
+        Page<Product> pages = productService.findByShape(shape,page,pageSize);
+        return galerieForAll(model, principal, session, pages, page);
+    }
+
 
 
     @RequestMapping("/galerie")
-    public String galerie(Model model, Principal principal, HttpSession session) {
+    public String galerie(Model model, Principal principal, HttpSession session,
+                          @RequestParam(required = false) Integer page) {
 
-        List<Product> productList = productService.findAll();
-        if (productList.isEmpty()) {
-            model.addAttribute("emptyList", true);
-            return "galerie";
+        int pageSize = 4;
+        if (page == null){
+            page = 1 ;
         }
-
-
-        return galerieForAll(model, principal, session, productList);
+        Page<Product> pages = productService.findPagination(page,pageSize);
+        return galerieForAll(model, principal, session, pages,page);
     }
 
 
-    private String galerieForAll(Model model, Principal principal, HttpSession session, List<Product> productList) {
+    private String galerieForAll(Model model, Principal principal, HttpSession session, Page<Product> pages,int page) {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
         model.addAttribute("dimensions", dimensionService.findAllDimensionDescription());
         model.addAttribute("shapes", shapeService.findAllShapeName());
-
+        model.addAttribute("currentPage",page);
+        model.addAttribute("totalPages",pages.getTotalPages());
         Ordered shoppingCart;
         if (principal != null) {
             String username = principal.getName();
@@ -164,6 +181,8 @@ public class HomeController {
                 .flatMap(product -> product.getImagesList().stream())
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));*/
         // construire l'url d'une seule image
+
+        List<Product> productList = pages.getContent();
         productList.stream()
                 .filter(product -> !product.getImagesList().isEmpty())
                 .map(product -> product.getImagesList().get(0))
@@ -174,10 +193,11 @@ public class HomeController {
         model.addAttribute("activeAll", true);
         model.addAttribute("shoppingCart", shoppingCart);
 
+        if (productList.isEmpty()) {
+            model.addAttribute("emptyList", true);
 
-       return findPaginated(1,model,principal,session);
-
-        //return "galerie";
+        }
+        return "galerie";
     }
 
     @RequestMapping("/productDetail")
@@ -357,19 +377,8 @@ public class HomeController {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
         User user = userService.findByUsername(principal.getName());
-        /*Ordered ordered = (Ordered) orderService.findByUser(user);
-        Address address = new Address();
-        City city = new City();*/
-        model.addAttribute("user", user);/*
-        model.addAttribute("orderedList",user.getOrderedList());
-        model.addAttribute("userShipping",ordered.getShippingAddress());
-        model.addAttribute("userBilling",ordered.getBillingAddress());*/
-/*
-        model.addAttribute("cityList",address.getCity());
-*/
-        /*List<City> cityList = cityService.findAll();
-        model.addAttribute("cityList",cityList);
-        model.addAttribute("classActiveEdit",true);*/
+
+        model.addAttribute("user", user);
 
         return "myProfile";
     }
@@ -379,20 +388,8 @@ public class HomeController {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
         User user = userService.findByUsername(principal.getName());
-        /*Ordered ordered = (Ordered) orderService.findByUser(user);*/
-        /*Address address = new Address();
-        City city = new City();*/
+
         model.addAttribute("user", user);
-        /*
-        model.addAttribute("myOrderedList",user.getOrderedList());
-        model.addAttribute("userShipping",ordered.getShippingAddress());
-        model.addAttribute("userBilling",ordered.getBillingAddress());*/
-/*
-        model.addAttribute("cityList",address.getCity());
-*/
-        /*List<City> cityList = cityService.findAll();
-        model.addAttribute("cityList",cityList);
-        model.addAttribute("classActiveEdit",true);*/
 
         return "profile";
     }
@@ -498,9 +495,6 @@ public class HomeController {
         User currentUser = userService.findById(user.getId_user());
 
 
-       // User currentUser = userService.findByUsername(user.getUsername());
-
-
         if(currentUser == null) {
             throw new Exception ("User not found");
         }
@@ -513,13 +507,6 @@ public class HomeController {
             }
         }
 
-        /*check username already exists*/
-    /*    if (userService.findByUsername(user.getUsername())!=null) {
-            if(userService.findByUsername(user.getUsername()).getId_user() != currentUser.getId_user()) {
-                model.addAttribute("usernameExists", true);
-                return "myProfile";
-            }
-        }*/
 
 //		update password
 
@@ -565,11 +552,10 @@ public class HomeController {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
 
-/*
         User currentUser = userService.findById(user.getId_user());
-*/
 
-        User currentUser = userService.findByUsername(user.getUsername());
+        //User currentUser = userService.findByEmail(user.getEmail());
+        User currentUser1 = userService.findByUsername(user.getUsername());
 
 
         if(currentUser == null) {
@@ -607,32 +593,43 @@ public class HomeController {
                 return "myProfile";
             }
         }*/
-        currentUser.setFirstName(user.getFirstName());
-        currentUser.setLastName(user.getLastName());
-        currentUser.setUsername(user.getUsername());
-        currentUser.setEmail(user.getEmail());
-        currentUser.setTel(user.getTel());
-        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        if(currentUser.getEmail().equals(user.getEmail())) {
+            currentUser.setFirstName(user.getFirstName());
+            currentUser.setLastName(user.getLastName());
+            currentUser.setUsername(user.getUsername());
+            currentUser.setEmail(user.getEmail());
+            currentUser.setTel(user.getTel());
+            currentUser.setPassword(passwordEncoder.encode(newPassword));
 
-        userService.save(currentUser);
+            userService.save(currentUser);
 
-        model.addAttribute("updateSuccess", true);
-        model.addAttribute("user",currentUser );
-        model.addAttribute("classActiveEdit", true);
+            model.addAttribute("updateSuccess", true);
+            model.addAttribute("user",currentUser );
+            model.addAttribute("classActiveEdit", true);
 
-        model.addAttribute("listOfShippingAddresses", true);
+            model.addAttribute("listOfShippingAddresses", true);
 
-        UserDetails userDetails = userSecurityService.loadUserByUsername(currentUser.getUsername());
+            UserDetails userDetails = userSecurityService.loadUserByUsername(currentUser.getUsername());
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
-                userDetails.getAuthorities());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+                    userDetails.getAuthorities());
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 /*
         model.addAttribute("orderList", user.getOrderedList());
 */
-       // return "redirect:../product/shapeList";
-        return "redirect:/";
+            // return "redirect:../product/shapeList";
+            return "redirect:/";
+        }
+        else{
+
+            model.addAttribute("incorrectToken",true);
+            model.addAttribute("classActiveEdit", true);
+
+            return "myProfile";
+
+        }
+
     }
 
     @GetMapping("/imgs/{filename:images.+}")
@@ -653,7 +650,9 @@ public class HomeController {
 
 
     @GetMapping(value = "/products")
-    public String filterProducts(PriceRange priceRange, Model model) {
+    public String filterProducts(PriceRange priceRange, Model model, Principal principal, HttpSession session,
+                                 @RequestParam(required = false)Integer page) {
+
         List<Product> products = productService.filterProducts(priceRange.getMin(), priceRange.getMax());
         model.addAttribute("emptyList", products.isEmpty());
         products.stream()
@@ -662,11 +661,10 @@ public class HomeController {
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
         model.addAttribute("productList", products);
 
-        //findPaginated(1,model);
-
-
         return "products";
     }
+
+
 
 
 
@@ -723,7 +721,10 @@ public class HomeController {
         Ordered ordered = orderService.findById(id);
         List<Ordered> orderedList = orderService.findAll();
         ordered.setStatus(OrderedStatus.ANNULER);
+        ordered.getCartItemList().stream().forEach(product->product.getProduct().setInStockNumber(product.getQty()+product.getProduct().getInStockNumber()));
         orderService.save(ordered);
+
+
         User user = userService.findByUsername(principal.getName());
         List<Ordered> myOrderedList = orderService.findByUser(user);
         model.addAttribute("myOrderedList", myOrderedList);
@@ -733,18 +734,19 @@ public class HomeController {
         return "/myOrderedList";
     }
 
+
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value="pageNo")int pageNo,Model model,Principal principal,HttpSession session){
         int pageSize = 8;
         Page<Product> page = productService.findPagination(pageNo,pageSize);
         List<Product> productList = page.getContent();
+
         model.addAttribute("currentPage",pageNo);
         model.addAttribute("totalPages",page.getTotalPages());
         model.addAttribute("productList",productList);
         //return galerieForAll(model, principal, session, productList);
-       return "galerie";
+        return "galerie";
     }
-
 
 
 }
