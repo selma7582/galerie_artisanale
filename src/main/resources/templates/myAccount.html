@@ -56,7 +56,8 @@
                                       </div>-->
 
                                     <div class="form-group">
-                                        <label for="email">* Email</label> <span
+                                        <label for="email">* Email</label>&nbsp;<span
+                                            id="checkEmail"></span> <span
                                             style="color: red;" th:if="${emailExists}">Email existe déja</span>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
@@ -64,7 +65,7 @@
                                                    id="email" name="email" />
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-login">S'inscrire</button>
+                                    <button type="submit" class="btn btn-login" id="inscriptionButton">S'inscrire</button>
 
                                 </form>
                             </div>
@@ -114,13 +115,13 @@
                         <div class="panel panel-default" style="border: none;">
                             <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
                                 <div th:if="${emailNotExists}" class="alert alert-danger">Cet email n'existe pas.</div>
-                                <div th:if="${forgetPasswordEmailSent}" class="alert alert-success">Email Envoyer.</div>
+                                <div th:if="${forgetPasswordEmailSent}" class="alert alert-success">Email envoyé.</div>
 
                                 <form th:action="@{/forgetPassword}" method="post">
 
                                     <div class="form-group">
 
-                                        <label for="recoverEmail"> Adresse mail </label>
+                                        <label for="recoverEmail">* Adresse mail </label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                                         <input required autofocus type="email" class="form-control"

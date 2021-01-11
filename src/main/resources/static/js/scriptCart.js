@@ -15,7 +15,6 @@ $(document).ready(function(){
 
 
 
-
 function checkPasswordMatch() {
     var password = $("#txtNewPassword").val();
     var confirmPassword = $("#txtConfirmPassword").val();
@@ -25,7 +24,7 @@ function checkPasswordMatch() {
         $("#updateUserInfoButton").prop('disabled', false);
     } else {
         if(password != confirmPassword) {
-            $("#checkPasswordMatch").html("Valider votre mot de passe").css("color","red");
+            $("#checkPasswordMatch").html("Valider le mot de passe").css("color","red");
             $("#updateUserInfoButton").prop('disabled', true);
         } else {
             $("#checkPasswordMatch").html("Mot de passe correct").css("color","green");
