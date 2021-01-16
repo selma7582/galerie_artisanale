@@ -26,17 +26,11 @@ public class ShoppingCartController {
 
     public static final String SHOPPING_CART_SESSION = "SHOPPING_CART";
     public static final String CART_ITEM_LIST = "cartItemList";
-   // public static final String CART_ITEM = "cartItem";
     public static final String SHOPPING_CART_MODEL = "shoppingCart";
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private CartItemService cartItemService;
-
-    @Autowired
-    private ProductService productService;
 
     @Autowired
     private CategoryService categoryService;
@@ -51,18 +45,9 @@ public class ShoppingCartController {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private JavaMailSender mailSender;
-
-    @Autowired
-    private MailConstructor mailConstructor;
-
-    @Autowired
-    private ProductRepository productRepository;
-
 
     @PostMapping("/cart")
-    public String shoppingCart( CartItem cartItem, HttpSession session, Model model) {
+    public String shoppingCart(CartItem cartItem, HttpSession session, Model model) {
 
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof User) {
@@ -76,28 +61,25 @@ public class ShoppingCartController {
             }
             cartItem.setOrdered(shoppingCart);
             Ordered cart = (Ordered) session.getAttribute(SHOPPING_CART_SESSION);
-            if(cart != null && cart.getId() == null && cart.getUser() != null){
+            if (cart != null && cart.getId() == null && cart.getUser() != null) {
                 cart = orderService.save(cart);
             }
-            // TODO : check if there is a merge to do
             CartItem cartItem1 = currentCartItem(cartItem.getProduct().getId(), (Ordered) shoppingCart);
-            if(cartItem1 != null){
+            if (cartItem1 != null) {
                 cartItem1.setQty(cartItem1.getQty() + cartItem.getQty());
-                if(cartItem1.getId() != null){
+                if (cartItem1.getId() != null) {
                     cartItemRepository.save(cartItem1);
                 }
-            }else {
+            } else {
 
                 shoppingCart.getCartItemList().add(cartItem);
                 shoppingCart.setUser(connectedUser);
                 orderService.save(shoppingCart);
                 session.removeAttribute(SHOPPING_CART_SESSION);
             }
-            // travailler avec la base de donnée (doit etre sauvegarder dans la base de donnee pour avoir la possibilité de recuperer tout les items suite a  une nouvelle connexion )
         } else {
 
             Object shoppingCart = session.getAttribute(SHOPPING_CART_SESSION);
-            //TODO : check if there is a merge to do
             if (shoppingCart == null) {
 
                 Ordered cart = new Ordered();
@@ -110,12 +92,12 @@ public class ShoppingCartController {
             } else {
                 if (shoppingCart instanceof Ordered) {
                     CartItem cartItem1 = currentCartItem(cartItem.getProduct().getId(), (Ordered) shoppingCart);
-                    if(cartItem1 != null){
+                    if (cartItem1 != null) {
                         cartItem1.setQty(cartItem1.getQty() + cartItem.getQty());
-                        if(cartItem1.getId() != null){
+                        if (cartItem1.getId() != null) {
                             cartItemRepository.save(cartItem1);
                         }
-                    }else {
+                    } else {
 
                         Ordered cart = (Ordered) shoppingCart;
                         cartItem.setOrdered(cart);
@@ -194,53 +176,8 @@ public class ShoppingCartController {
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
     }
 
-
-   /* @GetMapping("/confirm")
-    public String confirmShoppingCart(Model model, HttpSession session) {
-        model.addAttribute("categories", categoryService.findAllCategoryNames());
-
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof User) {
-            Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
-            if (ordered.getId() == null) {
-                throw new IllegalStateException("Shopping cart should be persisted at this level: id shouldn't be null");
-            }
-
-
-
-            ordered.setStatus(OrderedStatus.VALID);
-            LocalDateTime localDateTime = LocalDateTime.now();
-            Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-            ordered.setOrderDate(date);
-           // ordered.setOrderDate(new Date());
-            ordered.getCartItemList()
-                    .forEach(item -> item.setBuyinPrice(item.getProduct().getPrice()));
-
-
-
-            ordered = orderService.save(ordered);
-
-            User connectedUser = (User) authentication.getPrincipal();
-
-            User user = userService.findByEmail(connectedUser.getEmail());
-
-            mailSender.send(mailConstructor.constructOrderConfirmationEmail(user, ordered, Locale.FRENCH));
-
-            //
-            fillFullURLOfFirstImage(ordered);
-            model.addAttribute(SHOPPING_CART_MODEL, ordered);
-            // try again to clear the session (may be itsnt necessary )
-            session.removeAttribute(SHOPPING_CART_SESSION);
-
-        } else {
-            throw new IllegalStateException("You should be authenticated to be able to confirm your Shopping cart");
-        }
-        return "orderConfirm";
-    }*/
-
-
     @RequestMapping("/updateCartItem")
-    public String updateShoppingCart( @ModelAttribute("qty") int qty, @ModelAttribute("itemID") long itemID) {
+    public String updateShoppingCart(@ModelAttribute("qty") int qty, @ModelAttribute("itemID") long itemID) {
         CartItem persistedCartItem = cartItemService.findById(itemID);
         persistedCartItem.setQty(qty);
         cartItemService.save(persistedCartItem);
@@ -250,10 +187,32 @@ public class ShoppingCartController {
     }
 
     @RequestMapping("/deleteItem/{itemId}")
-    public String removeItem(@PathVariable("itemId")long itemId, Model model){
-        CartItem persistedCartItem = cartItemService.findById(itemId);
-        cartItemService.remove(persistedCartItem);
-        //model.addAttribute("shoppingCart", cartItemService.findAll());
+    public String removeItem(@PathVariable("itemId") long itemId, Model model, HttpSession session) {
+
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof User) {
+
+            CartItem cartItem = cartItemService.findById(itemId);
+            cartItemService.remove(cartItem);
+            return "redirect:/shoppingCart/view";
+        } else {
+            Object shoppingCart = session.getAttribute(SHOPPING_CART_SESSION);
+            if(shoppingCart == null) {
+
+                shoppingCart = new Ordered();
+            }
+
+            if (shoppingCart instanceof Ordered) {
+                List<CartItem> cartItemList = cartItemService.findByOrdered((Ordered) shoppingCart);
+                cartItemService.removeOne(itemId);
+                model.addAttribute("shoppingCart", cartItemList);
+
+            }
+            else {
+                throw new IllegalStateException("Should not have this state");
+            }
+
+        }
         return "redirect:/shoppingCart/view";
     }
 
@@ -262,8 +221,7 @@ public class ShoppingCartController {
         products.forEach(product -> product.getImagesList().stream().forEach(image -> image.setFullURL((fileToPath(storageService.load(image.getUrl_image()))))));
     }
 
-
-    private CartItem currentCartItem(Long id, Ordered ordered ) {
+    private CartItem currentCartItem(Long id, Ordered ordered) {
         if (ordered.getCartItemList() == null) {
             return null;
         }

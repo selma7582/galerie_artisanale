@@ -176,11 +176,7 @@ public class HomeController {
             shoppingCart = (Ordered) session.getAttribute(ShoppingCartController.SHOPPING_CART_SESSION);
         }
 
-        // construire l'url de plusieurs images
-        /*productList.stream()
-                .flatMap(product -> product.getImagesList().stream())
-                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));*/
-        // construire l'url d'une seule image
+
 
         List<Product> productList = pages.getContent();
         productList.stream()
@@ -188,7 +184,6 @@ public class HomeController {
                 .map(product -> product.getImagesList().get(0))
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
 
-        // fin du construction des url des images
         model.addAttribute("productList", productList);
         model.addAttribute("activeAll", true);
         model.addAttribute("shoppingCart", shoppingCart);
@@ -233,43 +228,6 @@ public class HomeController {
     }
 
 
-    /*@RequestMapping("/forgetPassword")
-    public String forgetPassword(
-            HttpServletRequest request,
-            @ModelAttribute("email") String email,
-            Model model) {
-        model.addAttribute("categories", categoryService.findAllCategoryNames());
-
-        model.addAttribute("classActiveForgetPassword", true);
-
-        User user = userService.findByEmail(email);
-
-        if (user == null) {
-            model.addAttribute("emailNotExists", true);
-            return "myAccount";
-        }
-
-        String password = securityUtility.randomPassword();
-
-        String encryptedPassword = passwordEncoder.encode(password);
-        user.setPassword(encryptedPassword);
-
-        userService.save(user);
-
-        String token = UUID.randomUUID().toString();
-        userService.createPasswordResetTokenForUser(user, token);
-
-        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-
-        SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
-
-        mailSender.send(newEmail);
-
-        model.addAttribute("forgetPasswordEmailSent", "true");
-        return "myAccount";
-
-    }*/
-
 
     @RequestMapping("/forgetPassword")
     public String forgetPassword(
@@ -285,9 +243,7 @@ public class HomeController {
             model.addAttribute("emailNotExists", true);
             return "myAccount";
         }
-        /*String password = securityUtility.randomPassword();
-        String encryptedPassword = passwordEncoder.encode(password);
-        user.setPassword(encryptedPassword);*/
+
         userService.save(user);
         String token = UUID.randomUUID().toString();
         userService.createPasswordResetTokenForUser(user, token);
@@ -337,9 +293,7 @@ public class HomeController {
                 userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-/*
-        model.addAttribute("orderList", user.getOrderedList());
-*/
+
         // return "redirect:../product/shapeList";
         return "redirect:/";
     }
@@ -406,13 +360,7 @@ public class HomeController {
         model.addAttribute("categories", categoryService.findAllCategoryNames());
 
         model.addAttribute("classActiveNewAccount", true);
-        // model.addAttribute("email", userEmail);
-        //model.addAttribute("username", userName);
 
-      /*  if (userService.findByUsername(userName) != null) {
-            model.addAttribute("usernameExists", true);
-            return "myAccount";
-        }*/
 
         if (userService.findByEmail(userEmail) != null) {
             model.addAttribute("emailExists", true);
@@ -423,10 +371,7 @@ public class HomeController {
         user.setUsername(userEmail);
         user.setEmail(userEmail);
 
-        /*String password = securityUtility.randomPassword();
 
-        String encryptedPassword = passwordEncoder.encode(password);
-        user.setPassword(encryptedPassword);*/
 
         User persistedUser = userService.createUser(user, "ROLE_USER");
 
@@ -439,7 +384,6 @@ public class HomeController {
         String appUrl2 = MvcUriComponentsBuilder.fromMethodName(HomeController.class,
                 "newUser", token,model).build().toString();
 
-        /*SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);*/
 
 
         SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user);
@@ -499,7 +443,6 @@ public class HomeController {
             throw new Exception ("User not found");
         }
 
-        /*check email already exists*/
         if (userService.findByEmail(user.getEmail())!=null) {
             if(userService.findByEmail(user.getEmail()).getId_user() != currentUser.getId_user()) {
                 model.addAttribute("emailExists", true);
@@ -508,16 +451,13 @@ public class HomeController {
         }
 
 
-//		update password
 
         currentUser.setFirstName(user.getFirstName());
         currentUser.setLastName(user.getLastName());
         currentUser.setUsername(user.getUsername());
         currentUser.setEmail(user.getEmail());
         currentUser.setTel(user.getTel());
-/*
-        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
-*/
+
 
 
         userService.save(currentUser);
@@ -534,9 +474,7 @@ public class HomeController {
                 userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-/*
-        model.addAttribute("orderList", user.getOrderedList());
-*/
+
 
         return "profile";
     }
@@ -554,7 +492,6 @@ public class HomeController {
 
         User currentUser = userService.findById(user.getId_user());
 
-        //User currentUser = userService.findByEmail(user.getEmail());
         User currentUser1 = userService.findByUsername(user.getUsername());
 
 
@@ -562,7 +499,6 @@ public class HomeController {
             throw new Exception ("User not found");
         }
 
-        /*check email already exists*/
         if (userService.findByEmail(user.getEmail())!=null) {
             if(userService.findByEmail(user.getEmail()).getId_user() != currentUser.getId_user()) {
                 model.addAttribute("emailExists", true);
@@ -570,7 +506,6 @@ public class HomeController {
             }
         }
 
-        /*check username already exists*/
         if (userService.findByUsername(user.getUsername())!=null) {
             if(userService.findByUsername(user.getUsername()).getId_user() != currentUser.getId_user()) {
                 model.addAttribute("usernameExists", true);
@@ -578,21 +513,7 @@ public class HomeController {
             }
         }
 
-//		update password
 
-       /* if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")){
-
-
-            //BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
-            String dbPassword = currentUser.getPassword();
-            if(passwordEncoder.matches(user.getPassword(), dbPassword)){
-                currentUser.setPassword(passwordEncoder.encode(newPassword));
-            } else {
-                model.addAttribute("incorrectPassword", true);
-                model.addAttribute("classActiveEdit", true);
-                return "myProfile";
-            }
-        }*/
         if(currentUser.getEmail().equals(user.getEmail())) {
             currentUser.setFirstName(user.getFirstName());
             currentUser.setLastName(user.getLastName());
@@ -615,10 +536,7 @@ public class HomeController {
                     userDetails.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-/*
-        model.addAttribute("orderList", user.getOrderedList());
-*/
-            // return "redirect:../product/shapeList";
+
             return "redirect:/";
         }
         else{
@@ -720,6 +638,7 @@ public class HomeController {
 
         Ordered ordered = orderService.findById(id);
         List<Ordered> orderedList = orderService.findAll();
+
         ordered.setStatus(OrderedStatus.ANNULER);
         ordered.getCartItemList().stream().forEach(product->product.getProduct().setInStockNumber(product.getQty()+product.getProduct().getInStockNumber()));
         orderService.save(ordered);
@@ -727,10 +646,11 @@ public class HomeController {
 
         User user = userService.findByUsername(principal.getName());
         List<Ordered> myOrderedList = orderService.findByUser(user);
+        model.addAttribute("ordered", ordered);
         model.addAttribute("myOrderedList", myOrderedList);
-        model.addAttribute("orderedList", orderedList);
-        model.addAttribute("deleteSuccess", true);
+
         model.addAttribute("displayOrderDetail", true);
+
         return "/myOrderedList";
     }
 
@@ -744,7 +664,6 @@ public class HomeController {
         model.addAttribute("currentPage",pageNo);
         model.addAttribute("totalPages",page.getTotalPages());
         model.addAttribute("productList",productList);
-        //return galerieForAll(model, principal, session, productList);
         return "galerie";
     }
 

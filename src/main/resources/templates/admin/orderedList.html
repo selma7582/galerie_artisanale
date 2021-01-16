@@ -53,10 +53,8 @@
                 <td th:text="${ordered.id}"></td>
 
 
-                <!--<div th:if="${ordered.user != null}">-->
                 <td th:text="${ordered.user.lastName+' '+ordered.user.firstName}"></td>
 
-                <!--</div>-->
                 <td th:text="${#dates.format(ordered.orderDate, 'dd-MM-yyyy')}"></td>
 
 
@@ -73,12 +71,19 @@
                 <td th:text="${ordered.cartItemList.size()}"></td>
                 <td th:text="${ordered.status}"></td>
 
+                <div th:if="${ordered.getStatus().name() == ordered.getStatus().CLOTURER.name()}">
+                    <td>
+                        <span></span>
+                    </td>
+                </div>
+                <div th:unless="${ordered.getStatus().name() == ordered.getStatus().CLOTURER.name()}">
+                    <td>
+                        <a th:href="@{/product/orderedDetail(id=${ordered.id})}">
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </a>
+                    </td>
+                </div>
 
-                <td>
-                    <a th:href="@{/product/orderedDetail(id=${ordered.id})}">
-                        <i class="glyphicon glyphicon-pencil"></i>
-                    </a>
-                </td>
 
 
 

@@ -1,15 +1,8 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="common/header :: common-header"/>
 
-<!--<style>
-    body {
 
-        background-image: url("../images/background/background.jpg");
-        background-repeat: repeat
-
-    }
-</style>-->
 <body>
 <div th:replace="common/header :: navbar"/>
 
@@ -25,6 +18,13 @@
         votre panier est vide....
     </div>
 
+    <div th:if="${notEnoughStock}" class="alert alert-danger">
+        Supprimez les articles indisponibles....
+    </div>
+
+
+
+
     <div class="row" style="margin-top: 10px;">
         <div class="col-xs-12">
             <div class="row">
@@ -32,6 +32,7 @@
                     <a class="btn btn-warning " th:href="@{/galerie}">Continuer les achats</a>
                 </div>
                 <div class="col-xs-6 text-right">
+
                 <a th:if="${shoppingCart != null and shoppingCart.cartItemList != null and shoppingCart.getCartItemCount() != 0}"
                    th:href="@{/confirm(id=${shoppingCart.id})}" class="btn btn-success ">Valider le panier</a>
                 </div>
@@ -60,7 +61,8 @@
                                     <div th:if="${cartItem.product.haveImages()}"
                                          th:each="image : ${cartItem.product.imagesList}">
                                         <img th:if="${image.fullURL != null}" th:src="@{${image.fullURL}}" width="100"
-                                             height="80"/><!--</div> --><!-- </a>-->
+                                             height="80"/>
+
                                         <br/>
                                     </div>
                                 </a>
@@ -81,7 +83,7 @@
                                     <p th:if="${cartItem.product.inStockNumber==0}"
                                        style="color: darkred;">Produit indisponible</p>
 
-                                    <div>
+                                    <div sec:authorize="isAuthenticated()">
                                         <input hidden="hidden" name="itemId" th:value="${cartItem.getId()}"/>
 
                                         <a class="glyphicon glyphicon-trash"
@@ -97,12 +99,12 @@
                                             <div class="modal-header no-padding">
                                                 <div class="table-header">Suppression</div>
                                             </div>
-                                            <div class="modal-body no-padding">Vous étes sûr de
-                                                supprimer cette ligne de commande?
+                                            <div class="modal-body no-padding">Êtes-vous sûr de vouloir supprimer?
                                             </div>
 
+
                                             <div class="modal-footer no-margin-top">
-                                                <button class="btn btn-danger pull-left"
+                                                <button  class="btn btn-secondary pull-left" type="button"
                                                         data-dismiss="modal"> Annuler
                                                 </button>
 
@@ -133,6 +135,7 @@
                                         th:value="${cartItem.qty}"
                                         type="number"
                                         min="1"
+
                                         th:max="${cartItem.product.inStockNumber}"/>
                                 <button style="display: none;"
                                         th:id="'update-item-'+${cartItem.product.getId()}" type="submit"

@@ -17,13 +17,7 @@
     });
 
 });
-/*var table = $('#example').DataTable( {
-    "paging": true,
-    language: { url: "https://cdn.datatables.net/plug-ins/1.10.16/i18n/French.json" },
-    pagingType: "simple_numbers",
-    lengthMenu:[10,20,30,40,50],
-    pageLength: 50
-} );*/
+
 
 
 

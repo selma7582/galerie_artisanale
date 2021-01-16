@@ -19,7 +19,7 @@
             <div class="alert alert-success">
                 <h3>
                     <i class="fa fa-check" aria-hidden="true"
-                       style="color: limegreen;"></i> Votre commande est validée. Vérifiez vos emails pour les détails.
+                       style="color: limegreen;"></i> Une confirmation est envoyée par e-mail.
                 </h3>
             </div>
 
@@ -52,11 +52,10 @@
                 </div>
 
                 <div class="col-xs-2">
-                    <!--style="color: #db3208; font-size: large;"-->
                     <h5>
 
                         <span th:text="${#numbers.formatDecimal(cartItem.product.price, 0 ,2)}">
-                                <!--th:style="${cartItem.product.inStockNumber}==0? 'text-decoration: line-through' : ''"--> </span><span>DH</span>
+                                 </span><span>DH</span>
                     </h5>
                 </div>
 
@@ -83,8 +82,6 @@
 <div th:replace="common/header :: body-bottom-scripts" />
 
 
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
+
 </body>
 </html>

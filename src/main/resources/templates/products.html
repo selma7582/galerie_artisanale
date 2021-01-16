@@ -36,7 +36,7 @@
                     </div>
 
 
-                    <div th:if = "${totalPages >0}">
+                    <!--<div th:if = "${totalPages >0}">
                         <div class="row col-sm-10">
                             <div class="col-sm-2">
                                 Total Rows:[[${totalItems}]]
@@ -57,7 +57,73 @@
                                 <span th:unless="${currentPage < totalPages}">fin</span>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
+
+                    <!--<nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center ">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#"  tabindex="-1"><span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Antérieur</span></a>
+                        </li>
+                        </ul>
+                        <ul class="pagination justify-content-center " th:each="i:${#numbers.sequence(1,totalPages)}">
+                                    <li class="page-item"  th:if="${currentPage != i}" >
+                                    <a class="page-link" th:href="@{__${#httpServletRequest.requestURI}__?page=__${i}__}">[[${i}]]</a></li>
+                                    <li class="page-item" th:unless="${currentPage != i}"><span class="page-link">[[${i}]]</span></li>
+                        </ul>
+                        <ul class="pagination justify-content-center ">
+                        <li class="page-link" th:if="${currentPage < totalPages}" >
+                            <a class="page-link" th:href="@{'/page/'+${currentPage + 1}}"><span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span></a>
+
+                            &lt;!&ndash;<a class="page-link" href="#">Next</a>&ndash;&gt;
+                        </li >
+                        <li class="page-link" th:unless="${currentPage < totalPages}">
+
+                            <span aria-hidden="true">&raquo;</span>
+                            &lt;!&ndash;<span class="sr-only">Next</span>&ndash;&gt;
+                        </li>
+                        </ul>
+                    </nav>-->
+
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center ">
+
+                            <li class="page-item disabled" >
+                                <a class="page-link" href="#"  tabindex="-1"><span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Antérieur</span></a>
+                            </li>
+                            <li class="page-item" th:if="${currentPage>1}">
+                                <span >Antérieur</span>
+                            </li>
+                        </ul>
+                        <ul class="pagination justify-content-center " th:each="i:${#numbers.sequence(1,totalPages)}">
+                            <li class="page-item"  th:if="${currentPage != i}" >
+                                <a class="page-link" th:href="@{__${#httpServletRequest.requestURI}__?page=__${i}__}">[[${i}]]</a></li>
+                            <li class="page-item" th:unless="${currentPage != i}"><span class="page-link">[[${i}]]</span></li>
+                        </ul>
+                        <ul class="pagination justify-content-center ">
+                            <li class="page-link" th:if="${currentPage < totalPages}" >
+                                <a class="page-link" th:href="@{'/page/'+${currentPage + 1}}">Suivant</a>
+                            </li >
+                            <li class="page-link" th:unless="${currentPage < totalPages}">
+                                <span>Suivant</span>
+                            </li>
+                        </ul>
+                            <ul class="pagination justify-content-center ">
+                                <li class="page-link" th:if="${currentPage < totalPages}" >
+                                    <a  th:href="@{'/page/'+${totalPages}}">
+                                        <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">Next</span></a>
+                                </li>
+                            <li class="page-link" th:unless="${currentPage < totalPages}">
+
+                                <span >fin</span>
+                            </li>
+
+                            </ul>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>

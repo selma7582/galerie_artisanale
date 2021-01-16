@@ -50,6 +50,7 @@ public class Config extends WebSecurityConfigurerAdapter {
             "/products",
             "/fonts/**",
             "/galerie","/galerie/**",
+            "/contact",
             "/productDetail",
             "/shoppingCart/cart",
             "/shoppingCart/view",
@@ -90,7 +91,7 @@ public class Config extends WebSecurityConfigurerAdapter {
 
 
 
-    @Bean
+  /*  @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(Locale.FRANCE);
@@ -104,8 +105,8 @@ public class Config extends WebSecurityConfigurerAdapter {
         return localeChangeInterceptor;
     }
 
-    /*@Override*/
+    *//*@Override*//*
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
-    }
+    }*/
 }

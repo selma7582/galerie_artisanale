@@ -3,18 +3,15 @@
 <head th:fragment="common-header">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1">-->
 
     <title> Galerie Artisanale</title>
 
-    <!-- Bootstrap core CSS -->
 
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
 
     <link href="/css/non-responsive.css" rel="stylesheet" />
 
 
-    <!-- data table -->
     <link th:href="@{/css/jquery.dataTables.min.css}" rel="stylesheet" />
     <link th:href="@{/css/dataTables.bootstrap.min.css}" rel="stylesheet" />
 
@@ -22,15 +19,8 @@
 
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>tinymce.init({ selector:'textarea' });</script>
-    <!-- Custom styles for this template -->
     <link href="/css/style.css" rel="stylesheet" />
 
-    <!--
-        <link th:rel="stylesheet" th:href="@{assets/bootstrap-slider/css/bootstrap-slider.css}"/>
-    -->
-
-    <!-- <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-     <link th:rel="stylesheet" th:href="@{webjars/font-awesome/5.11.2/css/all.css} "/>-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.css">
 
 
@@ -88,30 +78,18 @@
                             <li sec:authorize="isAuthenticated()"><a th:href="@{/myOrderedList}">Mes commandes</a></li>
                         </ul>
                     </li>
-                    <!--<li sec:authorize="isAuthenticated()"><a th:href="@{/profile}"><i class="glyphicon glyphicon-user"></i></a></li>
-                    <li sec:authorize="isAuthenticated()"><a th:href="@{/myOrderedList}"><i class="glyphicon glyphicon-user"></i></a></li>-->
 
-                    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Deconnexion</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Déconnexion</a></li>
 
 
-                    <!--    <li class="nav-item dropdown">
-
-                            <span th:text="#{lang.change}"></span>:
-                            <select id="locales">
-                                <option value=""></option>
-                                <option value="en" th:text="#{lang.eng}"></option>
-                                <option value="fr" th:text="#{lang.fr}"></option>
-                            </select>
-
-                        </li>-->
 
 
 
                 </ul>
 
 
-            </div><!--nav -->
-        </div><!--  -->
+            </div>
+        </div>
     </nav>
 
 </div>
@@ -123,15 +101,7 @@
         <div class="">
 
 
-            <!--<div class="col-xs-3 footerleft">
-                <div class="logofooter">
-                    <a th:href="@{/}"><img /></a>
-                </div>
-                <p>
-                    Le's Independent Book Store. <br />Serving our customers with the
-                    best.
-                </p>
-            </div>-->
+
 
 
 
@@ -157,7 +127,8 @@
             <div class="col-xs-4 ">
                 <h6 class="heading7">LIENS</h6>
                 <ul class="footer-ul">
-                    <li><a href="#"> Vie privée</a></li>
+                    <li><a href="/contactForm" th:href="@{/contact}">Contact</a></li>
+                    <!--<li><a href="#"> Vie privée</a></li>-->
                     <li><a href="#"> Conditions</a></li>
                     <li><a href="#"> Questions fréquentes</a></li>
                 </ul>
@@ -178,10 +149,7 @@
                 2020 - Tous les droits sont réservés </p>
         </div>
 
-        <!--<div class="col-md-2">
-            <p>Suivez nous sur :</p>
 
-        </div>-->
         <div class="col-md-6">
             <ul class=" bottom_ul">
                 <li><a href="#" ><i class="fa fa-facebook"></i></a></li>
@@ -189,11 +157,7 @@
                 <li><a href="#" ><i class="fa fa-linkedin"></i></a></li>
                 <li><a href="#" ><i class="fa fa-instagram"></i></a></li>
 
-                <!--<li><a href="#">A propos</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Faq's</a></li>
-                <li><a href="#">Contacter nous</a></li>
-                <li><a href="#">Site Map</a></li>-->
+
             </ul>
         </div>
     </div>
@@ -209,10 +173,8 @@
     <script th:src="@{/js/scriptCart.js}"></script>
     <script th:src="@{/js/checkEmail.js}"></script>
 
-    <!-- data table -->
     <script th:src="@{/js/jquery.dataTables.min.js}"></script>
     <script th:src="@{/js/dataTables.bootstrap.min.js}"></script>
-    <script th:src="@{/js/scriptLang.js}"></script>
 
 
 

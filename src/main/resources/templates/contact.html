@@ -1,0 +1,125 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header"/>
+
+
+<style>
+    body {
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+
+<div th:replace="common/header :: navbar"/>
+
+
+
+
+
+
+
+<div class="container login">
+
+
+
+    <div class="container login">
+
+        <h2 class=""><span>Contact</span></h2>
+
+    </div>
+
+
+
+            <div class="tab-content">
+
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none;">
+                            <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
+
+<form th:action="@{/contact}" th:method="post" class="form-horizontal">
+
+
+
+    <div class="form-group">
+
+        <div class="">
+            <div class="col-xs-6">
+                <div class="">
+                    <label for="form_name">Prénom *</label>
+                    <input id="form_name" type="text" name="name" class="form-control"  required="required" >
+
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="">
+                    <label for="form_lastname">Nom *</label>
+                    <input id="form_lastname" type="text" name="surname" class="form-control"  required="required" >
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="form-group">
+            <div class="col-xs-12">
+
+                <label for="email">Email *</label>
+                <input id="email" type="email" name="email" class="form-control"  required="required" >
+
+
+            </div>
+
+        </div>
+        <div>
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                    <label for="form_need">Sélectionner une option *</label>
+                    <select id="form_need" name="need" class="form-control" required="required" data-error="Please specify your need.">
+                        <option value=""></option>
+                        <option value="Request quotation">Problème de livraison</option>
+                        <option value="Request order status">Le produit ne correspond pas</option>
+                        <option value="Request copy of an invoice">Demander une facture</option>
+                        <option value="Other">Autre</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="">
+
+                <div class="form-group">
+                    <div class="col-xs-12">
+                    <label for="form_message">Message *</label>
+                    <textarea id="form_message" name="message" class="form-control"  rows="5" required="required" data-error="Please, leave us a message."></textarea>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-success btn-send" value="Envoyer">
+            </div>
+        </div>
+
+    </div>
+
+
+</form>
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+</div>
+
+
+
+<div th:replace="common/header :: footer"/>
+
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+
+
+</body>
+</html>

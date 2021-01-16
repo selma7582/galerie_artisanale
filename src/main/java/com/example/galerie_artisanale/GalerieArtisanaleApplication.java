@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SpringBootApplication
-//@ComponentScan("controller")
 public class GalerieArtisanaleApplication implements CommandLineRunner {
 
     @Autowired
@@ -38,42 +37,14 @@ public class GalerieArtisanaleApplication implements CommandLineRunner {
         storageService.init();
         User user1 = new User();
         user1.setEnabled(1);
-        user1.setEmail("admin@hotmail.com");
-        System.out.println("coucou"+user1.getEmail());
-        user1.setUsername("admin@hotmail.com");
+        user1.setEmail("galerie@hotmail.com");
         user1.setTel("0486938793");
         user1.setPassword(passwordEncoder.encode("admin"));
         userService.createUser(user1, "ROLE_ADMIN");
 
-/**
- User user2 = new User();
- user2.setEmail("Peter@gmail.com");
- user2.setUsername("Peter");
- user2.setTel("04869754332");
- user2.setPassword(SecurityUtility.passwordEncoder().encode("p"));
 
 
- UserRole role2 = new UserRole();
- role2.setUserRoleId(user1.getId_user());
- role2.setRole("ROLE_ADMIN");
 
- userService.createUser(user2, role2);*/
-        /*
-        User user3 = new User();
-        user3.setEmail("Peter@gmail.com");
-        user3.setUsername("Peter");
-        user3.setTel("04869754332");
-        user3.setPassword(SecurityUtility.passwordEncoder().encode("p"));
-
-
-        UserRole role2 = new UserRole();
-        role2.setUserRoleId(user3.getId_user());
-        role2.setRole("ROLE_ADMIN");
-        Set<UserRole> userRoles = new HashSet<>();
-
-        userRoles.add(new UserRole(user3.getId_user(),role2.getRole()));
-
-        userService.createUser(user3, userRoles);*/
 
     }
 

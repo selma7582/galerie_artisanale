@@ -1,10 +1,9 @@
-
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="common/header :: common-header" />
+<head th:replace="common/header :: common-header"/>
 
 <style>
-    body{
+    body {
 
         background-color: grey;
 
@@ -12,9 +11,7 @@
 </style>
 
 <body>
-<div th:replace="common/header :: navbar" />
-
-
+<div th:replace="common/header :: navbar"/>
 
 
 <!-- caroussel-->
@@ -31,10 +28,6 @@
                         <li data-target="#carousel-example-generic" data-slide-to="1"></li>
                         <li data-target="#carousel-example-generic" data-slide-to="2"></li>
                         <li data-target="#carousel-example-generic" data-slide-to="3"></li>
-
-                        <!--<li data-target="#carousel-example-generic" data-slide-to="4"></li>
-                        <li data-target="#carousel-example-generic" data-slide-to="5"></li>
-                        <li data-target="#carousel-example-generic" data-slide-to="6"></li>-->
 
                     </ol>
                     <!-- Wrapper for slides -->
@@ -81,42 +74,7 @@
                         </div>
 
 
-                        <!--<div class="item">
-
-                            <img src="/images/tapis/tapis3.jpg" alt="...">
-                            <div class="carousel-caption">
-                                <h4>La diversité culturelle des tribus est une richesse pour nos produits</h4>
-                                &lt;!&ndash;
-                                                                <p>Une passion pour la collection de tapis berbères...</p>
-                                &ndash;&gt;
-                            </div>
-                        </div>
-
-                        <div class="item">
-
-                        <img src="/images/tapis/tapis5.jpg" alt="...">
-                        <div class="carousel-caption">
-                            <h4>La diversité culturelle des tribus est une richesse pour nos produits</h4>
-                            &lt;!&ndash;
-                                                            <p>Une passion pour la collection de tapis berbères...</p>
-                            &ndash;&gt;
-                        </div>
                     </div>
-
-                        <div class="item">
-
-                        <img src="/images/tapis/Tapis4.jpg" alt="...">
-                        <div class="carousel-caption">
-                            <h4>La diversité culturelle des tribus est une richesse pour nos produits</h4>
-                            &lt;!&ndash;
-                                                            <p>Une passion pour la collection de tapis berbères...</p>
-                            &ndash;&gt;
-                        </div>
-                    </div>-->
-
-                    </div>
-
-
 
 
                     <!-- Controls -->
@@ -137,34 +95,33 @@
 </div>
 
 
-
 <div class="row">
     <div class="col-md-6 col-lg-4 col-sm-6">
 
         <a th:href="@{/galerie/Tapis}">
 
-        <div class="thumbnail">
+            <div class="thumbnail">
 
-            <img src="/images/galerie/tableau1.jpg" alt="...">
-        </div>
+                <img src="/images/galerie/tableau1.jpg" alt="...">
+            </div>
         </a>
     </div>
 
     <div class="col-md-6 col-lg-4 col-sm-6">
         <a th:href="@{/galerie/Couverture}">
 
-        <div class="thumbnail">
-            <img src="/images/galerie/couverture.jpg" alt="...">
-        </div>
+            <div class="thumbnail">
+                <img src="/images/galerie/couverture.jpg" alt="...">
+            </div>
         </a>
     </div>
 
     <div class="col-md-6 col-lg-4 col-sm-6">
         <a th:href="@{/galerie/Tapis}">
 
-        <div class="thumbnail">
-            <img src="/images/galerie/pouf2.gif" alt="...">
-        </div>
+            <div class="thumbnail">
+                <img src="/images/galerie/pouf2.gif" alt="...">
+            </div>
         </a>
     </div>
 
@@ -172,47 +129,87 @@
 
         <a th:href="@{/galerie/Tapis}">
 
-        <div class="thumbnail">
+            <div class="thumbnail">
 
-            <img src="/images/galerie/tapis_21.jpg" alt="...">
-        </div>
+                <img src="/images/galerie/tapis_21.jpg" alt="...">
+            </div>
         </a>
 
+    </div>
+
+    <div class="col-md-6 col-lg-4 col-sm-6">
+
+
+        <a th:href="@{/galerie/Tapis}">
+
+            <div class="thumbnail">
+                <img src="/images/galerie/fourrure_1.jpg" alt="...">
+            </div>
+        </a>
     </div>
 
     <div class="col-md-6 col-lg-4 col-sm-6">
         <a th:href="@{/galerie/Tapis}">
-
-        <div class="thumbnail">
-            <img src="/images/galerie/fourrure_1.jpg" alt="...">
-        </div>
+            <div class="thumbnail">
+                <img src="/images/galerie/fourrure_2.jpg" alt="...">
+            </div>
         </a>
-    </div>
-
-    <div class="col-md-6 col-lg-4 col-sm-6">
-       <a th:href="@{/galerie/Tapis}">
-           <div class="thumbnail">
-               <img src="/images/galerie/fourrure_2.jpg" alt="...">
-           </div>
-       </a>
 
     </div>
 
 
+    <!--<div class="container">
+
+        <div class="col-xs-7">
+            <a th:href="@{/galerie/Tapis}">
+
+                <div class="thumbnail float-left">
+                    <img src="/images/galerie/tapis_21.jpg" alt="...">
+                </div>
+            </a>
+        </div>
+        <div class="col-xs-5">
+            Découvrez notre collection de tapis
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <h4>Découvrez notre collection de tapis</h4>
+            </div>
+            <div class="col-xs-6">
+                <a th:href="@{/galerie/Tapis}">
+
+                    <div class="thumbnail float-right">
+                        <img src="/images/galerie/couverture.jpg" alt="...">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col-xs-6">
+            <a th:href="@{/galerie/Tapis}">
+                <div class="thumbnail float-left">
+                    <img src="/images/galerie/tableau1.jpg" alt="...">
+                </div>
+            </a>
+        </div>
+        <div class="col-xs-6 justify-content-lg-center">
+            <h4>Découvrez notre collection de tapis</h4>
+        </div>
+    </div>-->
 
 </div>
 
+
 </div>
-
-
-
 
 
 <div th:replace="common/header :: footer"/>
 
-<div th:replace="common/header :: body-bottom-scripts" />
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
+<div th:replace="common/header :: body-bottom-scripts"/>
+
 </body>
 </html>

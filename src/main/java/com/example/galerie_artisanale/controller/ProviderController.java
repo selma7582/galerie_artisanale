@@ -53,26 +53,7 @@ public class ProviderController {
         provider.setAddress(address);
         providerService.save(provider);
 
-        /*address.setProvider(provider);
-        addressService.save(address);
 
-
-        List<Address> addresses = addressService.findByProvider(provider);
-
-        if (addresses.size() == 0) {
-
-            address.setProvider(provider);
-            Address persestideAddress1 = addressService.save(address);
-        }
-        if (addresses != null && !addresses.isEmpty()) {
-
-            Address address1 = addressService.findOne(addresses.get(addresses.size() - 1).getId());
-            Address persestideAddress = addressService.save(address1);
-        }
-
-        model.addAttribute("addresses", addresses);
-        List<City> cityList = cityService.findAll();
-        model.addAttribute("cityList", cityList);*/
 
 
         model.addAttribute("addSuccess", true);
@@ -85,8 +66,6 @@ public class ProviderController {
         List<Provider> providerList = providerService.findAll();
         model.addAttribute("providerList",providerList);
         return "admin/addProvider";
-
-
 
     }
 
@@ -106,8 +85,7 @@ public class ProviderController {
     public String providerList(Model model){
         List<Provider> providerList = providerService.findAll();
         model.addAttribute("providerList",providerList);
-        /*List<Address> addressList = addressService.findAll();
-        model.addAttribute("addressList",addressList);*/
+
         return "admin/providerList";
     }
 
@@ -128,10 +106,6 @@ public class ProviderController {
     public String updateProviderGet(Model model, @RequestParam("id") Long id) {
         Provider provider = providerService.findOne(id);
         model.addAttribute("provider", provider);
-        /*Address address = provider.getAddress();
-        model.addAttribute("address",address);*/
-       // List<Address> addressList = addressService.findByProvider(provider);
-       // model.addAttribute("addressList",addressList);
 
         return "admin/updateProvider";
     }
@@ -149,59 +123,10 @@ public class ProviderController {
         provider.setAddress(address);
         provider = providerService.save(provider);
 
-
-
-        /*Provider persistedProvider = providerService.save(provider);
-
-        List<Address> addressList = addressService.findByProvider(persistedProvider);
-
-        Address address = addressService.findOne((addressList.get(addressList.size()-1)).getId()); //.g.get(addresses.si
-        address.setId((addressList.get(addressList.size()-1)).getId());*/
         return "redirect:../provider/providerList";
 
     }
-/* Address address1 = addressService.findOne(address.getId());
 
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User connectedUser = (User) authentication.getPrincipal();
-        Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
-        address1.setUser(connectedUser);
-        address1.setStreet(address.getStreet());
-        address1.setNumber(address.getNumber());
-        address1.setCity(cityService.findById(address.getCity().getId()));
-        Address persestideAddress = addressService.save(address1);
-        ordered.setShippingAddress(persestideAddress);
-        ordered.setBillingAddress(persestideAddress);
-        return "redirect:/confirm?id=" + ordered.getId();*/
-    /*@GetMapping(value = "/updateProviderAddress")
-    public String updateProviderAddressGet(Model model, @RequestParam("id") Long id) {
-        Address address1 = addressService.findOne(id);
-
-        List<Address> addressList = addressService.findByProvider(address1.getProvider());
-
-        Address address = addressService.findOne((addressList.get(addressList.size()-1)).getId()); //.g.get(addresses.size() - 1)).getId());
-        //Address address = addressService.findOne((addressList.get(addresses.size() - 1)).getId());//addresses.size() - 1
-
-        model.addAttribute("address", address);
-        Provider provider = address.getProvider();
-
-        Address address1 = addressService.findOne(id);
-
-        model.addAttribute("provider",provider);
-        return "admin/updateProviderAddress";
-    }
-
-
-    @PostMapping("/updateProviderAddress")
-    public String updateProviderAddress(@ModelAttribute Address address, Model model) {
-
-        Provider provider = address.getProvider();
-
-        address.setProvider(provider);
-        addressService.save(address);
-
-        return "redirect:../provider/providerList";
-    }*/
 
     @RequestMapping("/updateProduct")
     public String updateProductGet(@RequestParam("id") Long id, Model model) {

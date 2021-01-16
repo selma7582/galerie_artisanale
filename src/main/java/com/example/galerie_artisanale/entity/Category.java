@@ -28,11 +28,6 @@ public class Category implements Serializable {
     private List<Product> productList;
 
 
-/*
-    @ManyToOne
-    @JoinColumn(name = "id_subCategory")
-    private SubCategory subCategory;*/
-
 
 
     @Override

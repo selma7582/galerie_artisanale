@@ -2,14 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 
-    <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet" />
 
     <link href="/css/non-responsive.css" rel="stylesheet" />
 
     <link href="/css/font-awesome.min.css" rel="stylesheet" />
 
-    <!-- Custom styles for this template -->
     <link href="/css/style.css" rel="stylesheet" />
 
     <style>
@@ -59,15 +57,7 @@
     <tbody>
     <tr th:each="cartItem : ${cartItemList}">
         <td><span data-th-text="${cartItem.product.productName}"></span></td>
-        <!--<td>
 
-                <img th:if="${cartItem.product.getImagesList().get(0).getFullURL()  != null}"
-                     class=""
-                     th:src="@{${cartItem.product.getImagesList().get(0).getFullURL()}}"
-                     style="width: 70px;" />
-
-
-        </td>-->
         <td class="text-center" data-th-text="${#numbers.formatDecimal(cartItem.product.price, 0 ,2)+' '+'DH'}"><span>DH</span></td>
         <td class="text-center" data-th-text="${cartItem.qty}"></td>
         <td class="text-right" data-th-text="${#numbers.formatDecimal((cartItem.product.price)*(cartItem.qty), 0 ,2)+' '+'DH'}"><span>DH</span></td>

@@ -25,7 +25,7 @@
                                    data-toggle="dropdown" role="button" aria-haspopup="true"
                                    aria-expanded="false">Recherche par catégories<span class="caret"></span>
                                 </a>
-                                <ul th:if="${categories != null}" class="dropdown-menu breadcrumb">
+                                <ul th:if="${categories != null}" class="dropdown-menu ">
                                     <li th:each="cat : ${categories}">
                                         <a th:href="${'/galerie/'+cat}">[[${cat}]]</a>
                                     </li>
@@ -39,7 +39,7 @@
                                    data-toggle="dropdown" role="button" aria-haspopup="true"
                                    aria-expanded="false">Recherche par formes<span class="caret"></span>
                                 </a>
-                                <ul th:if="${shapes != null}" class="dropdown-menu breadcrumb">
+                                <ul th:if="${shapes != null}" class="dropdown-menu ">
 
                                     <li th:each="shape : ${shapes}">
                                         <a th:href="${'/searchByShape/'+shape}">[[${shape}]]</a>
@@ -53,7 +53,7 @@
                                    data-toggle="dropdown" role="button" aria-haspopup="true"
                                    aria-expanded="false">Recherche par dimensions<span class="caret"></span>
                                 </a>
-                                <ul th:if="${dimensions != null}" class="dropdown-menu breadcrumb">
+                                <ul th:if="${dimensions != null}" class="dropdown-menu ">
 
                                     <li th:each="dim : ${dimensions}">
                                         <a th:href="${'/searchByDimension/'+dim}">[[${dim}]]</a>
@@ -98,11 +98,11 @@
 
 <div id="products">
     <div th:replace="products :: list">
-        <div th:if = "${totalPages >0}">
+        <!--<div th:if = "${totalPages >0}">
             <div class="row col-sm-10">
-                <div class="col-sm-2">
-                    Total Rows:[[${totalItems}]]
-                </div>
+                &lt;!&ndash;<div class="col-sm-2">
+                    Total :[[${totalItems}]]
+                </div>&ndash;&gt;
                 <div class="col-sm-1">
             <span th:each="i:${#numbers.sequence(1,totalPages)}">
                 <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
@@ -111,15 +111,30 @@
                 </div>
                 <div class="col-sm-1">
                     <a th:if="${currentPage < totalPages}" th:href="@{'/page/'+${currentPage + 1}}">Suivant</a>
-                    <span th:unless="${currentPage < totalPages}">Suivant</span>
+
+                    &lt;!&ndash;<span th:unless="${currentPage < totalPages}">precedent</span>&ndash;&gt;
                 </div>
 
                 <div class="col-sm-1">
                     <a th:if="${currentPage < totalPages}" th:href="@{'/page/'+${totalPages}}">fin</a>
-                    <span th:unless="${currentPage < totalPages}">fin</span>
+                    &lt;!&ndash;<span th:unless="${currentPage < totalPages}">fin</span>&ndash;&gt;
                 </div>
             </div>
-        </div>
+        </div>-->
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center ">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#"  tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
 </div>

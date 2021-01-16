@@ -4,6 +4,7 @@ import com.example.galerie_artisanale.entity.*;
 import com.example.galerie_artisanale.service.*;
 import com.example.galerie_artisanale.util.Container;
 import com.example.galerie_artisanale.util.PriceRange;
+import com.example.galerie_artisanale.util.ProductDTO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,28 +154,7 @@ public class ProductController {
     }
 
 
-    /*@RequestMapping(value = "/remove2", method = RequestMethod.POST)
-    public String remove(@ModelAttribute Product product) {
-        System.out.println("Removing :" + product.getId());
-        productService.removeOne(product.getId());
 
-        return "redirect:/product/productList";
-
-    }
-
-    @RequestMapping(value = "/removelist", method = RequestMethod.POST)
-    public String remove(@ModelAttribute Container container) {
-        System.out.println("Removing  List:");
-
-        container.getProductList().stream().filter(Product::isSelected)
-                .forEach(p -> {
-                    System.out.println("Removing " + p.getId());
-                    productService.removeOne(p.getId());
-                });
-
-        return "redirect:/product/productList";
-
-    }*/
 
     @PostMapping(value = "/add")
     public String addProductPost(@ModelAttribute("product") Product product, Model model,
@@ -304,6 +284,44 @@ public class ProductController {
     }
 
 
+   /* @RequestMapping(value = "/addShapePop", method = RequestMethod.GET)
+    public String addShapePopPost(Model model) {
+        Product product = new Product();
+        List<Shape> shapeList = shapeService.findAll();
+        List<Dimension> dimensionList = dimensionService.findAll();
+        List<Category> categoryList = categoryService.findAll();
+        List<Provider> providerList = providerService.findAll();
+        model.addAttribute("providerList",providerList);
+        model.addAttribute("categoryList",categoryList);
+        model.addAttribute("dimensionList",dimensionList);
+        model.addAttribute("shapeList",shapeList);
+        model.addAttribute("product", product);
+
+        return "/admin/addProduct";
+    }*/
+
+    /*@RequestMapping(value = "/addShapePop", method = RequestMethod.POST)
+    public String addShapePopPost(HttpServletRequest request,
+                               @ModelAttribute("shape") Shape shape,
+                               Model model) throws Exception {
+        model.addAttribute("shapeName", shape.getShapeName());
+        //model.addAttribute("product", product);
+
+        if (shapeService.findByShapeName(shape.getShapeName()) != null) {
+            model.addAttribute("shapeExistss", true);
+            return "redirect:/product/addShapePop";
+        }
+
+        String name = shape.getShapeName();
+        String nameMaj = name.replaceFirst(".",(name.charAt(0)+"").toUpperCase());
+        shape.setShapeName(nameMaj);
+
+        this.shapeService.save(shape);
+
+        return "redirect:/product/add";
+    }*/
+
+
     @ModelAttribute("shape")
     public Shape newShape() {
         return new Shape();
@@ -361,9 +379,7 @@ public class ProductController {
         /*if (shape != null) {*/
         model.addAttribute("category", category);
         return "admin/updateCategory";
-      /*  } else {
-            throw new IllegalArgumentException();
-        }*/
+
     }
 
 
@@ -399,6 +415,24 @@ public class ProductController {
         this.dimensionService.save(dimension);
         // return ("admin/addCategory");
         return ("redirect:dimensionList");
+
+    }
+
+
+    @RequestMapping(value = "/addDimensionPop", method = RequestMethod.POST)
+    public String addDimensionPopPost(
+            HttpServletRequest request,
+            @ModelAttribute("dimensionList") Dimension dimension,
+            Model model) throws Exception {
+        model.addAttribute("dimensionDescription", dimension.getDescription());
+
+        if (dimensionService.findByDescription(dimension.getDescription()) != null) {
+            model.addAttribute("dimensionExists", true);
+            return "redirect:/product/add";
+        }
+
+        this.dimensionService.save(dimension);
+        return "redirect:/product/add";
 
     }
 
@@ -539,6 +573,7 @@ public class ProductController {
         ordered1.setStatus(ordered.getStatus());
         if(ordered.getStatus()== OrderedStatus.ANNULER){
             ordered1.getCartItemList().stream().forEach(product->product.getProduct().setInStockNumber(product.getQty()+product.getProduct().getInStockNumber()));
+
         }
         orderService.save(ordered1);
         if(ordered1.getStatus() == OrderedStatus.LIVRER){

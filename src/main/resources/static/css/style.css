@@ -188,8 +188,13 @@ margin-left: 40px;}
 }
 
 .bottom_ul li:after {
-    content: "/";
+    content: " ";
     color: #FFF;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+.bottom_ul li:after insta{
+    color: red;
     margin-right: 8px;
     margin-left: 8px;
 }
@@ -225,4 +230,9 @@ margin-left: 40px;}
 .bak{
     background-image: url("../images/background/background.jpg");
     background-repeat: repeat
+}
+
+.insta
+{
+    content: "\f0e1";
 }

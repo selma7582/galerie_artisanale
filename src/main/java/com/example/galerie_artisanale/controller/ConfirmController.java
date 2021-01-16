@@ -37,8 +37,6 @@ public class ConfirmController {
     @Autowired
     private CartItemService cartItemService;
 
-    @Autowired
-    private ProductService productService;
 
     @Autowired
     private CityService cityService;
@@ -46,9 +44,6 @@ public class ConfirmController {
     @Autowired
     private CategoryService categoryService;
 
-
-    @Autowired
-    private CartItemRepository cartItemRepository;
 
     @Autowired
     private StorageService storageService;
@@ -78,9 +73,7 @@ public class ConfirmController {
         if (authentication.getPrincipal() instanceof User) {
             Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
             if (ordered == null) {
-                // cad que le panier est dans la session et l'utilisateur n'a pas encore un panier en cours qui n'est pas encore validé
                 ordered = (Ordered) session.getAttribute(ShoppingCartController.SHOPPING_CART_SESSION);
-                //ordered.setUser();
                 ordered = orderService.save(ordered);
             }
 
@@ -99,11 +92,9 @@ public class ConfirmController {
                 }
             }
 
-            // GET THE ADDRESS  of the connected user
 
             User user = (User) authentication.getPrincipal();
             List<Address> addresses = addressService.findByUser(user);
-            //Address shippingAddress = orderService.
             if (addresses != null && !addresses.isEmpty()) {
                 ordered.setShippingAddress(addresses.get(addresses.size() - 1));
                 ordered.setBillingAddress(ordered.getShippingAddress());
@@ -122,7 +113,6 @@ public class ConfirmController {
             if (missingRequiredField) {
                 model.addAttribute("missingRequiredField", true);
             }
-            // Validate Order !
             model.addAttribute(SHOPPING_CART_MODEL, ordered);
 
         } else {
@@ -144,7 +134,7 @@ public class ConfirmController {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof User) {
             Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
-            // TODO : verifier ici si tu dois faire la meme correciton à la ligne 79
+
             if (ordered == null) {
                 // cad que le panier est dans la session et l'utilisateur n'a pas encore un panier en cours qui n'est pas encore validé
                 ordered = (Ordered) session.getAttribute(ShoppingCartController.SHOPPING_CART_SESSION);
@@ -154,7 +144,6 @@ public class ConfirmController {
                 throw new IllegalStateException("Shopping cart should be persisted at this level: id shouldn't be null");
             }
 
-            // TODO: update the stock
 
             ordered.getCartItemList()
                     .forEach(cartItem -> cartItem.getProduct().setInStockNumber(cartItem.getProduct().getInStockNumber() - cartItem.getQty()));
@@ -259,27 +248,7 @@ public class ConfirmController {
         return "redirect: ..";
     }
 
-    @RequestMapping("/deleteItemC/{cartItem}")
-    public String removeItem(@PathVariable("cartItem") Long id, Model model) {
 
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Ordered ordered = orderService.findShoppingCart((User) authentication.getPrincipal());
-
-        CartItem persistedCartItem = cartItemService.findById(id);
-
-        cartItemService.remove(persistedCartItem);
-
-        model.addAttribute("shoppingCart", cartItemService.findAll());
-
-        if (cartItemService.findAll() == null)
-
-            return "redirect:/shoppingCart/view";
-
-        // return "/confirm";
-        return "redirect:/confirm?id=" + ordered.getId();
-
-    }
 
     @GetMapping(value = "/updateUserAddress")
     public String updateUserAddress(Model model, @RequestParam("id") Long id) {

@@ -11,13 +11,4 @@ let activeImages = document.getElementsByClassName('active')
         })
     }
 
-/*    let buttonRight = document.getElementById('slideRight');
-    let buttonLeft = document.getElementById('slideLeft');
 
-    buttonRight.addEventListener('click',function (){
-        document.getElementById('slider').scrollLeft -=180
-    })
-
-    buttonLeft.addEventListener('click',function (){
-        document.getElementById('slider').scrollLeft +=180
-    })*/

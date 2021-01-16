@@ -16,11 +16,8 @@ public class Ordered {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-    // the date of confirmation of the order
     private Date orderDate;
-    /*
-        private Date shippingDate;
-    */
+
     @Enumerated(EnumType.STRING)
     private OrderedStatus status = OrderedStatus.INVALID;
 

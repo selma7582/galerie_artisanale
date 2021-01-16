@@ -169,7 +169,7 @@
                                 <label  for="inStockNumber"> * Stock</label>
                                 <div >
                                     <input th:value="${product.inStockNumber}" type="number" name="inStockNumber"
-                                           class="form-control" id="inStockNumber" placeholder="Le stock" required/>
+                                           class="form-control" id="inStockNumber" placeholder="Le stock" min="0" required/>
 
                                     <!--
                                                             <span class="help-block">Quantité stock</span>

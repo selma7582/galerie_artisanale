@@ -24,10 +24,5 @@ public interface CartItemService {
     void removeOne(Long id);
 
 
-/*
-    void removeCartItem(CartItem cartItem);
-*/
-
-
 
 }
