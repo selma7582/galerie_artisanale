@@ -1,6 +1,7 @@
 package com.example.galerie_artisanale.controller;
 
 import com.example.galerie_artisanale.entity.*;
+import com.example.galerie_artisanale.repository.ProductRepository;
 import com.example.galerie_artisanale.security.MailConstructor;
 import com.example.galerie_artisanale.security.PasswordResetToken;
 import com.example.galerie_artisanale.security.SecurityUtility;
@@ -10,6 +11,8 @@ import com.example.galerie_artisanale.util.PriceRange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +63,8 @@ public class HomeController {
     @Autowired
     private SecurityUtility securityUtility;
 
-
+    @Autowired
+    private ProductRepository productRepository;
     @Autowired
     private OrderService orderService;
 
@@ -91,13 +95,21 @@ public class HomeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (User.class.isInstance(authentication.getPrincipal())) {
 
+
             User connectedUser = (User) authentication.getPrincipal();
             if (connectedUser.getRole().getRole().equals("ROLE_ADMIN")) {
                 /*return "admin/orderedList";*/
                 return "redirect:/orderedList";
             }
+            if(connectedUser.getEnabled() == 0){
+                model.addAttribute("classActiveLogin", true);
+                model.addAttribute("desactive",true);
+                return "myAccount";
+            }
         }
         shoppingCartHeaderFiller.fill(model,session);
+        //User connectedUser = (User) authentication.getPrincipal();
+
         return "index";
     }
 
@@ -145,6 +157,30 @@ public class HomeController {
         return galerieForAll(model, principal, session, pages, page);
     }
 
+    @GetMapping(value = "/products")
+    public String filterProducts(PriceRange priceRange, Model model, Principal principal, HttpSession session,
+                                 @RequestParam(required = false)Integer page) {
+
+        int pageSize = 4;
+        if (page == null){
+            page = 1 ;
+        }
+
+        Page<Product> pages = productService.chercher(priceRange.getMin(), priceRange.getMax(),page,pageSize);
+        List<Product> products = pages.getContent();
+
+
+        model.addAttribute("emptyList", products.isEmpty());
+        products.stream()
+                .filter(product -> !product.getImagesList().isEmpty())
+                .map(product -> product.getImagesList().get(0))
+                .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
+        model.addAttribute("productList", products);
+        galerieForAll(model,principal,session,pages,page);
+
+        return "products";
+    }
+
 
 
     @RequestMapping("/galerie")
@@ -176,8 +212,6 @@ public class HomeController {
             shoppingCart = (Ordered) session.getAttribute(ShoppingCartController.SHOPPING_CART_SESSION);
         }
 
-
-
         List<Product> productList = pages.getContent();
         productList.stream()
                 .filter(product -> !product.getImagesList().isEmpty())
@@ -185,7 +219,7 @@ public class HomeController {
                 .forEach(img -> img.setFullURL((fileToPath(storageService.load(img.getUrl_image())))));
 
         model.addAttribute("productList", productList);
-        model.addAttribute("activeAll", true);
+        //model.addAttribute("activeAll", true);
         model.addAttribute("shoppingCart", shoppingCart);
 
         if (productList.isEmpty()) {
@@ -241,6 +275,11 @@ public class HomeController {
 
         if (user == null) {
             model.addAttribute("emailNotExists", true);
+            return "myAccount";
+        }
+        if(user.getEnabled()==0){
+            model.addAttribute("classActiveForgetPassword",true);
+            model.addAttribute("desactiver",true);
             return "myAccount";
         }
 
@@ -567,7 +606,7 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = "/products")
+   /* @GetMapping(value = "/products")
     public String filterProducts(PriceRange priceRange, Model model, Principal principal, HttpSession session,
                                  @RequestParam(required = false)Integer page) {
 
@@ -580,10 +619,7 @@ public class HomeController {
         model.addAttribute("productList", products);
 
         return "products";
-    }
-
-
-
+    }*/
 
 
     @GetMapping("/myOrderedList")
@@ -657,7 +693,7 @@ public class HomeController {
 
     @GetMapping("/page/{pageNo}")
     public String findPaginated(@PathVariable(value="pageNo")int pageNo,Model model,Principal principal,HttpSession session){
-        int pageSize = 8;
+        int pageSize = 4;
         Page<Product> page = productService.findPagination(pageNo,pageSize);
         List<Product> productList = page.getContent();
 

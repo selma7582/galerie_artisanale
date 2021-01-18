@@ -1,31 +1,33 @@
-
-
 <div th:fragment="list" xmlns:th="http://www.thymeleaf.org">
     <div class="container">
         <div class="row">
 
-
             <div class="" style="">
-
 
                 <div class="">
                     <div th:if="${emptyList}">
-                        <h3 class="text-center" style="font-style: italic;">Aucun resulta pour votre recherche.</h3>
+
+                        <h3 class="text-center" style="font-style: italic;">Aucun résultat pour votre recherche.</h3>
+
                     </div>
-                    <div class="row" >
+                    <div class="row">
                         <div th:each="product : ${productList}" class="col-lg-3">
                             <form method="post" th:object="${cartItemList}">
-                                <h4  th:text="${product.productName}"></h4>
+                                <h4 th:text="${product.productName}"></h4>
                                 <input type="hidden" name="product" th:value="productList">
 
                                 <div th:if="${product.haveImages()}">
-                                    <a th:href="@{/productDetail?id=}+${product.id}"><div>
-                                        <img th:if="${product.imagesList.get(0).fullURL != null}"  th:src="@{${product.imagesList.get(0).fullURL}}" width="200" height="250"/></div>  </a>
-                                    <br />
+                                    <a th:href="@{/productDetail?id=}+${product.id}">
+                                        <div>
+                                            <img th:if="${product.imagesList.get(0).fullURL != null}"
+                                                 th:src="@{${product.imagesList.get(0).fullURL}}" width="200"
+                                                 height="250"/></div>
+                                    </a>
+                                    <br/>
 
                                 </div>
 
-                                <span >Dimension:  <span th:text="${product.dimension}"></span></span> cm<br/>
+                                <span>Dimension:  <span th:text="${product.dimension}"></span></span> cm<br/>
 
                                 <h4>Prix: <span
                                         th:text="${#numbers.formatDecimal(product.price, 0 , 2)}"></span> DH</h4><br/>
@@ -89,39 +91,60 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center ">
 
-                            <li class="page-item disabled" >
-                                <a class="page-link" href="#"  tabindex="-1"><span aria-hidden="true">&laquo;</span>
+                            <li th:if="${currentPage > 1}" class="page-item ">
+                                <a class="page-link" th:href="@{'/page/'+${1}}" ><span aria-hidden="true">&laquo;</span>
                                     <span class="sr-only">Antérieur</span></a>
                             </li>
-                            <li class="page-item" th:if="${currentPage>1}">
-                                <span >Antérieur</span>
+                            <li class="page-item" th:unless="${currentPage > 1}">
+                                <span>
+                                    <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Antérieur</span>
+                                </span>
+
                             </li>
                         </ul>
+
+                        <ul class="pagination justify-content-center ">
+                            <li class="page-link" th:if="${currentPage > 1}">
+                                <a class="page-link" th:href="@{'/page/'+${currentPage - 1}}">Précédent</a>
+                            </li>
+                            <li class="page-link" th:unless="${currentPage > 1}">
+                                <span>Précédent</span>
+                            </li>
+                        </ul>
+
                         <ul class="pagination justify-content-center " th:each="i:${#numbers.sequence(1,totalPages)}">
-                            <li class="page-item"  th:if="${currentPage != i}" >
-                                <a class="page-link" th:href="@{__${#httpServletRequest.requestURI}__?page=__${i}__}">[[${i}]]</a></li>
-                            <li class="page-item" th:unless="${currentPage != i}"><span class="page-link">[[${i}]]</span></li>
+                            <li class="page-item" th:if="${currentPage != i}">
+                                <a class="page-link" th:href="@{__${#httpServletRequest.requestURI}__?page=__${i}__}">[[${i}]]</a>
+                            </li>
+                            <li class="page-item" th:unless="${currentPage != i}"><span
+                                    class="page-link">[[${i}]]</span></li>
                         </ul>
                         <ul class="pagination justify-content-center ">
-                            <li class="page-link" th:if="${currentPage < totalPages}" >
+                            <li class="page-link" th:if="${currentPage < totalPages}">
                                 <a class="page-link" th:href="@{'/page/'+${currentPage + 1}}">Suivant</a>
-                            </li >
+                            </li>
                             <li class="page-link" th:unless="${currentPage < totalPages}">
                                 <span>Suivant</span>
                             </li>
                         </ul>
-                            <ul class="pagination justify-content-center ">
-                                <li class="page-link" th:if="${currentPage < totalPages}" >
-                                    <a  th:href="@{'/page/'+${totalPages}}">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">Next</span></a>
-                                </li>
-                            <li class="page-link" th:unless="${currentPage < totalPages}">
-
-                                <span >fin</span>
+                        <ul class="pagination justify-content-center ">
+                            <li class="page-link" th:if="${currentPage < totalPages}">
+                                <a th:href="@{'/page/'+${totalPages}}">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span></a>
                             </li>
 
-                            </ul>
+                            <li class="page-link" th:unless="${currentPage < totalPages}">
+                                <span>
+                                    <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                                </span>
+
+
+                            </li>
+
+                        </ul>
                         </ul>
                     </nav>
 

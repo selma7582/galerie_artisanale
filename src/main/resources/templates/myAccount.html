@@ -80,6 +80,11 @@
                             <div class="panel-body"
                                  style="background-color:#ededed; margin-top: 20px;">
                                 <div th:if="${param.error != null}" style="color: red">Email ou Mot de passe incorrecte</div>
+                                <div th:if="${desactive}" class="alert alert-danger">Votre compte est désactivé</div>
+
+
+
+
                                 <form th:action="@{/login}" method = "post">
                                     <div class="form-group">
                                         <label for="username">* Adresse mail</label>
@@ -116,7 +121,7 @@
                             <div class="panel-body" style="background-color:#ededed; margin-top: 20px;">
                                 <div th:if="${emailNotExists}" class="alert alert-danger">Cet email n'existe pas.</div>
                                 <div th:if="${forgetPasswordEmailSent}" class="alert alert-success">Email envoyé.</div>
-
+                                <div th:if="${desactiver}" class="alert alert-danger">Votre compte est désactivé</div>
                                 <form th:action="@{/forgetPassword}" method="post">
 
                                     <div class="form-group">

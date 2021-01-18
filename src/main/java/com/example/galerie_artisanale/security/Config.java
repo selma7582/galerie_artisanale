@@ -67,7 +67,7 @@ public class Config extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .antMatchers("/product/**").hasAnyRole("ADMIN")
+                .antMatchers("/product/**","/provider/**").hasAnyRole("ADMIN")
                 //.antMatchers("/provider/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

@@ -26,6 +26,7 @@
                                    aria-expanded="false">Recherche par catégories<span class="caret"></span>
                                 </a>
                                 <ul th:if="${categories != null}" class="dropdown-menu ">
+
                                     <li th:each="cat : ${categories}">
                                         <a th:href="${'/galerie/'+cat}">[[${cat}]]</a>
                                     </li>
@@ -42,8 +43,7 @@
                                 <ul th:if="${shapes != null}" class="dropdown-menu ">
 
                                     <li th:each="shape : ${shapes}">
-                                        <a th:href="${'/searchByShape/'+shape}">[[${shape}]]</a>
-
+                                        <a th:href="${'/searchByShape/'+shape}" >[[${shape}]]</a>
                                     </li>
                                 </ul>
                             </li>
@@ -56,6 +56,7 @@
                                 <ul th:if="${dimensions != null}" class="dropdown-menu ">
 
                                     <li th:each="dim : ${dimensions}">
+
                                         <a th:href="${'/searchByDimension/'+dim}">[[${dim}]]</a>
 
                                     </li>
@@ -106,7 +107,7 @@
                 <div class="col-sm-1">
             <span th:each="i:${#numbers.sequence(1,totalPages)}">
                 <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
-                <span th:unless="${currentPage != i}">[[${i}]]</span>&nbsp;&nbsp;
+                <span th:unless="${currentPage != i}">[[${i}]]</span>&nbsp;&nbsp;F
             </span>
                 </div>
                 <div class="col-sm-1">

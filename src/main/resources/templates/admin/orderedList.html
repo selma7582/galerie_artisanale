@@ -67,7 +67,7 @@
                     <td th:text="${'Aucune Adresse'}"></td>
                 </div>
 
-                <td th:text="${#numbers.formatDecimal(ordered.total, 0 , 2)+' '+'DH'}"></td>
+                <td th:text="${#numbers.formatDecimal(ordered.totalH, 0 , 2)+' '+'DH'}"></td>
                 <td th:text="${ordered.cartItemList.size()}"></td>
                 <td th:text="${ordered.status}"></td>
 

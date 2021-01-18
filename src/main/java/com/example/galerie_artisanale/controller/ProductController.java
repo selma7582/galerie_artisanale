@@ -300,7 +300,7 @@ public class ProductController {
         return "/admin/addProduct";
     }*/
 
-    /*@RequestMapping(value = "/addShapePop", method = RequestMethod.POST)
+    @RequestMapping(value = "/addShapePop", method = RequestMethod.POST)
     public String addShapePopPost(HttpServletRequest request,
                                @ModelAttribute("shape") Shape shape,
                                Model model) throws Exception {
@@ -319,7 +319,7 @@ public class ProductController {
         this.shapeService.save(shape);
 
         return "redirect:/product/add";
-    }*/
+    }
 
 
     @ModelAttribute("shape")

@@ -63,7 +63,7 @@
                                              </span></a></td>
 
                                         <td th:text="${ordered.id}"></td>
-                                        <td class="text-center" data-th-text="${#numbers.formatDecimal(ordered.total, 0 ,2)+' '+'DH'}"></td>
+                                        <td class="text-center" data-th-text="${#numbers.formatDecimal(ordered.totalH, 0 ,2)+' '+'DH'}"></td>
 
 
                                         <td th:text="${ordered.status}"></td>
@@ -168,7 +168,7 @@
 
                                                             <td class="text-center"><strong>Total</strong></td>
                                                             <td class="text-right"
-                                                                data-th-text="${#numbers.formatDecimal(ordered.total, 0 ,2)+' '+'DH'}"><span> DH</span></td>
+                                                                data-th-text="${#numbers.formatDecimal(ordered.totalH, 0 ,2)+' '+'DH'}"><span> DH</span></td>
                                                         </tr>
 
 

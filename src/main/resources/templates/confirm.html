@@ -266,7 +266,7 @@
                                     <!--<div th:if="${#lists.size(cartItemList)>1}">-->
 
                                         <strong style="font-size: medium;">Total de la commande TTC <!--(<span
-                                                th:text="${#lists.size(cartItemList)}"></span> articles)-->:
+                                                th:text="${#lists.size()}"></span> articles)-->:
                                             <span style=" font-szie: large;">
                                         <span th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span> DH</span>
                                         </strong>
@@ -275,14 +275,14 @@
                                     <!--<div th:if="${#lists.size(cartItemList)==1}">
                                         <div th:if="${cartItemList.get(0).getQty()==1}">
                                             <strong style="font-size: medium;">Total de la commande TTC (<span
-                                                    th:text="${#lists.size(cartItemList)}"></span> article):
+                                                    th:text="${#lists.size()}"></span> article):
                                                 <span style=" font-szie: large;">
                                                 <span th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span> DH</span>
                                             </strong>
                                         </div>
                                         <div th:if="${cartItemList.get(0).getQty()>1}">
                                             <strong style="font-size: medium;">Total de la commande TTC (<span
-                                                    th:text="${#lists.size(cartItemList)}"></span> articles):
+                                                    th:text="${#lists.size()}"></span> articles):
                                                 <span style=" font-szie: large;">
                                                  <span th:text="${#numbers.formatDecimal(shoppingCart.total, 0 ,2)}"></span> DH</span>
                                             </strong>

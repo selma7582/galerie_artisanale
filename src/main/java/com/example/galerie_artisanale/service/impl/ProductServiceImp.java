@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -106,6 +107,13 @@ public class ProductServiceImp implements ProductService {
                 .stream()
                 .filter(product -> product.getPrice() >= min && product.getPrice() <= max)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<Product> chercher(float priceMin, float priceMax, int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo-1,pageSize);
+
+        return productRepository.chercher(priceMin,priceMax,pageable);
     }
 
 

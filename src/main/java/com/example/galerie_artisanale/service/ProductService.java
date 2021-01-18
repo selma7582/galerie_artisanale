@@ -3,6 +3,7 @@ package com.example.galerie_artisanale.service;
 import com.example.galerie_artisanale.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -35,9 +36,14 @@ public interface ProductService {
 
     List<Product> filterProducts(int min, int max);
 
-   // Page<Product> filterProducts(int min, int max,int pageNo, int pageSize);
+    Page<Product> chercher(
+
+            @Param("x") float priceMin,
+            @Param("y") float priceMax, int pageNo, int pageSize);
 
     Page<Product> findPagination(int pageNo, int pageSize);
+
+
 
 
 

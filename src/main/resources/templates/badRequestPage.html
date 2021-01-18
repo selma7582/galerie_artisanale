@@ -1,0 +1,47 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header"/>
+
+
+<style>
+    body {
+
+        background-image: url("../images/background/background.jpg");
+        background-repeat: repeat
+
+    }
+</style>
+<body>
+
+<div th:replace="common/header :: navbar"/>
+
+
+
+<div class="container">
+    <div class="row" style="margin-bottom: -100px;">
+        <div class="col-xs-8">
+            <h2 class="section-headline">
+                <span></span>
+            </h2>
+        </div>
+
+    </div>
+
+    <div class="row" style="margin-top:10px">
+        <div class="col-xs-9 col-xs-offset-3">
+            <h5>Aucun résultat pour votre requête. Clickez <a th:href="@{/}">ici</a> pour retourner à la page d'acceuil.</h5>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div th:replace="common/header :: footer"/>
+
+
+<div th:replace="common/header :: body-bottom-scripts"/>
+
+
+</body>
+</html>

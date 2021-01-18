@@ -46,6 +46,16 @@ public class Ordered {
         }
     }
 
+    public double getTotalH(){
+        if (cartItemList != null && !cartItemList.isEmpty()){
+            return  cartItemList.stream()
+                    .mapToDouble(item -> item.getQty() * item.getBuyinPrice())
+                    .sum();
+        }else {
+            return 0d ;
+        }
+    }
+
     /**
      *
      * @return
